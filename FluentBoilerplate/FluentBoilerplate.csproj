@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{16299F03-2C61-4B1A-8232-5E58389FC0C8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentBoilerplate</RootNamespace>
+    <AssemblyName>FluentBoilerplate</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PublicContract\Attributes\LogAttribute.cs" />
+    <Compile Include="PublicContract\Attributes\LogVisibility.cs" />
+    <Compile Include="PublicContract\Attributes\MapsToAttribute.cs" />
+    <Compile Include="PublicContract\Attributes\NotNullAttribute.cs" />
+    <Compile Include="PublicContract\Attributes\StringLengthAttribute.cs" />
+    <Compile Include="PublicContract\Boilerplate.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContext_WithResult.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContractualContext.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContractualContext_WithResult.cs" />
+    <Compile Include="PublicContract\Contexts\IContractContext.cs" />
+    <Compile Include="PublicContract\Contexts\IKnownResultContext.cs" />
+    <Compile Include="PublicContract\Contexts\IVerifiableContractContext.cs" />
+    <Compile Include="PublicContract\ContractExit.cs" />
+    <Compile Include="PublicContract\Exceptions\OperationWasNotSuccessfulException.cs" />
+    <Compile Include="PublicContract\Identity.cs" />
+    <Compile Include="PublicContract\IValidationAttribute.cs" />
+    <Compile Include="PublicContract\Traits\IContractualTrait.cs" />
+    <Compile Include="PublicContract\Exceptions\ContractViolationException.cs" />
+    <Compile Include="PublicContract\Traits\IDataClientTrait.cs" />
+    <Compile Include="PublicContract\Traits\IServiceClientTrait.cs" />
+    <Compile Include="Runtime\Contexts\BoilerplateContext_WithResult.cs" />
+    <Compile Include="Runtime\Contexts\BoilerplateContractContext.cs" />
+    <Compile Include="Runtime\Contexts\BoilerplateContractContext_WithResult.cs" />
+    <Compile Include="Runtime\Contexts\ImmutableContractAwareContext.cs" />
+    <Compile Include="Runtime\Contexts\Permissions.cs" />
+    <Compile Include="Runtime\Contexts\Traits\ConversionContextTrait.cs" />
+    <Compile Include="PublicContract\Traits\IActionableTrait.cs" />
+    <Compile Include="PublicContract\Traits\IConversionTrait.cs" />
+    <Compile Include="PublicContract\Traits\IPermissionsBasedTrait.cs" />
+    <Compile Include="PublicContract\Traits\IRightsBasedTrait.cs" />
+    <Compile Include="PublicContract\Traits\IRolesBasedTrait.cs" />
+    <Compile Include="Runtime\Contexts\Traits\PermissionsBasedContextTrait.cs" />
+    <Compile Include="PublicContract\Traits\ICopyableTrait.cs" />
+    <Compile Include="Runtime\Contexts\BoilerplateContext.cs" />
+    <Compile Include="Runtime\Contexts\ContextSettings.cs" />
+    <Compile Include="PublicContract\Providers\ITranslationProvider.cs" />
+    <Compile Include="PublicContract\Providers\IValidationProvider.cs" />
+    <Compile Include="PublicContract\StringExtensions.cs" />
+    <Compile Include="PublicContract\Contexts\IImmutableErrorContext.cs" />
+    <Compile Include="Runtime\Contexts\ImmutableContext.cs" />
+    <Compile Include="Runtime\Contexts\ImmutableErrorContext.cs" />
+    <Compile Include="PublicContract\Providers\IExceptionHandler.cs" />
+    <Compile Include="PublicContract\Providers\IExceptionHandlerProvider.cs" />
+    <Compile Include="PublicContract\Providers\ILogProvider.cs" />
+    <Compile Include="PublicContract\Providers\ITryCatchBlock.cs" />
+    <Compile Include="PublicContract\Providers\ITryCatchBlockProvider.cs" />
+    <Compile Include="PublicContract\IValidationResult.cs" />
+    <Compile Include="Runtime\ContractCondition.cs" />
+    <Compile Include="Runtime\CustomExceptionContractCondition.cs" />
+    <Compile Include="Runtime\DefaultContractCondition.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\ExceptionHandlerWithResult.cs" />
+    <Compile Include="PublicContract\ValidationKind.cs" />
+    <Compile Include="PublicContract\Exceptions\EnumValueNotValidException.cs" />
+    <Compile Include="PublicContract\IIdentity.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContext.cs" />
+    <Compile Include="PublicContract\Providers\IConnectionAccessProvider.cs" />
+    <Compile Include="PublicContract\Exceptions\ILGenerationException.cs" />
+    <Compile Include="PublicContract\Exceptions\PropertyTypeMismatchException.cs" />
+    <Compile Include="Runtime\Extensions\ActionExtensions.cs" />
+    <Compile Include="Runtime\Extensions\ArrayExtensions.cs" />
+    <Compile Include="Runtime\Extensions\DynamicMethodExtensions.cs" />
+    <Compile Include="Runtime\Extensions\FuncExtensions.cs" />
+    <Compile Include="Runtime\Extensions\IImmutableSetExtensions.cs" />
+    <Compile Include="Runtime\Extensions\ISetExtensions.cs" />
+    <Compile Include="Runtime\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Runtime\Extensions\PropertyInfoExtensions.cs" />
+    <Compile Include="Runtime\Extensions\TypeExtensions.cs" />
+    <Compile Include="Messages\Developer\AssertFailures.Designer.cs">
+      <DependentUpon>AssertFailures.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Messages\Developer\LogErrors.Designer.cs">
+      <DependentUpon>LogErrors.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Messages\Developer\LogSections.Designer.cs">
+      <DependentUpon>LogSections.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Messages\User\CommonErrors.Designer.cs">
+      <DependentUpon>CommonErrors.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Messages\User\CommonResults.Designer.cs">
+      <DependentUpon>CommonResults.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Messages\User\Errors.Designer.cs">
+      <DependentUpon>Errors.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Runtime\Providers\ErrorHandling\ExceptionHandler.cs" />
+    <Compile Include="Runtime\FunctionGenerator.cs" />
+    <Compile Include="Runtime\IFunctionGenerator.cs" />
+    <Compile Include="Runtime\ILStackOperationMap.cs" />
+    <Compile Include="Runtime\ILWriter.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\ExceptionHandlerProvider.cs" />
+    <Compile Include="Runtime\Providers\CacheProvider.cs" />
+    <Compile Include="PublicContract\Providers\IPermissionsProvider.cs" />
+    <Compile Include="Runtime\Providers\PermissionsProvider.cs" />
+    <Compile Include="PublicContract\Exceptions\PropertyIsMissingException.cs" />
+    <Compile Include="Runtime\Providers\Translation\TranslationMap.cs" />
+    <Compile Include="Runtime\Providers\Translation\TranslationProvider.cs" />
+    <Compile Include="Runtime\Providers\Translation\ITranslator.cs" />
+    <Compile Include="Runtime\Providers\Translation\Translator.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\TryCatchBlockProvider.cs" />
+    <Compile Include="Runtime\KnownMetadata.cs" />
+    <Compile Include="PublicContract\PermissionKind.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicContract\Response.cs" />
+    <Compile Include="PublicContract\ResultCode.cs" />
+    <Compile Include="PublicContract\IRight.cs" />
+    <Compile Include="PublicContract\IRole.cs" />
+    <Compile Include="Runtime\Providers\Logging\LogProvider.cs" />
+    <Compile Include="Runtime\Providers\Validation\IValidator.cs" />
+    <Compile Include="Runtime\Providers\Validation\ValidationProvider.cs" />
+    <Compile Include="Runtime\Providers\Validation\Validator.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\TryCatchBlock.cs" />
+    <Compile Include="PublicContract\Providers\ITypeInstanceProvider.cs" />
+    <Compile Include="Runtime\Providers\Validation\Validated.cs" />
+    <Compile Include="Runtime\Providers\Validation\ValidationResult.cs" />
+    <Compile Include="Runtime\Response.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages\Developer\AssertFailures.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AssertFailures.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Messages\Developer\LogErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LogErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Messages\Developer\LogSections.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LogSections.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Messages\User\CommonErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Messages\User\CommonResults.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonResults.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Messages\User\Errors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
