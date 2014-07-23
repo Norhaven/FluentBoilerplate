@@ -34,3 +34,21 @@ C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin
 C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\obj\Debug\FluentBoilerplate.Tests.csprojResolveAssemblyReference.cache
 C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\obj\Debug\FluentBoilerplate.Tests.dll
 C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\obj\Debug\FluentBoilerplate.Tests.pdb
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentBoilerplate.Tests.dll.config
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentBoilerplate.Tests.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentBoilerplate.Tests.pdb
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentAssertions.Core.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentAssertions.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentBoilerplate.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\Moq.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\System.Collections.Immutable.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentBoilerplate.pdb
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentAssertions.pdb
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentAssertions.xml
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentAssertions.Core.pdb
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\FluentAssertions.Core.xml
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\Moq.xml
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\bin\Debug\System.Collections.Immutable.xml
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\obj\Debug\FluentBoilerplate.Tests.csprojResolveAssemblyReference.cache
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\obj\Debug\FluentBoilerplate.Tests.dll
+D:\Development\Source\Side Projects\Business\FluentBoilerplate\DotNet\FluentBoilerplate.Tests\obj\Debug\FluentBoilerplate.Tests.pdb
