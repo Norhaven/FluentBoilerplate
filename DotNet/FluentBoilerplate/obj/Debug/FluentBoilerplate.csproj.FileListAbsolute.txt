@@ -12,3 +12,17 @@ D:\Development\Source\Side Projects\Business\Cairn\Products\FluentBoilerplate\Fl
 D:\Development\Source\Side Projects\Business\Cairn\Products\FluentBoilerplate\FluentBoilerplate\obj\Debug\FluentBoilerplate.csproj.GenerateResource.Cache
 D:\Development\Source\Side Projects\Business\Cairn\Products\FluentBoilerplate\FluentBoilerplate\obj\Debug\FluentBoilerplate.dll
 D:\Development\Source\Side Projects\Business\Cairn\Products\FluentBoilerplate\FluentBoilerplate\obj\Debug\FluentBoilerplate.pdb
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.Messages.Developer.AssertFailures.resources
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.Messages.Developer.LogErrors.resources
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.Messages.Developer.LogSections.resources
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.Messages.User.CommonErrors.resources
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.Messages.User.CommonResults.resources
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.Messages.User.Errors.resources
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.csproj.GenerateResource.Cache
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\bin\Debug\FluentBoilerplate.dll
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\bin\Debug\FluentBoilerplate.pdb
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\bin\Debug\System.Collections.Immutable.dll
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\bin\Debug\System.Collections.Immutable.xml
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.csprojResolveAssemblyReference.cache
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.dll
+C:\Users\Chris\Source\Repos\FluentBoilerplate\DotNet\FluentBoilerplate\obj\Debug\FluentBoilerplate.pdb
