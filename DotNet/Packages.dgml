@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="FluentBoilerplate.Tests" Label="FluentBoilerplate.Tests" Category="Project" />
+    <Node Id="FluentAssertions 3.0.107" Label="FluentAssertions 3.0.107" Category="Package" />
+    <Node Id="Microsoft.Bcl.Immutable 1.0.34" Label="Microsoft.Bcl.Immutable 1.0.34" Category="Package" />
+    <Node Id="Moq 4.2.1402.2112" Label="Moq 4.2.1402.2112" Category="Package" />
+    <Node Id="FluentBoilerplate" Label="FluentBoilerplate" Category="Project" />
+    <Node Id="Microsoft.Bcl.Immutable 1.0.34" Label="Microsoft.Bcl.Immutable 1.0.34" Category="Package" />
+  </Nodes>
+  <Links>
+    <Link Source="FluentBoilerplate.Tests" Target="FluentAssertions 3.0.107" Category="Installed Package" />
+    <Link Source="FluentBoilerplate.Tests" Target="Microsoft.Bcl.Immutable 1.0.34" Category="Installed Package" />
+    <Link Source="FluentBoilerplate.Tests" Target="Moq 4.2.1402.2112" Category="Installed Package" />
+    <Link Source="FluentBoilerplate" Target="Microsoft.Bcl.Immutable 1.0.34" Category="Installed Package" />
+  </Links>
+  <Categories>
+    <Category Id="Project" />
+    <Category Id="Package" />
+  </Categories>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
+      <Condition Expression="HasCategory('Project')" />
+      <Setter Property="Background" Value="Blue" />
+    </Style>
+  </Styles>
+</DirectedGraph>
