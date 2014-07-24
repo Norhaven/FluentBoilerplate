@@ -8,28 +8,28 @@ namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
     [TestClass]
     public class LoadThis
     {
-        [TestMethod]
-        public void LoadAndPopWillNotUnbalanceTheStack()
-        {
-            var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
-            var generator = method.GetILGenerator();
-            var il = new ILWriter(generator);
+        //[TestMethod]
+        //public void LoadAndPopWillNotUnbalanceTheStack()
+        //{
+        //    var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
+        //    var generator = method.GetILGenerator();
+        //    var il = new ILWriter(generator);
 
-            il.LoadThis();
-            il.Pop();
-            il.VerifyStack();        
-        }
+        //    il.LoadThis();
+        //    il.Pop();
+        //    il.VerifyStack();        
+        //}
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void LoadWithoutPopWillUnbalanceTheStack()
-        {
-            var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
-            var generator = method.GetILGenerator();
-            var il = new ILWriter(generator);
+        //[TestMethod]
+        //[ExpectedException(typeof(ArgumentException))]
+        //public void LoadWithoutPopWillUnbalanceTheStack()
+        //{
+        //    var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
+        //    var generator = method.GetILGenerator();
+        //    var il = new ILWriter(generator);
 
-            il.LoadThis();
-            il.VerifyStack();   
-        }
+        //    il.LoadThis();
+        //    il.VerifyStack();   
+        //}
     }
 }
