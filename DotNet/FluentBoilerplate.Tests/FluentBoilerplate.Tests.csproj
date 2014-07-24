@@ -72,6 +72,7 @@
     <Compile Include="ActionExtensions.cs" />
     <Compile Include="BasePEVerifyTest.cs" />
     <Compile Include="MockILogExtensions.cs" />
+    <Compile Include="PublicContract\BoilerplateTests\New.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\Handle.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\ImplicitToLoweredExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,11 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Runtime\Caching\" />
     <Folder Include="Runtime\Contexts\" />
-    <Folder Include="Runtime\Extensions\" />
-    <Folder Include="Runtime\Logging\" />
-    <Folder Include="Runtime\Validation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

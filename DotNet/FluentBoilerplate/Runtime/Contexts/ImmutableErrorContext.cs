@@ -30,11 +30,13 @@ using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Runtime;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
+using FluentBoilerplate.Runtime.Providers.Logging;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
     public sealed class ImmutableErrorContext : IImmutableErrorContext
     {
+        public static IImmutableErrorContext Empty { get { return new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty); } }
         private readonly ILogProvider log;
         private readonly IExceptionHandlerProvider handlerProvider;
         private readonly ITryCatchBlockProvider tryCatchBlockProvider;

@@ -30,7 +30,9 @@ using FluentBoilerplate.Providers;
 namespace FluentBoilerplate.Runtime.Providers.Validation
 {
     internal sealed class ValidationProvider:CacheProvider<Type, IValidator>, IValidationProvider
-    { 
+    {
+        public static IValidationProvider Empty { get { return new ValidationProvider(FunctionGenerator.Default); } }
+
         private readonly IFunctionGenerator functionGenerator;
         private readonly bool shouldThrowExceptions;
 

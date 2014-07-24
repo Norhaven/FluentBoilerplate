@@ -69,16 +69,14 @@
     <Compile Include="Runtime\Contexts\BoilerplateContractContext_WithResult.cs" />
     <Compile Include="Runtime\Contexts\ImmutableContractAwareContext.cs" />
     <Compile Include="Runtime\Contexts\Permissions.cs" />
-    <Compile Include="Runtime\Contexts\Traits\ConversionContextTrait.cs" />
     <Compile Include="PublicContract\Traits\IActionableTrait.cs" />
     <Compile Include="PublicContract\Traits\IConversionTrait.cs" />
     <Compile Include="PublicContract\Traits\IPermissionsBasedTrait.cs" />
     <Compile Include="PublicContract\Traits\IRightsBasedTrait.cs" />
     <Compile Include="PublicContract\Traits\IRolesBasedTrait.cs" />
-    <Compile Include="Runtime\Contexts\Traits\PermissionsBasedContextTrait.cs" />
     <Compile Include="PublicContract\Traits\ICopyableTrait.cs" />
     <Compile Include="Runtime\Contexts\BoilerplateContext.cs" />
-    <Compile Include="Runtime\Contexts\ContextSettings.cs" />
+    <Compile Include="Runtime\Contexts\ContextBundle.cs" />
     <Compile Include="PublicContract\Providers\ITranslationProvider.cs" />
     <Compile Include="PublicContract\Providers\IValidationProvider.cs" />
     <Compile Include="PublicContract\StringExtensions.cs" />

@@ -43,7 +43,7 @@ namespace FluentBoilerplate
             var translationProvider = new TranslationProvider(functionGenerator);
             var validationProvider = new ValidationProvider(functionGenerator);
 
-            var settings = new ContextSettings(errorContext: errorContext,
+            var settings = new ContextBundle(errorContext: errorContext,
                                                translationProvider: translationProvider,
                                                validationProvider: validationProvider,
                                                serviceProvider: serviceProvider,

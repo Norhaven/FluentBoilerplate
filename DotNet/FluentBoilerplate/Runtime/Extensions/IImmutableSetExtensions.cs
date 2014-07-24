@@ -27,6 +27,12 @@ namespace FluentBoilerplate.Runtime.Extensions
     {
         public static IImmutableSet<T> Merge<T>(this IImmutableSet<T> set, IEnumerable<T> extras)
         {
+            if (set == null)
+                return extras.ToImmutableHashSet();
+
+            if (extras == null)
+                return set;
+
             return set.SymmetricExcept(extras);
         }
     }

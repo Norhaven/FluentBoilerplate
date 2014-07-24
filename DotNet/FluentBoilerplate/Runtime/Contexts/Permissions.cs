@@ -20,14 +20,39 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
     internal sealed class Permissions
     {
+        public static Permissions Empty { get { return new Permissions(); } }
+
         public IImmutableSet<IRight> RequiredRights { get; private set; }
         public IImmutableSet<IRight> RestrictedRights { get; private set; }
         public IImmutableSet<IRole> RequiredRoles { get; private set; }
         public IImmutableSet<IRole> RestrictedRoles { get; private set; }
+
+        public Permissions(IImmutableSet<IRole> requiredRoles = null,
+                           IImmutableSet<IRole> restrictedRoles = null,
+                           IImmutableSet<IRight> requiredRights = null,
+                           IImmutableSet<IRight> restrictedRights = null)
+        {
+            this.RequiredRoles = requiredRoles;
+            this.RestrictedRoles = restrictedRoles;
+            this.RequiredRights = requiredRights;
+            this.RestrictedRights = restrictedRights;
+        }
+
+        public Permissions Merge(IImmutableSet<IRole> requiredRoles = null,
+                                 IImmutableSet<IRole> restrictedRoles = null,
+                                 IImmutableSet<IRight> requiredRights = null,
+                                 IImmutableSet<IRight> restrictedRights = null)
+        {
+            return new Permissions(requiredRoles.Merge(this.RequiredRoles),
+                                   restrictedRoles.Merge(this.RestrictedRoles),
+                                   requiredRights.Merge(this.RequiredRights),
+                                   restrictedRights.Merge(this.RestrictedRights));
+        }
     }
 }

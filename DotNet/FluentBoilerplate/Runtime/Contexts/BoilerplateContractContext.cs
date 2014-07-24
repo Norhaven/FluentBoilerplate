@@ -29,9 +29,9 @@ namespace FluentBoilerplate.Runtime.Contexts
         IBoilerplateContractualContext,
         IVerifiableContractContext
     {
-        private readonly ContextSettings settings;
+        private readonly ContextBundle settings;
 
-        public BoilerplateContractContext(ContextSettings settings)
+        public BoilerplateContractContext(ContextBundle settings)
         {
             this.settings = settings;
         }

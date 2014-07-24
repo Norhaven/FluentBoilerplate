@@ -27,11 +27,14 @@ namespace FluentBoilerplate.Runtime.Providers
 {
     internal sealed class PermissionsProvider : IPermissionsProvider
     {
+        public static IPermissionsProvider Empty { get { return new PermissionsProvider(Permissions.Empty); } }
+
+        private readonly Permissions permissions;
         private readonly IImmutableSet<IRight> requiredRights;
         private readonly IImmutableSet<IRight> restrictedRights;
         private readonly IImmutableSet<IRole> requiredRoles;
         private readonly IImmutableSet<IRole> restrictedRoles;
-
+        
         public bool HasRequiredRights { get { return this.requiredRights.Count > 0; } }
         public bool HasRestrictedRights { get { return this.restrictedRights.Count > 0; } }
         public bool HasRequiredRoles { get { return this.requiredRoles.Count > 0; } }
@@ -41,6 +44,7 @@ namespace FluentBoilerplate.Runtime.Providers
 
         public PermissionsProvider(Permissions permissions)
         {
+            this.permissions = permissions;
             this.requiredRights = ConsolidateRights(permissions.RequiredRights, permissions.RequiredRoles);
             this.restrictedRights = ConsolidateRights(permissions.RestrictedRights, permissions.RestrictedRoles);
             this.requiredRoles = permissions.RequiredRoles;
@@ -84,6 +88,15 @@ namespace FluentBoilerplate.Runtime.Providers
                 return false;
 
             return true;
+        }
+        
+        public IPermissionsProvider Merge(IImmutableSet<IRole> requiredRoles = null, 
+                                          IImmutableSet<IRole> restrictedRoles = null, 
+                                          IImmutableSet<IRight> requiredRights = null, 
+                                          IImmutableSet<IRight> restrictedRights = null)
+        {
+            var mergedPermissions = this.permissions.Merge(requiredRoles, restrictedRoles, requiredRights, restrictedRights);
+            return new PermissionsProvider(mergedPermissions);
         }
     }
 }

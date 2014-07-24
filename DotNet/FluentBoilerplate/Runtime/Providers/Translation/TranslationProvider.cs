@@ -29,6 +29,8 @@ namespace FluentBoilerplate.Runtime.Providers.Translation
 {
     internal sealed class TranslationProvider : CacheProvider<TranslationMap, ITranslator>, ITranslationProvider
     {
+        public static ITranslationProvider Empty { get { return new TranslationProvider(FunctionGenerator.Default); } }
+
         private readonly IFunctionGenerator functionGenerator;
         private readonly bool shouldThrowExceptions;
 

@@ -26,7 +26,7 @@ namespace FluentBoilerplate.Runtime.Contexts
     {
         private readonly IVerifiableContractContext contract;
 
-        public ImmutableContractAwareContext(ContextSettings settings, IVerifiableContractContext contract)
+        public ImmutableContractAwareContext(ContextBundle settings, IVerifiableContractContext contract)
             : base(settings)
         {
             this.contract = contract;

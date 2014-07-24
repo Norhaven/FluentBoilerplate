@@ -29,17 +29,17 @@ namespace FluentBoilerplate.Runtime.Contexts
 {
     public abstract class ImmutableContext<TContext> 
     {
-        protected readonly ContextSettings settings;
+        protected readonly ContextBundle bundle;
 
-        internal ImmutableContext(ContextSettings settings)
+        internal ImmutableContext(ContextBundle bundle)
         {
-            this.settings = settings;
+            this.bundle = bundle;
         }
 
-        protected ContextSettings DowngradeErrorHandling()
+        protected ContextBundle DowngradeErrorHandling()
         {
-            var downgradedErrorContext = this.settings.ErrorContext.Copy(includeHandlers: false);
-            return this.settings.Copy(errorContext: downgradedErrorContext);
+            var downgradedErrorContext = this.bundle.Errors.Copy(includeHandlers: false);
+            return this.bundle.Copy(errorContext: downgradedErrorContext);
         }
         //TODO: Include Copy() call
     }

@@ -30,6 +30,8 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {   
     internal sealed class TryCatchBlockProvider : CacheProvider<IImmutableQueue<Type>, Action<IExceptionAwareAction>>, ITryCatchBlockProvider
     {
+        public static ITryCatchBlockProvider Empty { get { return new TryCatchBlockProvider(FunctionGenerator.Default); } }
+
         private readonly IFunctionGenerator functionGenerator;
         
         public TryCatchBlockProvider(IFunctionGenerator functionGenerator)

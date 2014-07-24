@@ -45,6 +45,8 @@ namespace FluentBoilerplate.Runtime
             }
         }
 
+        public static IFunctionGenerator Default { get { return new FunctionGenerator(); } }
+
         private readonly bool createPhysicalAssembly;
         private readonly PhysicalAssemblySettings assemblySettings;
 

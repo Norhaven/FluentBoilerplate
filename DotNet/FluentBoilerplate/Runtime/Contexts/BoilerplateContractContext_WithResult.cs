@@ -29,29 +29,24 @@ namespace FluentBoilerplate.Runtime.Contexts
         IBoilerplateContractualContext<TResult>,
         IVerifiableContractContext
     {
-        private readonly ContextSettings settings;
-        private readonly IIdentity account;
+        private readonly ContextBundle bundle;
+        private readonly IIdentity identity;
         private readonly TResult result;
         private readonly IImmutableQueue<ContractCondition> preconditions;
         private readonly IImmutableQueue<ContractCondition> postconditionsOnReturn;
         private readonly IImmutableQueue<ContractCondition> postconditionsOnThrow;
         private readonly IImmutableQueue<Action> instanceValidations;
 
-        public IImmutableSet<IRight> RequiredRights { get { return this.settings.RequiredRights; } }
-        public IImmutableSet<IRight> RestrictedRights { get { return this.settings.RestrictedRights; } }
-        public IImmutableSet<IRole> RequiredRoles { get { return this.settings.RequiredRoles; } }
-        public IImmutableSet<IRole> RestrictedRoles { get { return this.settings.RestrictedRoles; } }
-
-        public BoilerplateContractContext(ContextSettings settings,
-                                               IIdentity account,
-                                               IImmutableQueue<ContractCondition> preconditions,
-                                               IImmutableQueue<ContractCondition> postconditionsOnReturn,
-                                               IImmutableQueue<ContractCondition> postconditionsOnThrow,
-                                               IImmutableQueue<Action> instanceValidations,
-                                               TResult result)
+        public BoilerplateContractContext(ContextBundle bundle,
+                                          IIdentity identity,
+                                          IImmutableQueue<ContractCondition> preconditions,
+                                          IImmutableQueue<ContractCondition> postconditionsOnReturn,
+                                          IImmutableQueue<ContractCondition> postconditionsOnThrow,
+                                          IImmutableQueue<Action> instanceValidations,
+                                          TResult result)
         {
-            this.settings = settings;
-            this.account = account;
+            this.bundle = bundle;
+            this.identity = identity;
             this.preconditions = preconditions ?? ImmutableQueue<ContractCondition>.Empty;
             this.postconditionsOnReturn = postconditionsOnReturn ?? ImmutableQueue<ContractCondition>.Empty;
             this.postconditionsOnThrow = postconditionsOnThrow ?? ImmutableQueue<ContractCondition>.Empty;
@@ -61,47 +56,47 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IBoilerplateContractualContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.settings.ErrorContext.RegisterExceptionHandler<TException, TResult>(sectionName, action);
-            var elevatedSettings = this.settings.Copy(errorContext: elevatedErrorContext);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
+            var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(settings: elevatedSettings);
         }
 
         public IBoilerplateContractualContext<TResult> RequiresRights(params IRight[] rights)
         {
-            var elevatedRights = this.settings.RequiredRights.Merge(rights);
-            var elevatedSettings = this.settings.Copy(requiredRights: elevatedRights);
+            var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());
+            var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
         public IBoilerplateContractualContext<TResult> MustNotHaveRights(params IRight[] rights)
         {
-            var elevatedRestrictedRights = this.settings.RestrictedRights.Merge(rights);
-            var elevatedSettings = this.settings.Copy(restrictedRights: elevatedRestrictedRights);
+            var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRights: rights.ToImmutableHashSet());
+            var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
         public IBoilerplateContractualContext<TResult> RequiresRoles(params IRole[] roles)
         {
-            var elevatedRoles = this.settings.RequiredRoles.Merge(roles);
-            var elevatedSettings = this.settings.Copy(requiredRoles: elevatedRoles);
+            var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
+            var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
         public IBoilerplateContractualContext<TResult> MustNotHaveRoles(params IRole[] roles)
         {
-            var elevatedRestrictedRoles = this.settings.RestrictedRoles.Merge(roles);
-            var elevatedSettings = this.settings.Copy(restrictedRoles: elevatedRestrictedRoles);
+            var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRoles: roles.ToImmutableHashSet());
+            var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
         public IBoilerplateContext<TResult> EndContract()
         {
-            return new BoilerplateContext<TResult>(this.settings, this.account, this, this.result);
+            return new BoilerplateContext<TResult>(this.bundle, this.identity, this, this.result);
         }
 
         public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> RequiresValidInstanceOf<TType>(params TType[] instances)
         {
-            var localProvider = this.settings.ValidationProvider;
+            var localProvider = this.bundle.Validation;
             Action validate = () =>
             {
                 foreach (var instance in instances)
@@ -164,8 +159,8 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.settings.ErrorContext.RegisterExceptionHandler<TException>(sectionName, action);
-            var elevatedSettings = this.settings.Copy(errorContext: elevatedErrorContext);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(sectionName, action);
+            var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(settings: elevatedSettings);
         }
 
@@ -202,15 +197,15 @@ namespace FluentBoilerplate.Runtime.Contexts
             }
         }
 
-        private BoilerplateContractContext<TResult> Copy(ContextSettings settings = null,
+        private BoilerplateContractContext<TResult> Copy(ContextBundle settings = null,
                                                               IIdentity account = null,
                                                               IImmutableQueue<ContractCondition> preconditions = null,
                                                               IImmutableQueue<ContractCondition> postconditionsOnReturn = null,
                                                               IImmutableQueue<ContractCondition> postconditionsOnThrow = null,
                                                               IImmutableQueue<Action> instanceValidations = null)
         {
-            return new BoilerplateContractContext<TResult>(settings ?? this.settings,
-                                                                             account ?? this.account,
+            return new BoilerplateContractContext<TResult>(settings ?? this.bundle,
+                                                                             account ?? this.identity,
                                                                              preconditions ?? this.preconditions,
                                                                              postconditionsOnReturn ?? this.postconditionsOnReturn,
                                                                              postconditionsOnThrow ?? this.postconditionsOnThrow,

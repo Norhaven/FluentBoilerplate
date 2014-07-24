@@ -16,19 +16,30 @@ namespace FluentBoilerplate.Tests
             SampleBoilerplate(boilerplate, null);
         }
 
+        public class TestType
+        {
+            [MapsTo(typeof(Object), "Name")]
+            [StringLength(MinLength=2)]
+            public string Value { get; set; }
+        }
+
         private void SampleBoilerplate(IBoilerplateContext boilerplate, object value)
         {
             object returnValue = null;
-
-            var r = boilerplate
-                .BeginContract()
-                    .Require(() => value != null, "Value cannot be null")
-                    .RequiresValidInstanceOf(value)
-                    .EnsureOnReturn(() => returnValue != null, "Return value must not be null")
-                    .RequiresRights(null)
-                .EndContract()
-                .Get<int>(p => { return 0; })
-                .Result;
+            
+            //var r = boilerplate
+            //    .BeginContract()
+            //        .Require(() => value != null, "Value cannot be null")
+            //        .RequiresValidInstanceOf(value)
+            //        .EnsureOnReturn(() => returnValue != null, "Return value must not be null")
+            //        .EnsureOnThrow(() => returnValue != null, "HELP")
+            //        .RequiresRights(null)
+            //    .EndContract()
+            //    .Get<int>(c => 
+            //        {
+            //            var result = c.As<object, int>(value);
+            //        })
+            //    .Result;
         }
     }
 }

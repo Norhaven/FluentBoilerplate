@@ -29,11 +29,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Providers;
+using FluentBoilerplate.Runtime.Providers.Logging;
 
 namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
     internal sealed class ExceptionHandlerProvider : IExceptionHandlerProvider
-    {    
+    {
+        public static IExceptionHandlerProvider Empty { get { return new ExceptionHandlerProvider(LogProvider.Empty); } }
+
         public IImmutableSet<Type> HandledExceptionTypes { get { return this.handledTypes; } }
         public IImmutableQueue<Type> HandledTypesInCatchOrder { get { return this.handledTypesInCatchOrder; } }
 

@@ -15,9 +15,10 @@
  */
 
 using System;
+using System.Collections.Immutable;
 namespace FluentBoilerplate.Providers
 {
-    interface IPermissionsProvider
+    public interface IPermissionsProvider
     {
         bool HasNoRequirements { get; }
         bool HasNoRestrictions { get; }
@@ -26,5 +27,10 @@ namespace FluentBoilerplate.Providers
         bool HasRequiredRoles { get; }
         bool HasRestrictedRights { get; }
         bool HasRestrictedRoles { get; }
+
+        IPermissionsProvider Merge(IImmutableSet<IRole> requiredRoles = null,
+                                  IImmutableSet<IRole> restrictedRoles = null,
+                                  IImmutableSet<IRight> requiredRights = null,
+                                  IImmutableSet<IRight> restrictedRights = null);
     }
 }
