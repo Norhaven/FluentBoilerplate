@@ -7,8 +7,7 @@
     <authors>Chris Hannon</authors>
     <owners>Chris Hannon</owners>
     <description>
-      This package provides an easy and fluent way to write the boilerplate requirements, exception handling, connection, type mapping, and validation
-      that your code may depend on in order to actually write the business logic you require.
+      This package provides an easy and fluent way to write the boilerplate requirements, exception handling, connection, type mapping, and validation that your code may depend on in order to actually write the business logic you require.
     </description>
     <releaseNotes>
     </releaseNotes>
