@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>FluentBoilerplate</id>
-    <version>$version</version>
+    <version>$version$</version>
     <title>FluentBoilerplate</title>
     <authors>Chris Hannon</authors>
     <owners>Chris Hannon</owners>
