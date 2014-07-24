@@ -11,12 +11,12 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.ErrorHandling.TryCatchBlockP
         [TestMethod]
         public void TestMethod1()
         {
-            var generator = new FunctionGenerator();
-            var provider = new TryCatchBlockProvider(generator);            
-            var originalHandlerProvider = new ExceptionHandlerProvider(null);
-            var handlerHit =false;
-            var handlerProvider = originalHandlerProvider.Add<Exception>(String.Empty, ex => { handlerHit = true; });
-            provider.GetTryCatchFor(handlerProvider);
+            //var generator = new FunctionGenerator();
+            //var provider = new TryCatchBlockProvider(generator);            
+            //var originalHandlerProvider = new ExceptionHandlerProvider(null);
+            //var handlerHit =false;
+            //var handlerProvider = originalHandlerProvider.Add<Exception>(String.Empty, ex => { handlerHit = true; });
+            //provider.GetTryCatchFor(handlerProvider);
         }
     }
 }

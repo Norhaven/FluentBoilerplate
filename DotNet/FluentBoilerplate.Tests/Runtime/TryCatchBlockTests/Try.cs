@@ -10,8 +10,6 @@ using System.Collections.Immutable;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 
-using FluentAssertions;
-
 namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
 {
     [TestClass]

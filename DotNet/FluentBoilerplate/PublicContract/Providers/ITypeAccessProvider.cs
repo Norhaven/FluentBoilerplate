@@ -14,16 +14,13 @@
    limitations under the License.
  */
 
+using FluentBoilerplate;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FluentBoilerplate.Traits
+namespace FluentBoilerplate.Providers
 {
-    public interface IDataClientTrait<TContext>
+    public interface ITypeAccessProvider
     {
-        TContext OpenDataAccess<TEntity>(Action<TContext, TEntity> action);    
+        IResponse<TResult> TryAccess<TType, TResult>(IIdentity identity, Func<TType, TResult> useType);
+        IResponse TryAccess<TType>(IIdentity identity, Action<TType> useType);
     }
 }

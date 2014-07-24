@@ -30,8 +30,7 @@ namespace FluentBoilerplate.Runtime.Contexts
     public class ContextBundle
     {
         protected readonly IImmutableErrorContext errorContext;
-        protected readonly IConnectionAccessProvider serviceProvider;
-        protected readonly IConnectionAccessProvider dataProvider;
+        protected readonly ITypeAccessProvider accessProvider;
         protected readonly ITranslationProvider translationProvider;
         protected readonly IValidationProvider validationProvider;
         protected readonly IPermissionsProvider permissionsProvider;
@@ -39,36 +38,31 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IPermissionsProvider Permissions { get { return this.permissionsProvider; } }
         public IValidationProvider Validation { get { return this.validationProvider; } }
         public IImmutableErrorContext Errors { get { return errorContext; } }
-        public IConnectionAccessProvider Services { get { return serviceProvider; } }
-        public IConnectionAccessProvider Data { get { return dataProvider; } }
+        public ITypeAccessProvider Access { get { return accessProvider; } }
         public ITranslationProvider Translation { get { return translationProvider; } }
 
         public ContextBundle(IPermissionsProvider permissionsProvider = null, 
                              IImmutableErrorContext errorContext = null, 
-                             IConnectionAccessProvider serviceProvider = null, 
-                             IConnectionAccessProvider dataProvider = null, 
+                             ITypeAccessProvider accessProvider = null,
                              ITranslationProvider translationProvider = null, 
                              IValidationProvider validationProvider = null)
         {
             this.permissionsProvider = permissionsProvider ?? PermissionsProvider.Empty;
             this.errorContext = errorContext ?? ImmutableErrorContext.Empty;
-            this.serviceProvider = serviceProvider; //TODO: Create empty service/data providers
-            this.dataProvider = dataProvider;
+            this.accessProvider = accessProvider; //TODO: Create empty access providers
             this.translationProvider = translationProvider ?? TranslationProvider.Empty;
             this.validationProvider = validationProvider ?? ValidationProvider.Empty;
         }
 
         public ContextBundle Copy(IPermissionsProvider permissionsProvider = null,
                                   IImmutableErrorContext errorContext = null,
-                                  IConnectionAccessProvider serviceProvider = null,
-                                  IConnectionAccessProvider dataProvider = null,
+                                  ITypeAccessProvider accessProvider = null,
                                   ITranslationProvider translationProvider = null,
                                   IValidationProvider validationProvider = null)
         {
             return new ContextBundle(permissionsProvider ?? this.permissionsProvider,
                                      errorContext ?? this.errorContext,
-                                     serviceProvider ?? this.serviceProvider,
-                                     dataProvider ?? this.dataProvider,
+                                     accessProvider ?? this.accessProvider,
                                      translationProvider ?? this.translationProvider,
                                      validationProvider ?? this.validationProvider);
         }

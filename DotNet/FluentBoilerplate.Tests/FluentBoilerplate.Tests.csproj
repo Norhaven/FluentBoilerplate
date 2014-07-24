@@ -27,6 +27,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -69,7 +70,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ActionExtensions.cs" />
     <Compile Include="BasePEVerifyTest.cs" />
     <Compile Include="MockILogExtensions.cs" />
     <Compile Include="PublicContract\BoilerplateTests\New.cs" />

@@ -29,11 +29,10 @@ namespace FluentBoilerplate
          IConversionTrait<IBoilerplateContext<TResult>>
     {
         TResult Result { get; }
-        IIdentity Account { get; }
-        IBoilerplateContractualContext<TResult> BeginContract();
+        IIdentity Identity { get; }
+        IBoilerplateContractContext<TResult> BeginContract();
 
         IBoilerplateContext<TResult> Get(Func<IBoilerplateContext<TResult>, TResult> action);
-        IBoilerplateContext<TResult> OpenService<TService>(Func<IBoilerplateContext<TResult>, TService, TResult> action);
-        IBoilerplateContext<TResult> OpenDataAccess<TEntity>(Func<IBoilerplateContext<TResult>, TEntity, TResult> action);
+        IBoilerplateContext<TResult> Open<TType>(Func<IBoilerplateContext<TResult>, TType, TResult> action);
     }
 }

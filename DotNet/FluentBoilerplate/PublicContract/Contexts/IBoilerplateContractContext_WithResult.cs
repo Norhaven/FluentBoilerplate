@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Traits;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,10 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    public interface IBoilerplateContractualContext :
-        IContractContext<IBoilerplateContractualContext, IBoilerplateContext>
+    public interface IBoilerplateContractContext<TResult> :
+        IPermissionsBasedTrait<IBoilerplateContractContext<TResult>>,
+        IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>>
     {
-        IBoilerplateContractualContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
+        IBoilerplateContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
     }
 }

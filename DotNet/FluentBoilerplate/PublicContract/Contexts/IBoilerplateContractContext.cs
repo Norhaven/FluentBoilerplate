@@ -20,10 +20,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Traits
+namespace FluentBoilerplate
 {
-    public interface IServiceClientTrait<TContext>
+    public interface IBoilerplateContractContext :
+        IContractContext<IBoilerplateContractContext, IBoilerplateContext>
     {
-        TContext OpenService<TService>(Action<TContext, TService> action);
+        IBoilerplateContractContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
     }
 }

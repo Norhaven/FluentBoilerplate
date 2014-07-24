@@ -35,25 +35,25 @@ namespace FluentBoilerplate.Runtime.Contexts
         ImmutableContractAwareContext<BoilerplateContext<TResult>>,
         IBoilerplateContext<TResult>
     {
-        private readonly IBoilerplateContractualContext<TResult> contractualContext;
+        private readonly IBoilerplateContractContext<TResult> contractualContext;
         
-        public IIdentity Account { get; private set; }
+        public IIdentity Identity { get; private set; }
         public TResult Result { get; private set; }
 
         internal BoilerplateContext(ContextBundle settings,
-                                      IIdentity account, 
-                                      IBoilerplateContractualContext<TResult> contractualContext,
+                                      IIdentity identity, 
+                                      IBoilerplateContractContext<TResult> contractualContext,
                                       TResult result)
             : base(settings, contractualContext as IVerifiableContractContext)
         {
-            this.Account = account;
+            this.Identity = identity;
             this.contractualContext = contractualContext;
             this.Result = result;
         }
         
-        public IBoilerplateContractualContext<TResult> BeginContract()
+        public IBoilerplateContractContext<TResult> BeginContract()
         {
-            return new BoilerplateContractContext<TResult>(this.bundle, this.Account, null, null, null, null, this.Result);
+            return new BoilerplateContractContext<TResult>(this.bundle, this.Identity, null, null, null, null, this.Result);
         }
 
         public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext<TResult>, TResult> action)
@@ -62,77 +62,48 @@ namespace FluentBoilerplate.Runtime.Contexts
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Account, this.contractualContext, this.Result);
+                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractualContext, this.Result);
                     var result = action(serviceContext);
                     return Copy(result: result);
                 });
         }
 
-        public IBoilerplateContext<TResult> OpenService<TService>(Func<IBoilerplateContext<TResult>, TService, TResult> action)
+        public IBoilerplateContext<TResult> Open<TType>(Func<IBoilerplateContext<TResult>, TType, TResult> action)
         {
             return VerifyContractIfPossible(() =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Account, this.contractualContext, this.Result);
-                    var response = this.bundle.Services.TryAccess<TService, TResult>(service => safeCall(serviceContext, service));
+                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractualContext, this.Result);
+                    var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => safeCall(serviceContext, instance));
 
                     if (response.IsSuccess)
                         return Copy(result: response.Content);
                     return this;
                 });
         }
-
-        public IBoilerplateContext<TResult> OpenDataAccess<TEntity>(Func<IBoilerplateContext<TResult>, TEntity, TResult> action)
-        {
-            return VerifyContractIfPossible(() =>
-                {
-                    var safeCall = this.bundle.Errors.ExtendAround(action);
-                    var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Account, this.contractualContext, this.Result);
-                    var response = this.bundle.Data.TryAccess<TEntity, TResult>(service => safeCall(serviceContext, service));
-
-                    if (response.IsSuccess)
-                        return Copy(result: response.Content);
-                    return this;
-                });
-        }
-
+        
         public IBoilerplateContext<TResult> Do(Action<IBoilerplateContext<TResult>> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Account, this.contractualContext, this.Result);
+                var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractualContext, this.Result);
                 safeCall(serviceContext);
                 return Copy();
             });
         }
 
-        public IBoilerplateContext<TResult> OpenService<TService>(Action<IBoilerplateContext<TResult>, TService> action)
+        public IBoilerplateContext<TResult> OpenService<TType>(Action<IBoilerplateContext<TResult>, TType> action)
         {
             return VerifyContractIfPossible(() =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Account, this.contractualContext, this.Result);
-                    var response = this.bundle.Data.TryAccess<TService>(service => safeCall(serviceContext, service));
+                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractualContext, this.Result);
+                    var response = this.bundle.Access.TryAccess<TType>(this.Identity, instance => safeCall(serviceContext, instance));
                     
-                    if (response.IsSuccess)
-                        return Copy();
-                    return this;
-                });
-        }
-
-        public IBoilerplateContext<TResult> OpenDataAccess<TEntity>(Action<IBoilerplateContext<TResult>, TEntity> action)
-        {
-            return VerifyContractIfPossible(() =>
-                {
-                    var safeCall = this.bundle.Errors.ExtendAround(action);
-                    var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Account, this.contractualContext, this.Result);
-                    var response = this.bundle.Data.TryAccess<TEntity>(service => safeCall(serviceContext, service));
                     if (response.IsSuccess)
                         return Copy();
                     return this;
@@ -151,13 +122,13 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IBoilerplateContext<TResult> Copy(ContextBundle settings = null,
                                       IIdentity account = null,
-                                      IBoilerplateContractualContext<TResult> contractualContext = null,
+                                      IBoilerplateContractContext<TResult> contractualContext = null,
                                       TResult result = default(TResult))
         {   
             var resultWasNotSupplied = EqualityComparer<TResult>.Default.Equals(result, default(TResult));
             var actualResult = (resultWasNotSupplied) ? this.Result : result;
             return new BoilerplateContext<TResult>(settings ?? this.bundle,
-                                                                  account ?? this.Account,
+                                                                  account ?? this.Identity,
                                                                   contractualContext ?? this.contractualContext,
                                                                   actualResult);
         }

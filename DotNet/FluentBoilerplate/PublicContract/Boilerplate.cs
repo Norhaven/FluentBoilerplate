@@ -31,7 +31,7 @@ namespace FluentBoilerplate
 {
     public static class Boilerplate
     {
-        public static IBoilerplateContext New(IIdentity identity = null, IConnectionAccessProvider serviceProvider = null, IConnectionAccessProvider dataProvider = null)
+        public static IBoilerplateContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null)
         {
             var actualIdentity = identity ?? Identity.Default;
             var functionGenerator = new FunctionGenerator();
@@ -46,8 +46,7 @@ namespace FluentBoilerplate
             var settings = new ContextBundle(errorContext: errorContext,
                                                translationProvider: translationProvider,
                                                validationProvider: validationProvider,
-                                               serviceProvider: serviceProvider,
-                                               dataProvider: dataProvider);
+                                               accessProvider: accessProvider);
 
             var contract = new BoilerplateContractContext(settings);
             return new BoilerplateContext(settings, actualIdentity, contract);

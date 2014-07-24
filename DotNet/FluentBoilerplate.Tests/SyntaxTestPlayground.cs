@@ -25,7 +25,7 @@ namespace FluentBoilerplate.Tests
 
         private void SampleBoilerplate(IBoilerplateContext boilerplate, object value)
         {
-            object returnValue = null;
+            //object returnValue = null;
             
             //var r = boilerplate
             //    .BeginContract()

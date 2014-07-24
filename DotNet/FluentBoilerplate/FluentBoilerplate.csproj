@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,8 +52,9 @@
     <Compile Include="PublicContract\Attributes\StringLengthAttribute.cs" />
     <Compile Include="PublicContract\Boilerplate.cs" />
     <Compile Include="PublicContract\Contexts\IBoilerplateContext_WithResult.cs" />
-    <Compile Include="PublicContract\Contexts\IBoilerplateContractualContext.cs" />
-    <Compile Include="PublicContract\Contexts\IBoilerplateContractualContext_WithResult.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContractContextWithPermissions.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContractContext.cs" />
+    <Compile Include="PublicContract\Contexts\IBoilerplateContractContext_WithResult.cs" />
     <Compile Include="PublicContract\Contexts\IContractContext.cs" />
     <Compile Include="PublicContract\Contexts\IKnownResultContext.cs" />
     <Compile Include="PublicContract\Contexts\IVerifiableContractContext.cs" />
@@ -62,8 +64,7 @@
     <Compile Include="PublicContract\IValidationAttribute.cs" />
     <Compile Include="PublicContract\Traits\IContractualTrait.cs" />
     <Compile Include="PublicContract\Exceptions\ContractViolationException.cs" />
-    <Compile Include="PublicContract\Traits\IDataClientTrait.cs" />
-    <Compile Include="PublicContract\Traits\IServiceClientTrait.cs" />
+    <Compile Include="PublicContract\Traits\IClientAccessTrait.cs" />
     <Compile Include="Runtime\Contexts\BoilerplateContext_WithResult.cs" />
     <Compile Include="Runtime\Contexts\BoilerplateContractContext.cs" />
     <Compile Include="Runtime\Contexts\BoilerplateContractContext_WithResult.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="PublicContract\Providers\ITryCatchBlock.cs" />
     <Compile Include="PublicContract\Providers\ITryCatchBlockProvider.cs" />
     <Compile Include="PublicContract\IValidationResult.cs" />
+    <Compile Include="Runtime\Contexts\TType.cs" />
     <Compile Include="Runtime\ContractCondition.cs" />
     <Compile Include="Runtime\CustomExceptionContractCondition.cs" />
     <Compile Include="Runtime\DefaultContractCondition.cs" />
@@ -97,7 +99,7 @@
     <Compile Include="PublicContract\Exceptions\EnumValueNotValidException.cs" />
     <Compile Include="PublicContract\IIdentity.cs" />
     <Compile Include="PublicContract\Contexts\IBoilerplateContext.cs" />
-    <Compile Include="PublicContract\Providers\IConnectionAccessProvider.cs" />
+    <Compile Include="PublicContract\Providers\ITypeAccessProvider.cs" />
     <Compile Include="PublicContract\Exceptions\ILGenerationException.cs" />
     <Compile Include="PublicContract\Exceptions\PropertyTypeMismatchException.cs" />
     <Compile Include="Runtime\Extensions\ActionExtensions.cs" />

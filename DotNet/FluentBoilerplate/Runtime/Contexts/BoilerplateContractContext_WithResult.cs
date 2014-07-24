@@ -26,7 +26,7 @@ using FluentBoilerplate.Runtime.Extensions;
 namespace FluentBoilerplate.Runtime.Contexts
 {
     internal sealed class BoilerplateContractContext<TResult> :
-        IBoilerplateContractualContext<TResult>,
+        IBoilerplateContractContext<TResult>,
         IVerifiableContractContext
     {
         private readonly ContextBundle bundle;
@@ -54,35 +54,35 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.result = result;
         }
 
-        public IBoilerplateContractualContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
+        public IBoilerplateContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
             var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(settings: elevatedSettings);
         }
 
-        public IBoilerplateContractualContext<TResult> RequiresRights(params IRight[] rights)
+        public IBoilerplateContractContext<TResult> RequiresRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
-        public IBoilerplateContractualContext<TResult> MustNotHaveRights(params IRight[] rights)
+        public IBoilerplateContractContext<TResult> MustNotHaveRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
-        public IBoilerplateContractualContext<TResult> RequiresRoles(params IRole[] roles)
+        public IBoilerplateContractContext<TResult> RequiresRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(settings: elevatedSettings);
         }
 
-        public IBoilerplateContractualContext<TResult> MustNotHaveRoles(params IRole[] roles)
+        public IBoilerplateContractContext<TResult> MustNotHaveRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);

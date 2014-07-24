@@ -34,7 +34,7 @@ namespace FluentBoilerplate.Runtime
         sealed class ILWriter
     {
         private readonly ILGenerator il;
-        private int stackCount;
+        private int stackCount = 0;
 
         public ILWriter(ILGenerator il)
         {
@@ -293,46 +293,46 @@ namespace FluentBoilerplate.Runtime
         private void EvaluateStackBehavior(StackBehaviour stackBehavior)
         {
             return;
-            switch (stackBehavior)
-            {
-                case StackBehaviour.Pop0: return;
-                case StackBehaviour.Popi:
-                case StackBehaviour.Pop1:
-                case StackBehaviour.Popref:
-                case StackBehaviour.Varpop:
-                    this.stackCount -= 1; break;
-                case StackBehaviour.Pop1_pop1: 
-                case StackBehaviour.Popi_pop1:
-                case StackBehaviour.Popi_popi:
-                case StackBehaviour.Popi_popi8:
-                case StackBehaviour.Popi_popr4:
-                case StackBehaviour.Popi_popr8:
-                case StackBehaviour.Popref_pop1:
-                case StackBehaviour.Popref_popi:                
-                    this.stackCount -= 2; break;
-                case StackBehaviour.Popref_popi_pop1:
-                case StackBehaviour.Popref_popi_popi:
-                case StackBehaviour.Popref_popi_popi8:
-                case StackBehaviour.Popref_popi_popr4:
-                case StackBehaviour.Popref_popi_popr8:
-                case StackBehaviour.Popref_popi_popref:
-                case StackBehaviour.Popi_popi_popi:
-                    this.stackCount -= 3; break;
+            //switch (stackBehavior)
+            //{
+            //    case StackBehaviour.Pop0: return;
+            //    case StackBehaviour.Popi:
+            //    case StackBehaviour.Pop1:
+            //    case StackBehaviour.Popref:
+            //    case StackBehaviour.Varpop:
+            //        this.stackCount -= 1; break;
+            //    case StackBehaviour.Pop1_pop1: 
+            //    case StackBehaviour.Popi_pop1:
+            //    case StackBehaviour.Popi_popi:
+            //    case StackBehaviour.Popi_popi8:
+            //    case StackBehaviour.Popi_popr4:
+            //    case StackBehaviour.Popi_popr8:
+            //    case StackBehaviour.Popref_pop1:
+            //    case StackBehaviour.Popref_popi:                
+            //        this.stackCount -= 2; break;
+            //    case StackBehaviour.Popref_popi_pop1:
+            //    case StackBehaviour.Popref_popi_popi:
+            //    case StackBehaviour.Popref_popi_popi8:
+            //    case StackBehaviour.Popref_popi_popr4:
+            //    case StackBehaviour.Popref_popi_popr8:
+            //    case StackBehaviour.Popref_popi_popref:
+            //    case StackBehaviour.Popi_popi_popi:
+            //        this.stackCount -= 3; break;
 
-                case StackBehaviour.Push0: return;
-                case StackBehaviour.Push1:
-                case StackBehaviour.Pushi:
-                case StackBehaviour.Pushi8:
-                case StackBehaviour.Pushr4:
-                case StackBehaviour.Pushr8:
-                case StackBehaviour.Pushref:
-                case StackBehaviour.Varpush:                    
-                    this.stackCount += 1; break;
-                case StackBehaviour.Push1_push1:
-                    this.stackCount += 2; break;
-                default:
-                    throw new ArgumentOutOfRangeException("Received unexpected StackBehavior value");
-            }
+            //    case StackBehaviour.Push0: return;
+            //    case StackBehaviour.Push1:
+            //    case StackBehaviour.Pushi:
+            //    case StackBehaviour.Pushi8:
+            //    case StackBehaviour.Pushr4:
+            //    case StackBehaviour.Pushr8:
+            //    case StackBehaviour.Pushref:
+            //    case StackBehaviour.Varpush:                    
+            //        this.stackCount += 1; break;
+            //    case StackBehaviour.Push1_push1:
+            //        this.stackCount += 2; break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException("Received unexpected StackBehavior value");
+            //}
         }
 
         public void GetTypePropertyAttributes<T>()

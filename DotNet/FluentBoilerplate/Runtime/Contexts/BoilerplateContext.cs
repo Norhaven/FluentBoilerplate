@@ -35,19 +35,19 @@ namespace FluentBoilerplate.Runtime.Contexts
         ImmutableContractAwareContext<BoilerplateContext>,
         IBoilerplateContext
     {
-        private readonly IBoilerplateContractualContext contractualContext;
+        private readonly IBoilerplateContractContext contractualContext;
         public IIdentity Identity { get; private set; }
 
         internal BoilerplateContext(ContextBundle bundle,
                                     IIdentity identity, 
-                                    IBoilerplateContractualContext contractualContext)
+                                    IBoilerplateContractContext contractualContext)
             :base(bundle, contractualContext as IVerifiableContractContext)
         {
             this.Identity = identity;
             this.contractualContext = contractualContext;
         }
         
-        public IBoilerplateContractualContext BeginContract()
+        public IBoilerplateContractContext BeginContract()
         {
             return new BoilerplateContractContext(this.bundle);
         }
@@ -78,14 +78,14 @@ namespace FluentBoilerplate.Runtime.Contexts
                 });
         }
 
-        public IBoilerplateContext<TResult> OpenService<TService, TResult>(Func<IBoilerplateContext, TService, TResult> action)
+        public IBoilerplateContext<TResult> Open<TType, TResult>(Func<IBoilerplateContext, TType, TResult> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
                 var downgradedContext = Copy(settings: downgradedSettings);
-                var response = this.bundle.Services.TryAccess<TService, TResult>(service => action(downgradedContext, service));
+                var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => action(downgradedContext, instance));
 
                 if (!response.IsSuccess)
                     throw new OperationWasNotSuccessfulException(response.Result);
@@ -106,36 +106,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                        response.Content);               
             });
         }
-
-        public IBoilerplateContext<TResult> OpenDataAccess<TEntity, TResult>(Func<IBoilerplateContext, TEntity, TResult> action)
-        {
-            return VerifyContractIfPossible(() =>
-            {
-                var safeCall = this.bundle.Errors.ExtendAround(action);
-                var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(settings: downgradedSettings);
-                var response = this.bundle.Data.TryAccess<TEntity, TResult>(service => action(downgradedContext, service));
-
-                if (!response.IsSuccess)
-                    throw new OperationWasNotSuccessfulException(response.Result);
-
-                //TODO: Upgrade contract context
-                var elevatedContractualContext =
-                    new BoilerplateContractContext<TResult>(this.bundle,
-                                                            this.Identity,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            response.Content);
-
-                return new BoilerplateContext<TResult>(this.bundle,
-                                                       this.Identity,
-                                                       elevatedContractualContext,
-                                                       response.Content);               
-            });
-        }
-
+        
         public IBoilerplateContext Do(Action<IBoilerplateContext> action)
         {
             return VerifyContractIfPossible(() =>
@@ -151,14 +122,14 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
 
-        public IBoilerplateContext OpenService<TService>(Action<IBoilerplateContext, TService> action)
+        public IBoilerplateContext Open<TType>(Action<IBoilerplateContext, TType> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
                 var downgradedContext = Copy(settings: downgradedSettings);
-                var response = this.bundle.Services.TryAccess<TService>(service => safeCall(downgradedContext, service));
+                var response = this.bundle.Access.TryAccess<TType>(this.Identity, instance => safeCall(downgradedContext, instance));
 
                 if (!response.IsSuccess)
                     throw new OperationWasNotSuccessfulException(response.Result);
@@ -168,25 +139,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                               this.contractualContext);               
             });
         }
-
-        public IBoilerplateContext OpenDataAccess<TEntity>(Action<IBoilerplateContext, TEntity> action)
-        {
-            return VerifyContractIfPossible(() =>
-            {
-                var safeCall = this.bundle.Errors.ExtendAround(action);
-                var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(settings: downgradedSettings);
-                var response = this.bundle.Data.TryAccess<TEntity>(service => safeCall(downgradedContext, service));
-
-                if (!response.IsSuccess)
-                    throw new OperationWasNotSuccessfulException(response.Result);
-
-                return new BoilerplateContext(this.bundle,
-                                              this.Identity,
-                                              this.contractualContext);
-            });
-        }
-
+        
         public IBoilerplateContext Copy(ContextBundle settings)
         {
             return new BoilerplateContext(settings, this.Identity, this.contractualContext);
@@ -199,7 +152,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         protected IBoilerplateContext Copy(ContextBundle bundle = null,
                                            IIdentity account = null,
-                                           IBoilerplateContractualContext contractualContext = null)
+                                           IBoilerplateContractContext contractualContext = null)
         {
             return new BoilerplateContext(bundle ?? this.bundle,
                                           account ?? this.Identity,

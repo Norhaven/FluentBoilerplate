@@ -26,7 +26,7 @@ using FluentBoilerplate.Runtime.Extensions;
 namespace FluentBoilerplate.Runtime.Contexts
 {
     internal sealed class BoilerplateContractContext:
-        IBoilerplateContractualContext,
+        IBoilerplateContractContext,
         IVerifiableContractContext
     {
         private readonly ContextBundle settings;
@@ -36,7 +36,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.settings = settings;
         }
 
-        public IBoilerplateContractualContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
+        public IBoilerplateContractContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
         {
             throw new NotImplementedException();
         }
@@ -46,42 +46,42 @@ namespace FluentBoilerplate.Runtime.Contexts
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> RequiresValidInstanceOf<TType>(params TType[] instances)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> RequiresValidInstanceOf<TType>(params TType[] instances)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> Require(Func<bool> condition, string message = null)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> Require(Func<bool> condition, string message = null)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> EnsureOnReturn(Func<bool> condition, string message = null)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> EnsureOnReturn(Func<bool> condition, string message = null)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> EnsureOnThrow(Func<bool> condition, string message = null)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> EnsureOnThrow(Func<bool> condition, string message = null)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
         {
             throw new NotImplementedException();
         }
@@ -96,22 +96,22 @@ namespace FluentBoilerplate.Runtime.Contexts
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> RequiresRights(params IRight[] rights)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> RequiresRights(params IRight[] rights)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> MustNotHaveRights(params IRight[] rights)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> MustNotHaveRights(params IRight[] rights)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> RequiresRoles(params IRole[] roles)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> RequiresRoles(params IRole[] roles)
         {
             throw new NotImplementedException();
         }
 
-        public IContractContext<IBoilerplateContractualContext, IBoilerplateContext> MustNotHaveRoles(params IRole[] roles)
+        public IContractContext<IBoilerplateContractContext, IBoilerplateContext> MustNotHaveRoles(params IRole[] roles)
         {
             throw new NotImplementedException();
         }

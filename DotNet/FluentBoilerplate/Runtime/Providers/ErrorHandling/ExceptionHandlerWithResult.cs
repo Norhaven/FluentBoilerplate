@@ -56,7 +56,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         public ExceptionHandler(ILogProvider log, string sectionName, Func<TException, TResult> func)
             : base(log, sectionName, func.AsAction())
         {
-
+            this.funcHandler = func;
         }
         public TResult HandleWithResult(TException exception)
         {

@@ -30,10 +30,9 @@ namespace FluentBoilerplate
         IConversionTrait<IBoilerplateContext>
     {
         IIdentity Identity { get; }
-        IBoilerplateContractualContext BeginContract();
+        IBoilerplateContractContext BeginContract();
 
         IBoilerplateContext<TResult> Get<TResult>(Func<IBoilerplateContext, TResult> action);
-        IBoilerplateContext<TResult> OpenService<TService, TResult>(Func<IBoilerplateContext, TService, TResult> action);
-        IBoilerplateContext<TResult> OpenDataAccess<TEntity, TResult>(Func<IBoilerplateContext, TEntity, TResult> action);
+        IBoilerplateContext<TResult> Open<TType, TResult>(Func<IBoilerplateContext, TType, TResult> action);
     }
 }
