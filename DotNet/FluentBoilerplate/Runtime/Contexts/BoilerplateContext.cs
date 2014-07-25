@@ -66,9 +66,6 @@ namespace FluentBoilerplate.Runtime.Contexts
                         new BoilerplateContractContext<TResult>(this.bundle,
                                                                 this.Identity,
                                                                 null,
-                                                                null,
-                                                                null,
-                                                                null,
                                                                 result);
 
                     return new BoilerplateContext<TResult>(this.bundle, 
@@ -94,9 +91,6 @@ namespace FluentBoilerplate.Runtime.Contexts
                 var elevatedContractualContext =
                     new BoilerplateContractContext<TResult>(this.bundle,
                                                             this.Identity,
-                                                            null,
-                                                            null,
-                                                            null,
                                                             null,
                                                             response.Content);
 

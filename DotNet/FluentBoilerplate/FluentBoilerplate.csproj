@@ -51,10 +51,11 @@
     <Compile Include="PublicContract\Attributes\NotNullAttribute.cs" />
     <Compile Include="PublicContract\Attributes\StringLengthAttribute.cs" />
     <Compile Include="PublicContract\Boilerplate.cs" />
+    <Compile Include="PublicContract\Contexts\IContractBundle.cs" />
     <Compile Include="PublicContract\Contexts\IBoilerplateContext_WithResult.cs" />
-    <Compile Include="PublicContract\Contexts\IBoilerplateContractContextWithPermissions.cs" />
     <Compile Include="PublicContract\Contexts\IBoilerplateContractContext.cs" />
     <Compile Include="PublicContract\Contexts\IBoilerplateContractContext_WithResult.cs" />
+    <Compile Include="PublicContract\Contexts\IContractCondition.cs" />
     <Compile Include="PublicContract\Contexts\IContractContext.cs" />
     <Compile Include="PublicContract\Contexts\IKnownResultContext.cs" />
     <Compile Include="PublicContract\Contexts\IVerifiableContractContext.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="PublicContract\Providers\ITryCatchBlock.cs" />
     <Compile Include="PublicContract\Providers\ITryCatchBlockProvider.cs" />
     <Compile Include="PublicContract\IValidationResult.cs" />
-    <Compile Include="Runtime\Contexts\TType.cs" />
     <Compile Include="Runtime\ContractCondition.cs" />
     <Compile Include="Runtime\CustomExceptionContractCondition.cs" />
     <Compile Include="Runtime\DefaultContractCondition.cs" />

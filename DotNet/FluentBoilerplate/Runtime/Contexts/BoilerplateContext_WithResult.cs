@@ -53,7 +53,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         
         public IBoilerplateContractContext<TResult> BeginContract()
         {
-            return new BoilerplateContractContext<TResult>(this.bundle, this.Identity, null, null, null, null, this.Result);
+            return new BoilerplateContractContext<TResult>(this.bundle, this.Identity, null, this.Result);
         }
 
         public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext<TResult>, TResult> action)

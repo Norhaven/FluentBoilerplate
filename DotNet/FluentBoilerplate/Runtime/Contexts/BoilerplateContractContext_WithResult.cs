@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FluentBoilerplate.Runtime.Extensions;
+using FluentBoilerplate.Contexts;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
@@ -31,26 +32,17 @@ namespace FluentBoilerplate.Runtime.Contexts
     {
         private readonly ContextBundle bundle;
         private readonly IIdentity identity;
+        private readonly IContractBundle contractBundle;
         private readonly TResult result;
-        private readonly IImmutableQueue<ContractCondition> preconditions;
-        private readonly IImmutableQueue<ContractCondition> postconditionsOnReturn;
-        private readonly IImmutableQueue<ContractCondition> postconditionsOnThrow;
-        private readonly IImmutableQueue<Action> instanceValidations;
-
+        
         public BoilerplateContractContext(ContextBundle bundle,
                                           IIdentity identity,
-                                          IImmutableQueue<ContractCondition> preconditions,
-                                          IImmutableQueue<ContractCondition> postconditionsOnReturn,
-                                          IImmutableQueue<ContractCondition> postconditionsOnThrow,
-                                          IImmutableQueue<Action> instanceValidations,
+                                          IContractBundle contractBundle,
                                           TResult result)
-        {
+        {   
             this.bundle = bundle;
             this.identity = identity;
-            this.preconditions = preconditions ?? ImmutableQueue<ContractCondition>.Empty;
-            this.postconditionsOnReturn = postconditionsOnReturn ?? ImmutableQueue<ContractCondition>.Empty;
-            this.postconditionsOnThrow = postconditionsOnThrow ?? ImmutableQueue<ContractCondition>.Empty;
-            this.instanceValidations = instanceValidations ?? ImmutableQueue<Action>.Empty;
+            this.contractBundle = contractBundle;
             this.result = result;
         }
 
@@ -58,35 +50,35 @@ namespace FluentBoilerplate.Runtime.Contexts
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
             var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
-            return Copy(settings: elevatedSettings);
+            return Copy(bundle: elevatedSettings);
         }
 
         public IBoilerplateContractContext<TResult> RequiresRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
-            return Copy(settings: elevatedSettings);
+            return Copy(bundle: elevatedSettings);
         }
 
         public IBoilerplateContractContext<TResult> MustNotHaveRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
-            return Copy(settings: elevatedSettings);
+            return Copy(bundle: elevatedSettings);
         }
 
         public IBoilerplateContractContext<TResult> RequiresRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
-            return Copy(settings: elevatedSettings);
+            return Copy(bundle: elevatedSettings);
         }
 
         public IBoilerplateContractContext<TResult> MustNotHaveRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
-            return Copy(settings: elevatedSettings);
+            return Copy(bundle: elevatedSettings);
         }
 
         public IBoilerplateContext<TResult> EndContract()
@@ -176,20 +168,20 @@ namespace FluentBoilerplate.Runtime.Contexts
         {
             switch (exit)
             {
-                case ContractExit.Returned: VerifyConditions(this.postconditionsOnReturn); break;
-                case ContractExit.ThrewException: VerifyConditions(this.postconditionsOnThrow); break;
+                case ContractExit.Returned: VerifyConditions(this.contractBundle.PostconditionsOnReturn); break;
+                case ContractExit.ThrewException: VerifyConditions(this.contractBundle.PostconditionsOnThrow); break;
                 default:
                     throw new ArgumentException("Unknown contract exit condition encountered");
             }
         }
 
-        private void VerifyConditions(IImmutableQueue<ContractCondition> conditions)
+        private void VerifyConditions(IImmutableQueue<IContractCondition> conditions)
         {
             var currentConditions = conditions;
 
             while (!currentConditions.IsEmpty)
             {
-                ContractCondition condition;
+                IContractCondition condition;
                 currentConditions = currentConditions.Dequeue(out condition);
 
                 if (!condition.IsConditionMet())
@@ -197,40 +189,14 @@ namespace FluentBoilerplate.Runtime.Contexts
             }
         }
 
-        private BoilerplateContractContext<TResult> Copy(ContextBundle settings = null,
-                                                              IIdentity account = null,
-                                                              IImmutableQueue<ContractCondition> preconditions = null,
-                                                              IImmutableQueue<ContractCondition> postconditionsOnReturn = null,
-                                                              IImmutableQueue<ContractCondition> postconditionsOnThrow = null,
-                                                              IImmutableQueue<Action> instanceValidations = null)
+        private BoilerplateContractContext<TResult> Copy(ContextBundle bundle = null,
+                                                         IIdentity account = null,
+                                                         IContractBundle contractBundle = null)
         {
-            return new BoilerplateContractContext<TResult>(settings ?? this.bundle,
-                                                                             account ?? this.identity,
-                                                                             preconditions ?? this.preconditions,
-                                                                             postconditionsOnReturn ?? this.postconditionsOnReturn,
-                                                                             postconditionsOnThrow ?? this.postconditionsOnThrow,
-                                                                             instanceValidations ?? this.instanceValidations,
-                                                                             this.result);
-        }
-
-        IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> FluentBoilerplate.Traits.IRightsBasedTrait<IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>>>.RequiresRights(params IRight[] rights)
-        {
-            throw new NotImplementedException();
-        }
-
-        IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> FluentBoilerplate.Traits.IRightsBasedTrait<IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>>>.MustNotHaveRights(params IRight[] rights)
-        {
-            throw new NotImplementedException();
-        }
-
-        IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> FluentBoilerplate.Traits.IRolesBasedTrait<IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>>>.RequiresRoles(params IRole[] roles)
-        {
-            throw new NotImplementedException();
-        }
-
-        IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> FluentBoilerplate.Traits.IRolesBasedTrait<IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>>>.MustNotHaveRoles(params IRole[] roles)
-        {
-            throw new NotImplementedException();
+            return new BoilerplateContractContext<TResult>(bundle ?? this.bundle,
+                                                           account ?? this.identity,
+                                                           contractBundle ?? this.contractBundle,
+                                                           this.result);
         }
     }
 }

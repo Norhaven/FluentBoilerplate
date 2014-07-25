@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime
 {
-    public abstract class ContractCondition
+    public abstract class ContractCondition:IContractCondition
     {
         private readonly Func<bool> condition;
 
