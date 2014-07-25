@@ -30,8 +30,7 @@ namespace FluentBoilerplate.Traits
         TContext EnsureOnReturn(Func<bool> condition, string message = null);
         TContext EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;
         TContext EnsureOnThrow(Func<bool> condition, string message = null);
-        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;
-        TContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception;        
+        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;   
     }
 
     public interface IContractualTrait<TContext, out TResult> : IPermissionsBasedTrait<TContext>

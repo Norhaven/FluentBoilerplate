@@ -28,115 +28,124 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Messages.User;
+using FluentBoilerplate.Contexts;
+using FluentBoilerplate.Traits;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    public class BoilerplateContext : 
-        ImmutableContractAwareContext<BoilerplateContext>,
-        IBoilerplateContext
+    public class InitialBoilerplateContext<TContract> : 
+        ImmutableContractAwareContext<InitialBoilerplateContext<TContract>>,
+        IContext
+        where TContract: IInitialContractContext, 
+                         IBundledContractContext,                          
+                         ICopyableContractTrait<TContract>,
+                         new()
     {
-        private readonly IBoilerplateContractContext contractualContext;
+        private readonly TContract contractContext;
         public IIdentity Identity { get; private set; }
 
-        internal BoilerplateContext(ContextBundle bundle,
-                                    IIdentity identity, 
-                                    IBoilerplateContractContext contractualContext)
-            :base(bundle, contractualContext as IVerifiableContractContext)
+        internal InitialBoilerplateContext(ContextBundle bundle,
+                                           IIdentity identity,
+                                           TContract contractContext)
+            :base(bundle, contractContext as IVerifiableContractContext)
         {
             this.Identity = identity;
-            this.contractualContext = contractualContext;
-        }
-        
-        public IBoilerplateContractContext BeginContract()
-        {
-            return new BoilerplateContractContext(this.bundle);
+            this.contractContext = contractContext;
         }
 
-        public IBoilerplateContext<TResult> Get<TResult>(Func<IBoilerplateContext, TResult> action)
+        public IInitialContractContext BeginContract()
+        {
+            return new ContractContext(this.bundle, null);
+        }
+
+        public IContext<TResult> Get<TResult>(Func<IContext, TResult> action)
         {
             return VerifyContractIfPossible(() =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
-                    var downgradedContext = Copy(settings:downgradedSettings);
+                    var downgradedContext = Copy(bundle: downgradedSettings);
                     var result = action(downgradedContext);
-                    
+                                        
                     //TODO: Upgrade contract context
                     var elevatedContractualContext = 
-                        new BoilerplateContractContext<TResult>(this.bundle,
+                        new ContractContext<IContext<TResult>, TResult>(this.bundle,
                                                                 this.Identity,
-                                                                null,
+                                                                this.contractContext.Bundle,
+                                                                null, 
                                                                 result);
 
-                    return new BoilerplateContext<TResult>(this.bundle, 
-                                                           this.Identity, 
-                                                           elevatedContractualContext, 
-                                                           result);
+                    return new BoilerplateContext<TResult>(this.bundle,
+                                                           this.Identity,
+                                                           null,
+                                                           result);;
                 });
         }
 
-        public IBoilerplateContext<TResult> Open<TType, TResult>(Func<IBoilerplateContext, TType, TResult> action)
+        public IContext<TResult> Open<TType, TResult>(Func<IContext, TType, TResult> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(settings: downgradedSettings);
+                var downgradedContext = Copy(bundle: downgradedSettings);
                 var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => action(downgradedContext, instance));
 
                 if (!response.IsSuccess)
                     throw new OperationWasNotSuccessfulException(response.Result);
                 
-                //TODO: Upgrade contract context
-                var elevatedContractualContext =
-                    new BoilerplateContractContext<TResult>(this.bundle,
+                var elevatedContractContext =
+                    new ContractContext<IContext<TResult>, TResult>(this.bundle,
                                                             this.Identity,
+                                                            this.contractContext.Bundle,
                                                             null,
                                                             response.Content);
 
                 return new BoilerplateContext<TResult>(this.bundle,
                                                        this.Identity,
-                                                       elevatedContractualContext,
+                                                       elevatedContractContext,
                                                        response.Content);               
             });
         }
         
-        public IBoilerplateContext Do(Action<IBoilerplateContext> action)
+        public IContext Do(Action<IContext> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(settings: downgradedSettings);
+                var downgradedContext = Copy(bundle: downgradedSettings);
                 action(downgradedContext);
                 
-                return new BoilerplateContext(this.bundle,
-                                              this.Identity,
-                                              this.contractualContext);
+                return new InitialBoilerplateContext<TContract>(this.bundle,
+                                                                this.Identity,
+                                                                this.contractContext);
             });
         }
 
-        public IBoilerplateContext Open<TType>(Action<IBoilerplateContext, TType> action)
+        public IContext Open<TType>(Action<IContext, TType> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(settings: downgradedSettings);
+                var downgradedContext = Copy(bundle: downgradedSettings);
                 var response = this.bundle.Access.TryAccess<TType>(this.Identity, instance => safeCall(downgradedContext, instance));
 
                 if (!response.IsSuccess)
                     throw new OperationWasNotSuccessfulException(response.Result);
                 
-                return new BoilerplateContext(this.bundle,
-                                              this.Identity,
-                                              this.contractualContext);               
+                return new InitialBoilerplateContext<TContract>(this.bundle,
+                                                                this.Identity,
+                                                                this.contractContext);               
             });
         }
         
-        public IBoilerplateContext Copy(ContextBundle settings)
+        public IContext Copy(ContextBundle bundle)
         {
-            return new BoilerplateContext(settings, this.Identity, this.contractualContext);
+            return new InitialBoilerplateContext<TContract>(bundle, 
+                                                            this.Identity, 
+                                                            this.contractContext);
         }
 
         public TTo As<TFrom, TTo>(TFrom instance)
@@ -144,13 +153,28 @@ namespace FluentBoilerplate.Runtime.Contexts
             return this.bundle.Translation.Translate<TFrom, TTo>(instance);
         }
 
-        protected IBoilerplateContext Copy(ContextBundle bundle = null,
-                                           IIdentity account = null,
-                                           IBoilerplateContractContext contractualContext = null)
+        protected IContext Copy(ContextBundle bundle = null,
+                                IIdentity account = null,
+                                TContract contractContext = default(TContract))
         {
-            return new BoilerplateContext(bundle ?? this.bundle,
-                                          account ?? this.Identity,
-                                          contractualContext ?? this.contractualContext);
+            var isDefault = EqualityComparer<TContract>.Default.Equals(contractContext, default(TContract));
+            var actualContractContext = (isDefault) ? this.contractContext : contractContext;
+
+            return new InitialBoilerplateContext<TContract>(bundle ?? this.bundle,
+                                                            account ?? this.Identity,
+                                                            actualContractContext);
+        }
+
+        public IContext Copy(ContextBundle bundle = null, 
+                             IContractBundle contractBundle = null)
+        {
+            var contract = new TContract();
+            var fullContract = contract.Copy(bundle ?? this.bundle,
+                                             contractBundle ?? this.contractContext.Bundle);
+
+            return new InitialBoilerplateContext<TContract>(bundle ?? this.bundle,
+                                                            this.Identity,
+                                                            fullContract);
         }
     }
 }

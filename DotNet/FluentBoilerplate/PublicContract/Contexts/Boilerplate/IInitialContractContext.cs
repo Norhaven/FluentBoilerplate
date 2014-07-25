@@ -23,16 +23,10 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    public interface IBoilerplateContext<TResult> :
-         IActionableTrait<IBoilerplateContext<TResult>>,
-         ICopyableTrait<IBoilerplateContext<TResult>>,
-         IConversionTrait<IBoilerplateContext<TResult>>
+    public interface IInitialContractContext : IContractualTrait<IInitialContractContext>
     {
-        TResult Result { get; }
-        IIdentity Identity { get; }
-        IBoilerplateContractContext<TResult> BeginContract();
-
-        IBoilerplateContext<TResult> Get(Func<IBoilerplateContext<TResult>, TResult> action);
-        IBoilerplateContext<TResult> Open<TType>(Func<IBoilerplateContext<TResult>, TType, TResult> action);
+        IResultContractContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
+        IVoidReturnContractContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception;
+        IContext EndContract();
     }
 }

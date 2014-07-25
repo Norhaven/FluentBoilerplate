@@ -23,8 +23,17 @@ namespace FluentBoilerplate.Tests
             public string Value { get; set; }
         }
 
-        private void SampleBoilerplate(IBoilerplateContext boilerplate, object value)
+        private void SampleBoilerplate(IContext boilerplate, object value)
         {
+            //boilerplate.BeginContract()
+            //    .EndContract()
+            //    .BeginContract()
+            //    .Require(null)
+            //    .Handles<Exception, int>("")
+            //    .Handles<Exception>("")
+            //    .EndContract()
+            //    .Do((c,r) => {})
+            //    .Get()
             //object returnValue = null;
             
             //var r = boilerplate

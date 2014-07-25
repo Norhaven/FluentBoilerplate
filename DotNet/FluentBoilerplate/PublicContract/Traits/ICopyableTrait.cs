@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Contexts;
 using FluentBoilerplate.Runtime.Contexts;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace FluentBoilerplate.Traits
 {
     public interface ICopyableTrait<TContext> where TContext : ICopyableTrait<TContext>
     {
-        TContext Copy(ContextBundle settings);
+        TContext Copy(ContextBundle bundle = null,
+                      IContractBundle contractBundle = null);
     }
 }

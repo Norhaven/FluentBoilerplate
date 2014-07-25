@@ -14,25 +14,18 @@
    limitations under the License.
  */
 
-using FluentBoilerplate;
 using FluentBoilerplate.Traits;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    public interface IBoilerplateContext : 
-        IActionableTrait<IBoilerplateContext>,
-        ICopyableTrait<IBoilerplateContext>,
-        IConversionTrait<IBoilerplateContext>
+    public interface IVoidReturnContractContext : IContractualTrait<IVoidReturnContractContext>
     {
-        IIdentity Identity { get; }
-        IBoilerplateContractContext BeginContract();
-
-        IBoilerplateContext<TResult> Get<TResult>(Func<IBoilerplateContext, TResult> action);
-        IBoilerplateContext<TResult> Open<TType, TResult>(Func<IBoilerplateContext, TType, TResult> action);
+        IVoidReturnContractContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception;
+        IContext EndContract();
     }
 }

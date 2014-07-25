@@ -28,47 +28,60 @@
     using System.Threading.Tasks;
     using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Messages.User;
+using FluentBoilerplate.Contexts;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
     public class BoilerplateContext<TResult> :
         ImmutableContractAwareContext<BoilerplateContext<TResult>>,
-        IBoilerplateContext<TResult>
+        IContext<TResult>
     {
-        private readonly IBoilerplateContractContext<TResult> contractualContext;
+        private readonly IResultContractContext<TResult> contractualContext;
         
         public IIdentity Identity { get; private set; }
         public TResult Result { get; private set; }
 
         internal BoilerplateContext(ContextBundle settings,
-                                      IIdentity identity, 
-                                      IBoilerplateContractContext<TResult> contractualContext,
-                                      TResult result)
+                                    IIdentity identity, 
+                                    IResultContractContext<TResult> contractualContext,
+                                    TResult result)
             : base(settings, contractualContext as IVerifiableContractContext)
         {
             this.Identity = identity;
             this.contractualContext = contractualContext;
             this.Result = result;
         }
-        
-        public IBoilerplateContractContext<TResult> BeginContract()
+
+        public IResultContractContext<TResult> BeginContract()
         {
-            return new BoilerplateContractContext<TResult>(this.bundle, this.Identity, null, this.Result);
+            return new ContractContext<IContext<TResult>, TResult>(this.bundle, this.Identity, null, this, this.Result);
         }
 
-        public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext<TResult>, TResult> action)
+        public IContext<TResult> Get(Func<IContext, TResult> action)
         {
             return VerifyContractIfPossible(() =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractualContext, this.Result);
+                    var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
                     var result = action(serviceContext);
-                    return Copy(result: result);
+                    return MergeCopy(result: result);
                 });
         }
 
-        public IBoilerplateContext<TResult> Open<TType>(Func<IBoilerplateContext<TResult>, TType, TResult> action)
+        public IContext<TResult> Get(Func<IContext, TResult, TResult> action)
+        {
+            return VerifyContractIfPossible(() =>
+            {
+                var safeCall = this.bundle.Errors.ExtendAround(action);
+                var downgradedSettings = DowngradeErrorHandling();
+                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
+                var result = action(serviceContext, this.Result);
+                return MergeCopy(result: result);
+            });
+        }
+
+        public IContext<TResult> Open<TType>(Func<IContext<TResult>, TType, TResult> action)
         {
             return VerifyContractIfPossible(() =>
                 {
@@ -78,24 +91,36 @@ namespace FluentBoilerplate.Runtime.Contexts
                     var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => safeCall(serviceContext, instance));
 
                     if (response.IsSuccess)
-                        return Copy(result: response.Content);
+                        return MergeCopy(result: response.Content);
                     return this;
                 });
         }
         
-        public IBoilerplateContext<TResult> Do(Action<IBoilerplateContext<TResult>> action)
+        public IContext<TResult> Do(Action<IContext> action)
         {
             return VerifyContractIfPossible(() =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var serviceContext = new BoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractualContext, this.Result);
+                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
                 safeCall(serviceContext);
-                return Copy();
+                return MergeCopy();
             });
         }
 
-        public IBoilerplateContext<TResult> OpenService<TType>(Action<IBoilerplateContext<TResult>, TType> action)
+        public IContext<TResult> Do(Action<IContext, TResult> action)
+        {
+            return VerifyContractIfPossible(() =>
+            {
+                var safeCall = this.bundle.Errors.ExtendAround(action);
+                var downgradedSettings = DowngradeErrorHandling();
+                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
+                safeCall(serviceContext, this.Result);
+                return MergeCopy();
+            });
+        }
+
+        public IContext<TResult> OpenService<TType>(Action<IContext<TResult>, TType> action)
         {
             return VerifyContractIfPossible(() =>
                 {
@@ -105,32 +130,32 @@ namespace FluentBoilerplate.Runtime.Contexts
                     var response = this.bundle.Access.TryAccess<TType>(this.Identity, instance => safeCall(serviceContext, instance));
                     
                     if (response.IsSuccess)
-                        return Copy();
+                        return MergeCopy();
                     return this;
                 });
         }
-
-        public IBoilerplateContext<TResult> Copy(ContextBundle settings)
-        {
-            return Copy(settings: settings);
-        }
-
+        
         public TTo As<TFrom, TTo>(TFrom instance)
         {
             return this.bundle.Translation.Translate<TFrom, TTo>(instance);
-        }        
+        }
 
-        public IBoilerplateContext<TResult> Copy(ContextBundle settings = null,
+        public IContext<TResult> MergeCopy(ContextBundle settings = null,
                                       IIdentity account = null,
-                                      IBoilerplateContractContext<TResult> contractualContext = null,
+                                      IResultContractContext<TResult> contractualContext = null,
                                       TResult result = default(TResult))
-        {   
+        {
             var resultWasNotSupplied = EqualityComparer<TResult>.Default.Equals(result, default(TResult));
             var actualResult = (resultWasNotSupplied) ? this.Result : result;
             return new BoilerplateContext<TResult>(settings ?? this.bundle,
                                                                   account ?? this.Identity,
                                                                   contractualContext ?? this.contractualContext,
                                                                   actualResult);
+        }
+
+        public IContext<TResult> Copy(ContextBundle bundle = null, IContractBundle contractBundle = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

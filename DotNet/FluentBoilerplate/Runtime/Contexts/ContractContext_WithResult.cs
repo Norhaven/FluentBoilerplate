@@ -23,70 +23,75 @@ using System.Threading.Tasks;
 
 using FluentBoilerplate.Runtime.Extensions;
 using FluentBoilerplate.Contexts;
+using FluentBoilerplate.Traits;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal sealed class BoilerplateContractContext<TResult> :
-        IBoilerplateContractContext<TResult>,
+    internal sealed class ContractContext<TOriginalContext, TResult> :
+        IResultContractContext<TResult>,
         IVerifiableContractContext
+        where TOriginalContext : IContext<TResult>//, ICopyableTrait<TOriginalContext>
     {
         private readonly ContextBundle bundle;
         private readonly IIdentity identity;
         private readonly IContractBundle contractBundle;
+        private readonly TOriginalContext originalContext;
         private readonly TResult result;
         
-        public BoilerplateContractContext(ContextBundle bundle,
-                                          IIdentity identity,
-                                          IContractBundle contractBundle,
-                                          TResult result)
+        public ContractContext(ContextBundle bundle,
+                               IIdentity identity,
+                               IContractBundle contractBundle,
+                               TOriginalContext originalContext,
+                               TResult result)
         {   
             this.bundle = bundle;
             this.identity = identity;
             this.contractBundle = contractBundle;
+            this.originalContext = originalContext;
             this.result = result;
         }
 
-        public IBoilerplateContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
+        public IResultContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
             var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(bundle: elevatedSettings);
         }
 
-        public IBoilerplateContractContext<TResult> RequiresRights(params IRight[] rights)
+        public IResultContractContext<TResult> RequiresRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(bundle: elevatedSettings);
         }
 
-        public IBoilerplateContractContext<TResult> MustNotHaveRights(params IRight[] rights)
+        public IResultContractContext<TResult> MustNotHaveRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(bundle: elevatedSettings);
         }
 
-        public IBoilerplateContractContext<TResult> RequiresRoles(params IRole[] roles)
+        public IResultContractContext<TResult> RequiresRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(bundle: elevatedSettings);
         }
 
-        public IBoilerplateContractContext<TResult> MustNotHaveRoles(params IRole[] roles)
+        public IResultContractContext<TResult> MustNotHaveRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
             return Copy(bundle: elevatedSettings);
         }
 
-        public IBoilerplateContext<TResult> EndContract()
+        public IContext<TResult> EndContract()
         {
-            return new BoilerplateContext<TResult>(this.bundle, this.identity, this, this.result);
+            return this.originalContext.Copy(this.bundle, this.contractBundle);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> RequiresValidInstanceOf<TType>(params TType[] instances)
+        public IResultContractContext<TResult> RequiresValidInstanceOf<TType>(params TType[] instances)
         {
             var localProvider = this.bundle.Validation;
             Action validate = () =>
@@ -103,64 +108,64 @@ namespace FluentBoilerplate.Runtime.Contexts
                 }
             };
 
-            var elevatedInstanceValidations = this.instanceValidations.Enqueue(validate);
-            return Copy(instanceValidations: elevatedInstanceValidations);
+            var elevatedInstanceValidations = this.contractBundle.AddInstanceValidation(validate);
+            return Copy(contractBundle: elevatedInstanceValidations);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> Require(Func<bool> condition, string message = null)
+        public IResultContractContext<TResult> Require(Func<bool> condition, string message = null)
         {
             var contractCondition = new DefaultContractCondition(condition, message);
-            var elevatedPreconditions = this.preconditions.Enqueue(contractCondition);
-            return Copy(preconditions: elevatedPreconditions);
+            var elevatedPreconditions = this.contractBundle.AddPrecondition(contractCondition);
+            return Copy(contractBundle: elevatedPreconditions);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IResultContractContext<TResult> Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
         {
             var contractCondition = new CustomExceptionContractCondition<TException>(condition, createException);
-            var elevatedPreconditions = this.preconditions.Enqueue(contractCondition);
-            return Copy(preconditions: elevatedPreconditions);
+            var elevatedPreconditions = this.contractBundle.AddPrecondition(contractCondition);
+            return Copy(contractBundle: elevatedPreconditions);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> EnsureOnReturn(Func<bool> condition, string message = null)
+        public IResultContractContext<TResult> EnsureOnReturn(Func<bool> condition, string message = null)
         {
             var contractCondition = new DefaultContractCondition(condition, message);
-            var elevatedPostconditionsOnReturn = this.postconditionsOnReturn.Enqueue(contractCondition);
-            return Copy(postconditionsOnReturn: elevatedPostconditionsOnReturn);
+            var elevatedPostconditionsOnReturn = this.contractBundle.AddPostconditionOnReturn(contractCondition);
+            return Copy(contractBundle: elevatedPostconditionsOnReturn);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IResultContractContext<TResult> EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
         {
             var contractCondition = new CustomExceptionContractCondition<TException>(condition, createException);
-            var elevatedPostconditionsOnReturn = this.postconditionsOnReturn.Enqueue(contractCondition);
-            return Copy(postconditionsOnReturn: elevatedPostconditionsOnReturn);
+            var elevatedPostconditionsOnReturn = this.contractBundle.AddPostconditionOnReturn(contractCondition);
+            return Copy(contractBundle: elevatedPostconditionsOnReturn);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> EnsureOnThrow(Func<bool> condition, string message = null)
+        public IResultContractContext<TResult> EnsureOnThrow(Func<bool> condition, string message = null)
         {
             var contractCondition = new DefaultContractCondition(condition, message);
-            var elevatedPostconditionsOnThrow = this.postconditionsOnThrow.Enqueue(contractCondition);
-            return Copy(postconditionsOnThrow: elevatedPostconditionsOnThrow);
+            var elevatedPostconditionsOnThrow = this.contractBundle.AddPostconditionOnThrow(contractCondition);
+            return Copy(contractBundle: elevatedPostconditionsOnThrow);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IResultContractContext<TResult> EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
         {
             var contractCondition = new CustomExceptionContractCondition<TException>(condition, createException);
-            var elevatedPostconditionsOnThrow = this.postconditionsOnThrow.Enqueue(contractCondition);
-            return Copy(postconditionsOnThrow: elevatedPostconditionsOnThrow);
+            var elevatedPostconditionsOnThrow = this.contractBundle.AddPostconditionOnThrow(contractCondition);
+            return Copy(contractBundle: elevatedPostconditionsOnThrow);
         }
 
-        public IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>> Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
+        public IResultContractContext<TResult> Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(sectionName, action);
             var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
-            return Copy(settings: elevatedSettings);
+            return Copy(bundle: elevatedSettings);
         }
 
         public void VerifyPreConditions()
         {
-            VerifyConditions(this.preconditions);
+            VerifyConditions(this.contractBundle.Preconditions);
 
-            foreach (var validate in this.instanceValidations)
+            foreach (var validate in this.contractBundle.InstanceValidations)
                 validate();
         }
 
@@ -189,14 +194,15 @@ namespace FluentBoilerplate.Runtime.Contexts
             }
         }
 
-        private BoilerplateContractContext<TResult> Copy(ContextBundle bundle = null,
-                                                         IIdentity account = null,
-                                                         IContractBundle contractBundle = null)
+        private IResultContractContext<TResult> Copy(ContextBundle bundle = null,
+                                                                       IIdentity account = null,
+                                                                       IContractBundle contractBundle = null)
         {
-            return new BoilerplateContractContext<TResult>(bundle ?? this.bundle,
-                                                           account ?? this.identity,
-                                                           contractBundle ?? this.contractBundle,
-                                                           this.result);
+            return new ContractContext<TOriginalContext, TResult>(bundle ?? this.bundle,
+                                                                  account ?? this.identity,
+                                                                  contractBundle ?? this.contractBundle,
+                                                                  this.originalContext,
+                                                                  this.result);
         }
     }
 }

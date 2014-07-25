@@ -23,10 +23,9 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    public interface IBoilerplateContractContext<TResult> :
-        IPermissionsBasedTrait<IBoilerplateContractContext<TResult>>,
-        IContractContext<IBoilerplateContext<TResult>, IBoilerplateContext<TResult>>
+    public interface IResultContractContext<TResult> : IContractualTrait<IResultContractContext<TResult>>
     {
-        IBoilerplateContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
+        IResultContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
+        IContext<TResult> EndContract();
     }
 }
