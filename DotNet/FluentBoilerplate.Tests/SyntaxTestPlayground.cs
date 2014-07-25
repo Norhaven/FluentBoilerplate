@@ -23,6 +23,20 @@ namespace FluentBoilerplate.Tests
             public string Value { get; set; }
         }
 
+        public class Example
+        {
+            public string Text { get; private set; }
+
+            public void DoSomething(IContext boilerplate)
+            {
+                //boilerplate
+                //    .BeginContract()
+                //        .EnsureOnReturn(() => this.Text != null, "Text must be non-null on return")
+                //        .EnsureOnThrow(() => this.Text == null, "Text must be null when an exception is thrown")
+                //    .EndContract()
+                //    .Do(context => /* Take some action */);
+            }
+        }
         private void SampleBoilerplate(IContext boilerplate, object value)
         {
             //boilerplate.BeginContract()
@@ -31,6 +45,7 @@ namespace FluentBoilerplate.Tests
             //    .Require(null)
             //    .Handles<Exception, int>("")
             //    .Handles<Exception>("")
+            //    .Require()
             //    .EndContract()
             //    .Do((c,r) => {})
             //    .Get()
