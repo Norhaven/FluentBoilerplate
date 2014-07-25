@@ -91,7 +91,7 @@ public static void DoSomething(IContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
-             .Requires(text != null, () => { throw new ArgumentException("text", "The parameter must not be null"); })
+             .Requires(text != null, () => new ArgumentException("text", "The parameter must not be null"))
         .EndContract()
         .Do(context => /* Take some action */);
 }
