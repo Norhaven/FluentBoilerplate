@@ -14,10 +14,15 @@ Getting Started
 
 - Build the source (or get a release from NuGet, if available)
 - Reference the built assembly in your project
-- Add "using FluentBoilerplate;" to your file's using statements.
 
 The Simplest Example
 =================
+
+The only namespace you should care about is FluentBoilerplate. Add that to your file's using statements.
+
+```C#
+using FluentBoilerplate;
+```
 
 Everything is driven from an IContext implementation. You should get one.
 
