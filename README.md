@@ -24,19 +24,19 @@ Everything is driven from an IContext implementation. You should get one.
 
 ```C#
 var boilerplate = Boilerplate.New();
-```C#
+```
 
 Doing something within the context is very simple. If you don't want to return a result, you may do this.
 
 ```C#
 boilerplate.Do(context => /* Take some action */);
-```C#
+```
 
 If you'd like to get a result back, you may do this instead.
 
 ```C#
 boilerplate.Get<int>(context => /* Take some action that returns an integer */);
-```C#
+```
 
 After you get a result, you may want to use it.
 
@@ -44,7 +44,7 @@ After you get a result, you may want to use it.
 var text = boilerplate
               .Get<string>(context => /* Take some action that returns a string */)
               .Result;
-```C#
+```
 
 So why is that useful? Those actions can have a contract defined that applies to them.
 
@@ -56,7 +56,7 @@ boilerplate
          .Handles<ArgumentException>("Top Level", ex => Console.WriteLine(ex.Message))
     .EndContract()
     .Do(context => /* Take some action */);
-```C#
+```
 
 If your call to Do() throws an ArgumentException, it will now be caught and its message written to the console. Just like you would with a try/catch block, you can define any number of exception types and their handlers, and the order they're defined in matches the order in which they're handled.
 
