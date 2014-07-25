@@ -69,7 +69,7 @@ Contract Examples
 
 You may be saying to yourself "Self, this sounds sort of like Code Contracts", and you wouldn't be wrong. This follows along the same lines, in that it's very often ideal to be able to express pre and post conditions for a given action.
 
-Let's require that a parameter is not null.
+Let's require that a parameter is not null before we do something.
 
 ```C#
 public static void DoSomething(IContext boilerplate, string text)
@@ -97,6 +97,43 @@ public static void DoSomething(IContext boilerplate, string text)
 }
 ```
 
+Preconditions, like the ones above, are useful because you can verify that things are in a necessary state before you operate on it. Postconditions, on the other hand, are useful for ensuring that _you_ aren't leaving things in a bad state for anyone else.
+
+Let's make sure that we're leaving the state appropriately.
+
+```C#
+public class Example
+{
+    public string Text { get; private set; }
+
+    public void DoSomething(IContext boilerplate)
+    {
+        boilerplate
+            .BeginContract()
+                .EnsureOnReturn(() => this.Text != null, "Text must be non-null on return")
+                .EnsureOnThrow(() => this.Text == null, "Text must be null when an exception is thrown")
+            .EndContract()
+            .Do(context => /* Take some action */);
+    }
+}
+```
+
+There are two kinds of postconditions. 
+
+- EnsureOnReturn() makes sure that the state is appropriate when returning from the action. 
+- EnsureOnThrow() makes sure that the state is appropriate when the action threw an exception.
+
+Permissions
+=================
+
+Validation
+=================
+
+Translation
+=================
+
+Provided Type Usage
+=================
 
 Additional information is forthcoming...
 
