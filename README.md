@@ -64,7 +64,38 @@ boilerplate
 
 If your call to Do() throws an ArgumentException, it will now be caught and its message written to the console. Just like you would with a try/catch block, you can define any number of exception types and their handlers, and the order they're defined in matches the order in which they're handled.
 
+Contract Examples
 =================
+
+You may be saying to yourself "Self, this sounds sort of like Code Contracts", and you wouldn't be wrong. This follows along the same lines, in that it's very often ideal to be able to express pre and post conditions for a given action.
+
+Let's require that a parameter is not null.
+
+```C#
+public static void DoSomething(IContext context, string text)
+{
+    boilerplate
+        .BeginContract()
+             .Requires(text != null, "The parameter 'text' must not be null")
+        .EndContract()
+        .Do(context => /* Take some action */);
+}
+```
+
+When the call to Do() is performed, the contract will be validated. If the parameter is null, a ContractViolationException will be thrown with the given message.
+
+You're welcome to throw your own exceptions as well.
+
+```C#
+public static void DoSomething(IContext context, string text)
+{
+    boilerplate
+        .BeginContract()
+             .Requires(text != null, () => { throw new ArgumentException("text", "The parameter must not be null"); })
+        .EndContract()
+        .Do(context => /* Take some action */);
+}
+```
 
 Additional information is forthcoming...
 
