@@ -1,7 +1,7 @@
 FluentBoilerplate
 =================
 
-Official releases will be in NuGet. All release information and the package will be located at https://www.nuget.org/packages/FluentBoilerplate/ and visible in NuGet searches.
+All official release information and released builds will be located at https://www.nuget.org/packages/FluentBoilerplate/ and visible in NuGet searches as a NuGet package.
 
 This is still an alpha-quality work in progress. This means that things can and will break.
 
@@ -9,9 +9,8 @@ That said, you're more than welcome to report any bugs you may find, contribute,
 
 Enjoy!
 
-=================
-
 Getting Started
+=================
 
 - Build the source (or get a release from NuGet, if available)
 - Reference the built assembly in your project
