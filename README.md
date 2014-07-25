@@ -72,7 +72,7 @@ You may be saying to yourself "Self, this sounds sort of like Code Contracts", a
 Let's require that a parameter is not null.
 
 ```C#
-public static void DoSomething(IContext context, string text)
+public static void DoSomething(IContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
@@ -87,7 +87,7 @@ When the call to Do() is performed, the contract will be validated. If the param
 You're welcome to throw your own exceptions as well.
 
 ```C#
-public static void DoSomething(IContext context, string text)
+public static void DoSomething(IContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
@@ -96,6 +96,7 @@ public static void DoSomething(IContext context, string text)
         .Do(context => /* Take some action */);
 }
 ```
+
 
 Additional information is forthcoming...
 
