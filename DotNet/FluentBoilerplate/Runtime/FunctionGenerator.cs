@@ -58,86 +58,26 @@ namespace FluentBoilerplate.Runtime
 
         public Action<T1, T2> CreateAction<T1, T2>(Action<ILWriter> writeActionBody)
         {
-            if (this.createPhysicalAssembly)
-            {
-                if (File.Exists(this.assemblySettings.FullPath))
-                    File.Delete(this.assemblySettings.FullPath);
-
-                var assemblyName = new AssemblyName(this.assemblySettings.Name);
-                var assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, this.assemblySettings.DirectoryPath);
-
-                var module = assembly.DefineDynamicModule("OutputModule", this.assemblySettings.NameWithExtension);
-
-                var type = module.DefineType("GeneratedFunction", TypeAttributes.Public | TypeAttributes.Class);
-
-                var method = type.DefineMethod("Call",
-                                               MethodAttributes.Public | MethodAttributes.Static,
-                                               typeof(void),
-                                               new[] { typeof(T1), typeof(T2) });
-
-                var generator = method.GetILGenerator();
-                var writer = new ILWriter(generator);
-                writeActionBody(writer);
-
-                var concreteType = type.CreateType();
-                assembly.Save(this.assemblySettings.NameWithExtension);
-
-                var instance = Activator.CreateInstance(concreteType);
-                var instanceMethod = concreteType.GetMethod("Call");
-                return (p1, p2) => instanceMethod.Invoke(instance, new object[] { p1, p2 });
-            }
-            else
-            {
-                var method = new DynamicMethod(String.Empty, typeof(void), new[] { typeof(T1), typeof(T2) });
-                var generator = method.GetILGenerator();
-                var writer = new ILWriter(generator);
-                writeActionBody(writer);
-                return method.Create<Action<T1, T2>>();
-            }
+            return Create<Action<T1, T2>>(typeof(void), new[] { typeof(T1), typeof(T2) }, writeActionBody);
         }
 
         public Action<T> CreateAction<T>(Action<ILWriter> writeActionBody)
         {
-            if (this.createPhysicalAssembly)
-            {
-                if (File.Exists(this.assemblySettings.FullPath))
-                    File.Delete(this.assemblySettings.FullPath);
-
-                var assemblyName = new AssemblyName(this.assemblySettings.Name);
-                var assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, this.assemblySettings.DirectoryPath);
-
-                var module = assembly.DefineDynamicModule("OutputModule", this.assemblySettings.NameWithExtension);
-
-                var type = module.DefineType("GeneratedFunction", TypeAttributes.Public | TypeAttributes.Class);
-
-                var method = type.DefineMethod("Call",
-                                               MethodAttributes.Public | MethodAttributes.Static,
-                                               typeof(void),
-                                               new[] { typeof(T) });
-
-                var generator = method.GetILGenerator();
-                var writer = new ILWriter(generator);
-                writeActionBody(writer);
-
-                var concreteType = type.CreateType();
-                assembly.Save(this.assemblySettings.NameWithExtension);
-
-                var instance = Activator.CreateInstance(concreteType);
-                var instanceMethod = concreteType.GetMethod("Call");
-                return x => instanceMethod.Invoke(instance, new object[] { x });             
-            }
-            else
-            {
-                var method = new DynamicMethod(String.Empty, typeof(void), new[] { typeof(T) });
-                var generator = method.GetILGenerator();
-                var writer = new ILWriter(generator);
-                writeActionBody(writer);
-                return method.Create<Action<T>>();
-            }
+            return Create<Action<T>>(typeof(void), new[] { typeof(T) }, writeActionBody);
         }
 
         public Func<TIn, TOut> Create<TIn, TOut>(Action<ILWriter> writeFunctionBody)
         {
+            return Create<Func<TIn, TOut>>(typeof(TOut), new[] { typeof(TIn) }, writeFunctionBody);
+        }
+        
+        public Func<TIn1, TIn2, TOut> Create<TIn1, TIn2, TOut>(Action<ILWriter> writeFunctionBody)
+        {
+            return Create<Func<TIn1, TIn2, TOut>>(typeof(TOut), new[] { typeof(TIn1), typeof(TIn2) }, writeFunctionBody);
+        }
+
+        private TFunction Create<TFunction>(Type returnType, Type[] parameterTypes, Action<ILWriter> writeFunctionBody)
+        {
             if (this.createPhysicalAssembly)
             {
                 if (File.Exists(this.assemblySettings.FullPath))
@@ -145,15 +85,15 @@ namespace FluentBoilerplate.Runtime
 
                 var assemblyName = new AssemblyName(this.assemblySettings.Name);
                 var assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, this.assemblySettings.DirectoryPath);
-                
+
                 var module = assembly.DefineDynamicModule("OutputModule", this.assemblySettings.NameWithExtension);
 
                 var type = module.DefineType("GeneratedFunction", TypeAttributes.Public | TypeAttributes.Class);
 
                 var method = type.DefineMethod("Call",
                                                MethodAttributes.Public | MethodAttributes.Static,
-                                               typeof(TOut),
-                                               new[] { typeof(TIn) });
+                                               returnType,
+                                               parameterTypes);
 
                 var generator = method.GetILGenerator();
                 var writer = new ILWriter(generator);
@@ -163,26 +103,28 @@ namespace FluentBoilerplate.Runtime
                 assembly.Save(this.assemblySettings.NameWithExtension);
 
                 var instance = Activator.CreateInstance(concreteType);
-                var instanceMethod = concreteType.GetMethod("Call");
-                return x => (TOut)instanceMethod.Invoke(instance, new object[] { x });
-                //return (Func<TIn, TOut>)method.CreateDelegate(typeof(Func<TIn, TOut>), instance);                
+                var call = concreteType.GetMethod("Call");
+
+                //TFunction is typed so the easiest way to call it in a typed manner is to just
+                //funnel everything through a passthrough typed method.
+                var callingMethod = new DynamicMethod(String.Empty, returnType, parameterTypes);
+                var callingGenerator = callingMethod.GetILGenerator();
+                var callingWriter = new ILWriter(callingGenerator);
+
+                callingWriter.LoadParameterRange(0, parameterTypes.Length);
+                callingWriter.StaticMethodCall(call);
+                callingWriter.Return();
+
+                return callingMethod.Create<TFunction>();           
             }
             else
             {
-                var method = new DynamicMethod(String.Empty, typeof(TOut), new[] { typeof(TIn) });
+                var method = new DynamicMethod(String.Empty, returnType, parameterTypes);
                 var generator = method.GetILGenerator();
                 var writer = new ILWriter(generator);
                 writeFunctionBody(writer);
-                return method.Create<Func<TIn, TOut>>();
+                return method.Create<TFunction>();
             }
-        }
-
-
-        public Func<TIn1, TIn2, TOut> Create<TIn1, TIn2, TOut>(Action<ILWriter> writeFunctionBody)
-        {
-            //TODO: Consolidate the implementation of Create() above into common that any number of
-            //      overloads could take advantage of and use that here.
-            throw new NotImplementedException();
         }
     }
 }

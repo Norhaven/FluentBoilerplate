@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate.Runtime
 {
@@ -119,6 +120,14 @@ namespace FluentBoilerplate.Runtime
         {
             Emit(OpCodes.Ldarg_0);
         }
+        public void LoadParameterRange(int inclusiveLowerBounds, int exclusiveUpperBounds)
+        {
+            for (var i = inclusiveLowerBounds; i < exclusiveUpperBounds; i++)
+            {
+                Emit(OpCodes.Ldarg, i);
+            }
+        }
+
         public void LoadThis()
         {
             Emit(OpCodes.Ldarg_0);

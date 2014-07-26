@@ -28,140 +28,55 @@ using FluentBoilerplate.Contexts;
 namespace FluentBoilerplate.Runtime.Contexts
 {
     internal sealed class ContractContext:
+        ContractContextBase<IInitialContractContext>,
         IInitialContractContext,
         IVerifiableContractContext,
-        IContext,
         IBundledContractContext,
-        ICopyableContractTrait<ContractContext>
+        ICopyableContractTrait<IInitialContractContext>                                
     {
-        private readonly ContextBundle settings;
-        private readonly IContractBundle contractBundle;
+        private readonly IElevatableContext originalContext;
 
-        public IIdentity Identity { get; private set; }
+        public IContractBundle Bundle { get { return this.contractBundle; } }
 
-        public ContractContext() { }
-        public ContractContext(ContextBundle settings, IContractBundle contractBundle)
+        public ContractContext(ContextBundle bundle,
+                               IContractBundle contractBundle,
+                               IElevatableContext originalContext)
+            :base(bundle, contractBundle)
         {
-            this.settings = settings;
-            this.contractBundle = contractBundle;
+            this.originalContext = originalContext;
         }
 
-        public void VerifyPreConditions()
+        public override IInitialContractContext Copy(ContextBundle bundle = null, IContractBundle contractBundle = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public void VerifyPostConditions(ContractExit exit)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
-        public IInitialContractContext BeginContract()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IContext<TResult> Get<TResult>(Func<IContext, TResult> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IContext<TResult> Open<TType, TResult>(Func<IContext, TType, TResult> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IContext Do(Action<IContext> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TTo As<TFrom, TTo>(TFrom instance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ContractContext Copy(ContextBundle bundle = null, IContractBundle contractBundle = null)
-        {
-            throw new NotImplementedException();
+            return new ContractContext(bundle ?? this.bundle,
+                                       contractBundle ?? this.contractBundle,
+                                       this.originalContext);         
         }
 
         public IResultContractContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
         {
-            throw new NotImplementedException();
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
+            var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
+
+            var context = this.originalContext.Elevate<TResult>(elevatedBundle, this.contractBundle);
+            return new ContractContext<TResult>(elevatedBundle,
+                                                this.contractBundle,
+                                                context);
         }
 
         public IVoidReturnContractContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
         {
-            throw new NotImplementedException();
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(sectionName, action);
+            var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
+
+            return new VoidReturnContractContext(elevatedBundle,
+                                                 this.contractBundle,
+                                                 this.originalContext);
         }
 
         public IContext EndContract()
         {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext RequiresValidInstanceOf<TType>(params TType[] instances)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext Require(Func<bool> condition, string message = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext EnsureOnReturn(Func<bool> condition, string message = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext EnsureOnThrow(Func<bool> condition, string message = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext RequiresRights(params IRight[] rights)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext MustNotHaveRights(params IRight[] rights)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext RequiresRoles(params IRole[] roles)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IInitialContractContext MustNotHaveRoles(params IRole[] roles)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IContractBundle Bundle
-        {
-            get { throw new NotImplementedException(); }
-        }
+            return this.originalContext.Copy(this.bundle, this.contractBundle);
+        }        
     }    
 }

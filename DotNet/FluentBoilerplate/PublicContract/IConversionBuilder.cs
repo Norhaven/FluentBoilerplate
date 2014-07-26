@@ -14,24 +14,15 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Messages.Developer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    internal static class StringExtensions
+    public interface IConversionBuilder
     {
-        public static string WithValues(this string text, params object[] values)
-        {
-            Debug.Assert(text != null, String.Format(AssertFailures.InstanceShouldNotBeNull, "text"));
-
-            return String.Format(text, values);
-        }
+        TType As<TType>();
     }
 }

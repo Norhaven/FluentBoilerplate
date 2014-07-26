@@ -31,6 +31,7 @@ using FluentBoilerplate.Runtime;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using FluentBoilerplate.Runtime.Providers.Logging;
+using FluentBoilerplate.Contexts;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {

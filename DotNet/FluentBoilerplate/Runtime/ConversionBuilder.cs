@@ -14,21 +14,29 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Runtime
 {
-    public sealed class EnumValueNotValidException:Exception
+    internal sealed class ConversionBuilder<TFrom>:IConversionBuilder
     {
-        public Type EnumType { get; private set; }
-        public int Value { get; private set; }
-        public EnumValueNotValidException(Type enumType, int value)
-            : base(String.Format("Enum '{0}' has invalid value '{1}'", enumType, value))
+        private readonly TFrom instance;
+        private readonly ITranslationProvider provider;
+
+        public ConversionBuilder(ITranslationProvider provider, TFrom instance)
         {
+            this.instance = instance;
+            this.provider = provider;
+        }
+
+        public TType As<TType>()
+        {
+            return this.provider.Translate<TFrom, TType>(this.instance);
         }
     }
 }

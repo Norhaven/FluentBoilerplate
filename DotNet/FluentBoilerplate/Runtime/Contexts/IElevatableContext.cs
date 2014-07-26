@@ -14,29 +14,19 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Providers;
-using FluentBoilerplate.Runtime;
-using Moq;
+using FluentBoilerplate.Contexts;
+using FluentBoilerplate.Traits;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Tests
+namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal static class MockILogExtensions
+    public interface IElevatableContext:IContext, ICopyableTrait<IContext>
     {
-        public static Mock<ILogProvider> AllowEveryError(this Mock<ILogProvider> mock)
-        {
-            mock.Setup(x => x.Error(It.IsAny<string>(), It.IsAny<Exception>()));
-            return mock;
-        }
-
-        public static Mock<ILogProvider> AllowErrorsWithMessage(this Mock<ILogProvider> mock, string message)
-        {
-            mock.Setup(x => x.Error(It.Is<string>(p => p == message), It.IsAny<Exception>()));
-            return mock;
-        }
+        IContext<TResult> Elevate<TResult>(ContextBundle bundle = null,
+                                           IContractBundle contractBundle = null,
+                                           TResult result = default(TResult));
     }
 }

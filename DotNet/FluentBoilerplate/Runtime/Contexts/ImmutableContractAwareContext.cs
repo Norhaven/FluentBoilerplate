@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,32 +25,31 @@ namespace FluentBoilerplate.Runtime.Contexts
 {
     public abstract class ImmutableContractAwareContext<TContext>:ImmutableContext<TContext>
     {
-        private readonly IVerifiableContractContext contract;
-
-        public ImmutableContractAwareContext(ContextBundle settings, IVerifiableContractContext contract)
-            : base(settings)
+        public ImmutableContractAwareContext(ContextBundle bundle)
+            : base(bundle)
         {
-            this.contract = contract;
         }
 
-        public TResult VerifyContractIfPossible<TResult>(Func<TResult> action)
+        public TResult VerifyContractIfPossible<TResult>(IContractBundle contractBundle, Func<TResult> action)
         {
-            if (contract != null)
-                contract.VerifyPreConditions();
+            if (contractBundle == null)
+                return action();
+
+            var contract = new ContractContext<TResult>(this.bundle, contractBundle, null);
+            
+            contract.VerifyPreConditions();
 
             try
             {
                 var result = action();
 
-                if (contract != null)
-                    contract.VerifyPostConditions(ContractExit.Returned);
+                contract.VerifyPostConditions(ContractExit.Returned);
 
                 return result;
             }
             catch
             {
-                if (contract != null)
-                    contract.VerifyPostConditions(ContractExit.ThrewException);
+                contract.VerifyPostConditions(ContractExit.ThrewException);
                 throw;
             }
         }

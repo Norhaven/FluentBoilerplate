@@ -25,6 +25,6 @@ namespace FluentBoilerplate.Traits
 {
     public interface IConversionTrait<TContext>
     {
-        TTo As<TFrom, TTo>(TFrom instance);
+        IConversionBuilder Use<TFrom>(TFrom instance);
     }
 }

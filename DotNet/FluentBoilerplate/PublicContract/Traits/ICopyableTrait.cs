@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Traits
 {
-    public interface ICopyableTrait<TContext> where TContext : ICopyableTrait<TContext>
+    public interface ICopyableTrait<TContext>
     {
         TContext Copy(ContextBundle bundle = null,
                       IContractBundle contractBundle = null);
