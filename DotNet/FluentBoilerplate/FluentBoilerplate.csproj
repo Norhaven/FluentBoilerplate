@@ -151,6 +151,7 @@
     <Compile Include="Runtime\Providers\ErrorHandling\ExceptionHandlerProvider.cs" />
     <Compile Include="Runtime\Providers\CacheProvider.cs" />
     <Compile Include="PublicContract\Providers\IPermissionsProvider.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\IExceptionAwareAction.cs" />
     <Compile Include="Runtime\Providers\PermissionsProvider.cs" />
     <Compile Include="PublicContract\Exceptions\PropertyIsMissingException.cs" />
     <Compile Include="Runtime\Providers\Translation\TranslationMap.cs" />

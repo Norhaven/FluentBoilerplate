@@ -107,6 +107,7 @@ namespace FluentBoilerplate.Runtime
 
                 //TFunction is typed so the easiest way to call it in a typed manner is to just
                 //funnel everything through a passthrough typed method.
+
                 var callingMethod = new DynamicMethod(String.Empty, returnType, parameterTypes);
                 var callingGenerator = callingMethod.GetILGenerator();
                 var callingWriter = new ILWriter(callingGenerator);

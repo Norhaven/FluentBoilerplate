@@ -28,12 +28,7 @@ using System.Threading.Tasks;
 using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
-{
-    internal interface IExceptionAwareAction
-    {
-        void Do();
-        void HandleException<TException>(TException exception) where TException : Exception;
-    }
+{    
     internal sealed class TryCatchBlock : ITryCatchBlock
     {       
         private class ExceptionAwareAction<TResult>:IExceptionAwareAction
