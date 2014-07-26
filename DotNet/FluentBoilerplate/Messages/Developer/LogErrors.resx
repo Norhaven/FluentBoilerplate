@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActionResultedInException" xml:space="preserve">
-    <value>Exception '{0}' was handled in section '{1}'</value>
-    <comment>Ensures that exception type and handling location is logged</comment>
+    <value>Exception '{0}' was handled</value>
+    <comment>Ensures that exception type is logged</comment>
   </data>
   <data name="DebugInformation" xml:space="preserve">
     <value>Caller provided custom type '{0}'</value>

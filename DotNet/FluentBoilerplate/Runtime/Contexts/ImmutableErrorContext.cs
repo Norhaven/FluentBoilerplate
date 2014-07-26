@@ -57,20 +57,20 @@ namespace FluentBoilerplate.Runtime.Contexts
             return this.handlerProvider.HandledExceptionTypes.Contains(typeof(TException));
         }
 
-        public IImmutableErrorContext RegisterExceptionHandler<TException,TResult>(string sectionName, Func<TException, TResult> handler) where TException : Exception
+        public IImmutableErrorContext RegisterExceptionHandler<TException,TResult>(Func<TException, TResult> handler) where TException : Exception
         {
-            var elevatedHandlerProvider = this.handlerProvider.Add(sectionName, handler);
+            var elevatedHandlerProvider = this.handlerProvider.Add(handler);
 
             return new ImmutableErrorContext(this.log, this.tryCatchBlockProvider,elevatedHandlerProvider);
         }
 
-        public IImmutableErrorContext RegisterExceptionHandler<TException>(string sectionName, Action<TException> handler) where TException : Exception
+        public IImmutableErrorContext RegisterExceptionHandler<TException>(Action<TException> handler) where TException : Exception
         {
             //Re-registering for the same exception type needs to ignore the request
             if (this.handlerProvider.HandledExceptionTypes.Contains(typeof(TException)))
                 return this;
 
-            var elevatedHandlerProvider = this.handlerProvider.Add(sectionName, handler);
+            var elevatedHandlerProvider = this.handlerProvider.Add(handler);
 
             return new ImmutableErrorContext(this.log, this.tryCatchBlockProvider, elevatedHandlerProvider);
         }

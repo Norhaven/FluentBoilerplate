@@ -46,9 +46,9 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                  this.originalContext);
         }
 
-        public IVoidReturnContractContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
+        public IVoidReturnContractContext Handles<TException>(Action<TException> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(sectionName, action);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(action);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(bundle: elevatedBundle);
         }

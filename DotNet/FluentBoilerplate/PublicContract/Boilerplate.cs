@@ -21,16 +21,20 @@ using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using FluentBoilerplate.Runtime.Providers.Logging;
 using FluentBoilerplate.Runtime.Providers.Translation;
 using FluentBoilerplate.Runtime.Providers.Validation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Provides a way to easily create boilerplate contexts
+    /// </summary>
     public static class Boilerplate
     {
+        /// <summary>
+        /// Creates an instance of <see cref="IContext"/>
+        /// </summary>
+        /// <param name="identity">The current identity being used (rights/roles contract requirements or restrictions will apply to this identity)</param>
+        /// <param name="accessProvider">An access provider for specific types (available through IContext.Open())</param>
+        /// <returns>An instance of <see cref="IContext"/></returns>
         public static IContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null)
         {
             var actualIdentity = identity ?? Identity.Default;

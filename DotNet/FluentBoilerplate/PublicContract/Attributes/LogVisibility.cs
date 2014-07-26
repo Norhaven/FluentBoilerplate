@@ -15,19 +15,34 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// The available visibility levels that may be applied when writing to a log
+    /// </summary>
     [Flags]
     public enum LogVisibility
     {
+        /// <summary>
+        /// Visible under all circumstances
+        /// </summary>
         All = 0,
+        /// <summary>
+        /// Debug messages
+        /// </summary>
         Debug = 1,
+        /// <summary>
+        /// Informational messages
+        /// </summary>
         Info = 2,
+        /// <summary>
+        /// Warning messages
+        /// </summary>
         Warning = 3,
+        /// <summary>
+        /// Error messages
+        /// </summary>
         Error = 4
     }
 }

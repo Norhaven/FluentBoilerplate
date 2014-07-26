@@ -48,21 +48,18 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
 
             var action = handler.actionHandler.Generalize();
-            return new ExceptionHandler<Exception>(handler.log, handler.sectionName, action);
+            return new ExceptionHandler<Exception>(handler.log, action);
         }
 
         protected readonly ILogProvider log;
-        protected readonly string sectionName;
         private readonly Action<TException> actionHandler;
 
-        public ExceptionHandler(ILogProvider log, string sectionName, Action<TException> actionHandler)
+        public ExceptionHandler(ILogProvider log, Action<TException> actionHandler)
         {
             Debug.Assert(log != null, AssertFailures.InstanceShouldNotBeNull.WithValues("log"));
-            Debug.Assert(sectionName != null, AssertFailures.InstanceShouldNotBeNull.WithValues("sectionName"));
             Debug.Assert(actionHandler != null, AssertFailures.InstanceShouldNotBeNull.WithValues("actionHandler"));
 
             this.log = log;
-            this.sectionName = sectionName;
             this.actionHandler = actionHandler;
         }
 
@@ -77,7 +74,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 
         protected void LogException(TException exception)
         {
-            var message = LogErrors.ActionResultedInException.WithValues(exception.GetType(), this.sectionName);
+            var message = LogErrors.ActionResultedInException.WithValues(exception.GetType());
             this.log.Error(message, exception);
         }
     }

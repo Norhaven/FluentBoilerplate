@@ -79,11 +79,11 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             return null;
         }
         
-        public IExceptionHandlerProvider Add<TException, TResult>(string sectionName, Func<TException, TResult> action) where TException : Exception
+        public IExceptionHandlerProvider Add<TException, TResult>(Func<TException, TResult> action) where TException : Exception
         {
             //Lower the handler for storage and persist associated with actual type.
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
-            var typedHandler = new ExceptionHandler<TException, TResult>(this.log, sectionName, action);
+            var typedHandler = new ExceptionHandler<TException, TResult>(this.log, action);
             IExceptionHandler<Exception, TResult> loweredHandler = (ExceptionHandler<Exception, TResult>)typedHandler;
            
             var type = typeof(TException);
@@ -94,11 +94,11 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             return new ExceptionHandlerProvider(this.log, elevatedQueue);            
         }
 
-        public IExceptionHandlerProvider Add<TException>(string sectionName, Action<TException> action) where TException:Exception
+        public IExceptionHandlerProvider Add<TException>(Action<TException> action) where TException:Exception
         {
             //Lower the handler for storage and persist associated with actual type.
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
-            IExceptionHandler<Exception> handler = (ExceptionHandler<Exception>)new ExceptionHandler<TException>(this.log, sectionName, action);
+            IExceptionHandler<Exception> handler = (ExceptionHandler<Exception>)new ExceptionHandler<TException>(this.log, action);
 
             var type = typeof(TException);
             if (this.handledTypes.Contains(type))

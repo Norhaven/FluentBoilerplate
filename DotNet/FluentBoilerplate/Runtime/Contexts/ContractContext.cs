@@ -53,9 +53,9 @@ namespace FluentBoilerplate.Runtime.Contexts
                                        this.originalContext);         
         }
 
-        public IResultContractContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
+        public IResultContractContext<TResult> Handles<TException, TResult>(Func<TException, TResult> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(action);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
 
             var context = this.originalContext.Elevate<TResult>(elevatedBundle, this.contractBundle);
@@ -64,9 +64,9 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                 context);
         }
 
-        public IVoidReturnContractContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
+        public IVoidReturnContractContext Handles<TException>(Action<TException> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(sectionName, action);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(action);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
 
             return new VoidReturnContractContext(elevatedBundle,

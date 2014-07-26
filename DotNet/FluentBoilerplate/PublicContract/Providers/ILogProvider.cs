@@ -15,18 +15,38 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a provider for logging messages
+    /// </summary>
     public interface ILogProvider
     {
+        /// <summary>
+        /// Writes the specified message to the log as an error
+        /// </summary>
+        /// <param name="message">The message</param>
+        /// <param name="exception">The exception</param>
+        /// <param name="instances">Additional instances that should be included in the log</param>
         void Error(string message, Exception exception, params object[] instances);
+        /// <summary>
+        /// Writes the specified message to the log as a warning
+        /// </summary>
+        /// <param name="message">The message</param>
+        /// <param name="instances">Additional instances that should be included in the log</param>
         void Warning(string message, params object[] instances);
+        /// <summary>
+        /// Writes the specified message to the log as a debug message
+        /// </summary>
+        /// <param name="message">The message</param>
+        /// <param name="instances">Additional instances that should be included in the log</param>
         void Debug(string message, params object[] instances);
+        /// <summary>
+        /// Writes the specified message to the log as an information message
+        /// </summary>
+        /// <param name="message">The message</param>
+        /// <param name="instances">Additional instances that should be included in the log</param>
         void Info(string message, params object[] instances);
     }
 }

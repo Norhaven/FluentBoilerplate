@@ -14,13 +14,32 @@
    limitations under the License.
  */
 
-using FluentBoilerplate;
 using System;
+
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a provider that gives access to specific types
+    /// </summary>
     public interface ITypeAccessProvider
     {
+        /// <summary>
+        /// Tries to access a type and use it
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="identity">The current identity being used</param>
+        /// <param name="useType">How you use the type, if access was successful</param>
+        /// <returns>A response to your access attempt, including a result if access was successful</returns>
         IResponse<TResult> TryAccess<TType, TResult>(IIdentity identity, Func<TType, TResult> useType);
+
+        /// <summary>
+        /// Tries to access a type and use it
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <param name="identity">The current identity being used</param>
+        /// <param name="useType">How you use the type, if access was successful</param>
+        /// <returns>A response to your access attempt, including a result if access was successful</returns>
         IResponse TryAccess<TType>(IIdentity identity, Action<TType> useType);
     }
 }

@@ -14,18 +14,23 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a role that an identity may be a member of
+    /// </summary>
     public interface IRole
     {
+        /// <summary>
+        /// Gets or sets the description
+        /// </summary>
         string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rights that this role contains
+        /// </summary>
         IImmutableSet<IRight> Rights { get; set; }
     }
 }

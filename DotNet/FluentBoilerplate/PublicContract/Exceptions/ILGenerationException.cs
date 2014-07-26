@@ -15,15 +15,18 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a serious problem with the underlying MSIL generator
+    /// </summary>
     public sealed class ILGenerationException:Exception
     {
+        /// <summary>
+        /// Creates an instance of <see cref="ILGenerationException"/>
+        /// </summary>
+        /// <param name="message">The message</param>
         public ILGenerationException(string message) : base(message) { }
     }
 }

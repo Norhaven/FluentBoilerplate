@@ -15,12 +15,12 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a failure to locate an expected property
+    /// </summary>
     public sealed class PropertyIsMissingException : Exception
     {
     }

@@ -15,33 +15,91 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Traits
 {
+    /// <summary>
+    /// Represents a trait for constructing a contract
+    /// </summary>
+    /// <typeparam name="TContext">The context type that this trait applies to</typeparam>
     public interface IContractualTrait<TContext>:IPermissionsBasedTrait<TContext>
     {
+        /// <summary>
+        /// Indicates that the given instances should be validated against any validation attributes they contain
+        /// </summary>
+        /// <typeparam name="TType">The validated type</typeparam>
+        /// <param name="instances">Instances that require validation</param>
+        /// <returns>The context that this trait applies to</returns>
         TContext RequiresValidInstanceOf<TType>(params TType[] instances);
+
+        /// <summary>
+        /// Indicates that the given condition should be validated prior to a context action
+        /// </summary>
+        /// <param name="condition">The required condition</param>
+        /// <param name="message">A message that will be included with the <see cref="ContractViolationException"/> that's thrown on failure</param>
+        /// <returns>The context that this trait applies to</returns>
+        /// <exception cref="ContractViolationException">Thrown if the condition fails</exception>
         TContext Require(Func<bool> condition, string message = null);
+
+        /// <summary>
+        /// Indicates that the given condition should be validated prior to a context action
+        /// </summary>
+        /// <typeparam name="TException">The type of exception that will be thrown if the condition fails</typeparam>
+        /// <param name="condition">The required condition</param>
+        /// <param name="createException">Creates the exception that will be thrown if the condition fails</param>
+        /// <returns>The context that this trait applies to</returns>
+        /// <exception cref="TException">Thrown if the condition fails</exception>
         TContext Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;
+
+        /// <summary>
+        /// Indicates that the given condition should be validated when returning from a context action
+        /// </summary>
+        /// <param name="condition">The required condition</param>
+        /// <param name="message">A message that will be included with the <see cref="ContractViolationException"/> that's thrown on failure</param>
+        /// <returns>The context that this trait applies to</returns>
+        /// <exception cref="ContractViolationException">Thrown if the condition fails</exception>
         TContext EnsureOnReturn(Func<bool> condition, string message = null);
+
+        /// <summary>
+        /// Indicates that the given condition should be validated when returning from a context action
+        /// </summary>
+        /// <typeparam name="TException">The type of exception that will be thrown if the condition fails</typeparam>
+        /// <param name="condition">The required condition</param>
+        /// <param name="createException">Creates the exception that will be thrown if the condition fails</param>
+        /// <returns>The context that this trait applies to</returns>
+        /// <exception cref="TException">Thrown if the condition fails</exception>
         TContext EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;
+
+        /// <summary>
+        /// Indicates that the given condition should be validated when a context action throws an exception
+        /// </summary>
+        /// <param name="condition">The required condition</param>
+        /// <param name="message">A message that will be included with the <see cref="ContractViolationException"/> that's thrown on failure</param>
+        /// <returns>The context that this trait applies to</returns>
+        /// <exception cref="ContractViolationException">Thrown if the condition fails</exception>
         TContext EnsureOnThrow(Func<bool> condition, string message = null);
+
+        /// <summary>
+        /// Indicates that the given condition should be validated when a context action throws an exception
+        /// </summary>
+        /// <typeparam name="TException">The type of exception that will be thrown if the condition fails</typeparam>
+        /// <param name="condition">The required condition</param>
+        /// <param name="createException">Creates the exception that will be thrown if the condition fails</param>
+        /// <returns>The context that this trait applies to</returns>
+        /// <exception cref="TException">Thrown if the condition fails</exception>
         TContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;   
     }
 
-    public interface IContractualTrait<TContext, out TResult> : IPermissionsBasedTrait<TContext>
+    /// <summary>
+    /// Represents a trait for constructing a contract
+    /// </summary>
+    /// <typeparam name="TContext">The context type that this trait applies to</typeparam>
+    /// <typeparam name="TResult">The result type</typeparam>
+    public interface IContractualTrait<TContext, out TResult> : IContractualTrait<TContext>, IPermissionsBasedTrait<TContext>
     {
+        /// <summary>
+        /// Gets the result
+        /// </summary>
         TResult Result { get; }
-        TContext RequiresValidInstanceOf<TType>(params TType[] instances);
-        TContext Require(Func<bool> condition, string message = null);
-        TContext Require<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;
-        TContext EnsureOnReturn(Func<bool> condition, string message = null);
-        TContext EnsureOnReturn<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;
-        TContext EnsureOnThrow(Func<bool> condition, string message = null);
-        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception; 
     }
 }

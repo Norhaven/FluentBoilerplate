@@ -14,21 +14,15 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Messages;
-using FluentBoilerplate.Messages.User;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    using System.Diagnostics.Contracts;
-
-    internal sealed class NotNullAttribute:Attribute, IValidationAttribute
-    {
-       
+    /// <summary>
+    /// Indicates that this property must not have a null value
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
+    public sealed class NotNullAttribute:Attribute, IValidationAttribute
+    {       
     }
 }

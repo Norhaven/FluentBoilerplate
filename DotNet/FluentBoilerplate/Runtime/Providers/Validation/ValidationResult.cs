@@ -46,7 +46,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
         public static IValidationResult Success()
         {
-            return new ValidationResult(ValidationKind.All, CommonResults.ValidationSuccess);
+            return new ValidationResult(ValidationKind.Irrelevant, CommonResults.ValidationSuccess);
         }
 
         public static IValidationResult Failure(ValidationKind type, string message)

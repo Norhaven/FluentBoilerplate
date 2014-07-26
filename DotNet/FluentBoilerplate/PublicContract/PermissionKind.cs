@@ -14,18 +14,20 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents the kind of permissions that may apply to a right
+    /// </summary>
     public enum PermissionKind
     {
+        /// <summary>
+        /// The identity is permitted the right
+        /// </summary>
         Permit,
-        Deny,
-        InheritedPermit,
-        InheritedDeny
+        /// <summary>
+        /// The identity is explicitly denied the right
+        /// </summary>
+        Deny
     }
 }

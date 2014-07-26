@@ -14,12 +14,18 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Immutable;
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a provider for try/catch blocks
+    /// </summary>
     public interface ITryCatchBlockProvider
     {
+        /// <summary>
+        /// Gets a try/catch block for the given exception handler provider
+        /// </summary>
+        /// <param name="provider">The provider</param>
+        /// <returns>An instance of <see cref="ITryCatchBlock"/></returns>
         ITryCatchBlock GetTryCatchFor(IExceptionHandlerProvider provider);
     }
 }

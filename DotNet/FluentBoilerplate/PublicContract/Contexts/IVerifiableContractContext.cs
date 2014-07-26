@@ -14,17 +14,21 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate.Contexts
 {
+    /// <summary>
+    /// Represents a context that can verify a contract
+    /// </summary>
     public interface IVerifiableContractContext
     {
+        /// <summary>
+        /// Verify all preconditions contained by the context
+        /// </summary>
         void VerifyPreConditions();
+        /// <summary>
+        /// Verify all postconditions contained by the context, for the given way of exiting the contract
+        /// </summary>
+        /// <param name="exit">The way of exiting the contract</param>
         void VerifyPostConditions(ContractExit exit);
     }
 }

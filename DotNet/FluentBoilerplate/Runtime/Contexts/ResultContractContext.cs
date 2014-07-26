@@ -44,9 +44,9 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.originalContext = originalContext;
         }
 
-        public IResultContractContext<TResult> Handles<TException>(string sectionName, Func<TException, TResult> action = null) where TException : Exception
+        public IResultContractContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(sectionName, action);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(action);
             var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(bundle: elevatedSettings);
         }
@@ -147,9 +147,9 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(contractBundle: elevatedPostconditionsOnThrow);
         }
 
-        public IResultContractContext<TResult> Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception
+        public IResultContractContext<TResult> Handles<TException>(Action<TException> action = null) where TException : Exception
         {
-            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(sectionName, action);
+            var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(action);
             var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(bundle: elevatedSettings);
         }

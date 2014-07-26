@@ -15,21 +15,33 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Indicates that a property has an explicit mapping to a property on a given type.
+    /// This overrides the implicit mapping that uses the property name.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class MapsToAttribute:Attribute
     {
+        /// <summary>
+        /// The type that this mapping points to
+        /// </summary>
         public Type MappedType { get; private set; }
+        /// <summary>
+        /// The name of the property on the mapped type that this property explicitly maps to
+        /// </summary>
         public string PropertyName { get; private set; }
-        public MapsToAttribute(Type type, string propertyName)
+
+        /// <summary>
+        /// Creates an instance of the <see cref="MapsToAttribute"/> type.
+        /// </summary>
+        /// <param name="mappedType">The type that this mapping points to</param>
+        /// <param name="propertyName">The name of the property on the mapped type that this property explicitly maps to</param>
+        public MapsToAttribute(Type mappedType, string propertyName)
         {
-            this.MappedType = type;
+            this.MappedType = mappedType;
             this.PropertyName = propertyName;
         }
     }

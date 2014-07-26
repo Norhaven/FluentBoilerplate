@@ -14,19 +14,33 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents an exception handler
+    /// </summary>
+    /// <typeparam name="TException">The exception type</typeparam>
     public interface IExceptionHandler<in TException>
     {
+        /// <summary>
+        /// Handles the exception
+        /// </summary>
+        /// <param name="exception">The exception</param>
         void Handle(TException exception);        
     }
-    public interface IExceptionHandler<in TException, out TResult> : IExceptionHandler<TException>
+
+    /// <summary>
+    /// Represents an exception handler that can return a result
+    /// </summary>
+    /// <typeparam name="TException">The exception type</typeparam>
+    /// <typeparam name="TResult">The result type</typeparam>
+    public interface IExceptionHandler<in TException, out TResult> : IExceptionHandler<TException> //TODO: Don't inherit from something that could handle the exception without a result
     {
+        /// <summary>
+        /// Handles the exception, returning a result
+        /// </summary>
+        /// <param name="exception">The exception</param>
+        /// <returns>The result</returns>
         TResult HandleWithResult(TException exception);
     }
 }

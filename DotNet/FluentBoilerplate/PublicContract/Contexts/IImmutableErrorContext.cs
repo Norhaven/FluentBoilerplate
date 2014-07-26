@@ -15,29 +15,106 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Contexts
 {
+    /// <summary>
+    /// Represents an immutable context for handling errors
+    /// </summary>
     public interface IImmutableErrorContext
     {
+        /// <summary>
+        /// Gets whether the context has any exception handlers
+        /// </summary>
         bool HasHandlers { get; }
+        /// <summary>
+        /// Gets the number of exception handlers that this context contains
+        /// </summary>
         int HandlerCount { get; }
+        /// <summary>
+        /// Gets whether the context has an exception handler for the given exception type
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <returns>True if the context contains a handler for that type, false otherwise</returns>
         bool HasHandlerFor<TException>() where TException : Exception;        
-        IImmutableErrorContext RegisterExceptionHandler<TException>(string sectionName, Action<TException> handler) where TException : Exception;
-        IImmutableErrorContext RegisterExceptionHandler<TException, TResult>(string sectionName, Func<TException, TResult> handler) where TException : Exception;
+        /// <summary>
+        /// Registers the given exception handler with the error context
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <param name="handler">The exception handler</param>
+        /// <returns>An instance of <see cref="IImmutableErrorContext"/> with the exception handler registered</returns>
+        IImmutableErrorContext RegisterExceptionHandler<TException>(Action<TException> handler) where TException : Exception;
+        /// <summary>
+        /// Registers the given exception handler with the error context
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="handler">The exception handler</param>
+        /// <returns>An instance of <see cref="IImmutableErrorContext"/> with the exception handler registered</returns>
+        IImmutableErrorContext RegisterExceptionHandler<TException, TResult>(Func<TException, TResult> handler) where TException : Exception;
+        /// <summary>
+        /// Performs an action, surrounded by the context's exception handlers
+        /// </summary>
+        /// <param name="action">The action</param>
         void DoInContext(Action<IImmutableErrorContext> action);
+        /// <summary>
+        /// Gets a value, surrounded by the context's exception handlers
+        /// </summary>
+        /// <typeparam name="T">The result type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>The value</returns>
         T DoInContext<T>(Func<IImmutableErrorContext, T> action);
-        Action ExtendAround(Action action);
-        Action<T> ExtendAround<T>(Action<T> action);
-        Action<T1, T2> ExtendAround<T1, T2>(Action<T1, T2> action);
-        Func<T> ExtendAround<T>(Func<T> action);
-        Func<T, TResult> ExtendAround<T, TResult>(Func<T, TResult> action);
-        Func<T1, T2, TResult> ExtendAround<T1, T2, TResult>(Func<T1, T2, TResult> action);
 
+        /// <summary>
+        /// Wraps an action in the context's exception handlers
+        /// </summary>
+        /// <param name="action">The action</param>
+        /// <returns>An action that encompasses the given action in the context's exception handlers</returns>
+        Action ExtendAround(Action action);
+        /// <summary>
+        /// Wraps an action in the context's exception handlers
+        /// </summary>
+        /// <typeparam name="T">The parameter type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>An action that encompasses the given action in the context's exception handlers</returns>
+        Action<T> ExtendAround<T>(Action<T> action);
+        /// <summary>
+        /// Wraps an action in the context's exception handlers
+        /// </summary>
+        /// <typeparam name="T1">The first parameter type</typeparam>
+        /// <typeparam name="T2">The second parameter type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>An action that encompasses the given action in the context's exception handlers</returns>
+        Action<T1, T2> ExtendAround<T1, T2>(Action<T1, T2> action);
+        /// <summary>
+        /// Wraps a function in the context's exception handlers
+        /// </summary>
+        /// <typeparam name="T">The return type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>A function that encompasses the given function in the context's exception handlers</returns>
+        Func<T> ExtendAround<T>(Func<T> action);
+        /// <summary>
+        /// Wraps a function in the context's exception handlers
+        /// </summary>
+        /// <typeparam name="T">The parameter type</typeparam>
+        /// <typeparam name="TResult">The return type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>A function that encompasses the given function in the context's exception handlers</returns>
+        Func<T, TResult> ExtendAround<T, TResult>(Func<T, TResult> action);
+        /// <summary>
+        /// Wraps a function in the context's exception handlers
+        /// </summary>
+        /// <typeparam name="T1">The first parameter type</typeparam>
+        /// <typeparam name="T2">The second parameter type</typeparam>
+        /// <typeparam name="TResult">The return type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>A function that encompasses the given function in the context's exception handlers</returns>
+        Func<T1, T2, TResult> ExtendAround<T1, T2, TResult>(Func<T1, T2, TResult> action);
+        /// <summary>
+        /// Copies the error context
+        /// </summary>
+        /// <param name="includeHandlers">Indicates whether the exception handlers in the context should be copied</param>
+        /// <returns>An instance of <see cref="IImmutableErrorContext"/></returns>
         IImmutableErrorContext Copy(bool includeHandlers = true);
     }
 }

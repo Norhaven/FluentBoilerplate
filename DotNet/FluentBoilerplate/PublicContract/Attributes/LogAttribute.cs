@@ -14,20 +14,27 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Runtime.Providers.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Indicates that the type or member can be logged
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple=false, Inherited=true)]
     public sealed class LogAttribute:Attribute
     {
+        /// <summary>
+        /// A custom name for this type or member (overrides the type or member name in the log)
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Indicates the visibility levels that this type or member will be logged under. Defaults to All.
+        /// </summary>
         public LogVisibility Visibility { get; set; }
+        /// <summary>
+        /// Indicates whether the type or member should be ignored when logging
+        /// </summary>
         public bool Ignore { get; set; }
     }
 }

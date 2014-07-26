@@ -61,7 +61,7 @@ namespace FluentBoilerplate.Messages.Developer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exception &apos;{0}&apos; was handled in section &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Exception &apos;{0}&apos; was handled.
         /// </summary>
         public static string ActionResultedInException {
             get {

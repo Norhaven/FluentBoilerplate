@@ -24,13 +24,39 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// An identity that encapsulates the permissions for a given user
+    /// </summary>
     public interface IIdentity
     {
+        /// <summary>
+        /// Gets the roles that this identity is a member of
+        /// </summary>
         IImmutableSet<IRole> PermittedRoles { get; }
+
+        /// <summary>
+        /// Gets the roles that this identity is explicitly denied
+        /// </summary>
         IImmutableSet<IRole> DeniedRoles { get; }
+
+        /// <summary>
+        /// Gets the rights that this identity has
+        /// </summary>
         IImmutableSet<IRight> PermittedRights { get; }
+
+        /// <summary>
+        /// Gets the rights that this identity is explicitly denied
+        /// </summary>
         IImmutableSet<IRight> DeniedRights { get; }
 
+        /// <summary>
+        /// Copies the identity
+        /// </summary>
+        /// <param name="permittedRoles">A new set of permitted roles associated with the identity</param>
+        /// <param name="deniedRoles">A new set of denied roles associated with the identity</param>
+        /// <param name="permittedRights">A new set of permitted rights associated with the identity</param>
+        /// <param name="deniedRights">A new set of denied rights associated with the identity</param>
+        /// <returns></returns>
         IIdentity Copy(IImmutableSet<IRole> permittedRoles = null,
                        IImmutableSet<IRole> deniedRoles = null,
                        IImmutableSet<IRight> permittedRights = null,

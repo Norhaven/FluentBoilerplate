@@ -14,18 +14,29 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a right that an identity may have
+    /// </summary>
     public interface IRight
     {
+        /// <summary>
+        /// Gets or sets the identifier
+        /// </summary>
         int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
         string Description { get; set; }
-        PermissionKind PermissionType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the kind of permission this right grants
+        /// </summary>
+        PermissionKind PermissionKind { get; set; }
     }
 }

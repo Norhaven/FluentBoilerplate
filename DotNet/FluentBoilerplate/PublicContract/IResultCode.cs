@@ -14,18 +14,29 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a result code
+    /// </summary>
     public interface IResultCode
     {
+        /// <summary>
+        /// Gets a value indicating whether the operation was successful
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the operation was successful, <c>false</c> otherwise
+        /// </value>
         bool IsSuccess { get; }
+
+        /// <summary>
+        /// Gets the result code
+        /// </summary>
         int Code { get; }
+
+        /// <summary>
+        /// Gets the description
+        /// </summary>
         string Description { get; }
     }
 }

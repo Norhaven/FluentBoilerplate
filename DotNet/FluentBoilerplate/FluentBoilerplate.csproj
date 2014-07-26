@@ -63,7 +63,6 @@
     <Compile Include="PublicContract\IValidationAttribute.cs" />
     <Compile Include="PublicContract\Traits\IContractualTrait.cs" />
     <Compile Include="PublicContract\Exceptions\ContractViolationException.cs" />
-    <Compile Include="PublicContract\Traits\IClientAccessTrait.cs" />
     <Compile Include="PublicContract\IConversionBuilder.cs" />
     <Compile Include="Runtime\Contexts\ContractContextBase.cs" />
     <Compile Include="Runtime\Contexts\IContextBundle.cs" />
@@ -171,7 +170,6 @@
     <Compile Include="Runtime\Providers\Validation\ValidationProvider.cs" />
     <Compile Include="Runtime\Providers\Validation\Validator.cs" />
     <Compile Include="Runtime\Providers\ErrorHandling\TryCatchBlock.cs" />
-    <Compile Include="PublicContract\Providers\ITypeInstanceProvider.cs" />
     <Compile Include="Runtime\Providers\Validation\Validated.cs" />
     <Compile Include="Runtime\Providers\Validation\ValidationResult.cs" />
     <Compile Include="Runtime\Response.cs" />

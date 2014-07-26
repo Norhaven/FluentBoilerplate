@@ -15,16 +15,23 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a failure to accomplish an action
+    /// </summary>
     public sealed class OperationWasNotSuccessfulException:Exception
     {
+        /// <summary>
+        /// Gets the result code for the failed operation
+        /// </summary>
         public IResultCode Result { get; private set; }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OperationWasNotSuccessfulException"/>
+        /// </summary>
+        /// <param name="result">The result of the failed operation</param>
         public OperationWasNotSuccessfulException(IResultCode result)
             :base("Operation was not successful")
         {

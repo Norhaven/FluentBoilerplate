@@ -15,13 +15,12 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a failure to access a property due to the property type being unexpected
+    /// </summary>
     public sealed class PropertyTypeMismatchException:Exception
     {
     }

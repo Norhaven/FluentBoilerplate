@@ -14,22 +14,35 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a response
+    /// </summary>
     public interface IResponse
     {
+        /// <summary>
+        /// Gets the result
+        /// </summary>
         IResultCode Result { get; }
+        /// <summary>
+        /// Gets a value indicating whether the operation was successful
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the operation was successful, <c>false</c> otherwise
+        /// </value>
         bool IsSuccess { get; }
     }
 
+    /// <summary>
+    /// Represents a response that contains an instance
+    /// </summary>
+    /// <typeparam name="T">The instance type</typeparam>
     public interface IResponse<T>:IResponse
     {
+        /// <summary>
+        /// Gets the response content
+        /// </summary>
         T Content { get; }        
     }
 }

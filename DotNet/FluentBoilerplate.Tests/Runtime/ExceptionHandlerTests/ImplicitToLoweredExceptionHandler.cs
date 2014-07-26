@@ -39,7 +39,7 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
             var handled = false;
             Action<Exception> handler = ex => { handled = true; };
 
-            var wrapper = new ExceptionHandler<ArgumentException>(log.Object, sectionName, handler);
+            var wrapper = new ExceptionHandler<ArgumentException>(log.Object, handler);
 
             ExceptionHandler<Exception> lowered = wrapper;
 

@@ -48,13 +48,13 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
 
             var action = handler.funcHandler.Generalize();
-            return new ExceptionHandler<Exception, TResult>(handler.log, handler.sectionName, action);
+            return new ExceptionHandler<Exception, TResult>(handler.log, action);
         }
 
         private readonly Func<TException, TResult> funcHandler;
 
-        public ExceptionHandler(ILogProvider log, string sectionName, Func<TException, TResult> func)
-            : base(log, sectionName, func.AsAction())
+        public ExceptionHandler(ILogProvider log, Func<TException, TResult> func)
+            : base(log, func.AsAction())
         {
             this.funcHandler = func;
         }

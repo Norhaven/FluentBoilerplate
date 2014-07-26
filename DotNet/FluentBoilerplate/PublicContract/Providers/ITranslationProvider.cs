@@ -14,16 +14,20 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a provider that translates from one type to another
+    /// </summary>
     public interface ITranslationProvider
     {
+        /// <summary>
+        /// Performs a translation from <typeparamref name="TFrom"/> to <typeparamref name="TTo"/>
+        /// </summary>
+        /// <typeparam name="TFrom">The source type</typeparam>
+        /// <typeparam name="TTo">The destination type</typeparam>
+        /// <param name="instance">The instance that should be translated</param>
+        /// <returns>An instance of <typeparamref name="TTo"/></returns>
         TTo Translate<TFrom, TTo>(TFrom instance);
     }
 }

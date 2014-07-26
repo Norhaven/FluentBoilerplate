@@ -14,14 +14,12 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate.Traits
 {
+    /// <summary>
+    /// Represents a trait that allows contract requirements for rights/roles
+    /// </summary>
+    /// <typeparam name="TContext">The context</typeparam>
     public interface IPermissionsBasedTrait<TContext> : IRightsBasedTrait<TContext>, IRolesBasedTrait<TContext> 
     {
     }

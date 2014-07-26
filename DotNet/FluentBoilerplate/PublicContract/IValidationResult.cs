@@ -14,13 +14,32 @@
    limitations under the License.
  */
 
-using System;
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents the result of performing validation
+    /// </summary>
     public interface IValidationResult
     {
+        /// <summary>
+        /// Gets a value indicating whether the validation applies to the validated instance
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the validated instance is applicable, <c>false</c> otherwise
+        /// </value>
         bool IsApplicable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the validation was successful
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the validation was successful, <c>false</c> otherwise
+        /// </value>
         bool IsSuccess { get; }
+
+        /// <summary>
+        /// Gets the message associated with the validation result
+        /// </summary>
         string Message { get; }
     }
 }

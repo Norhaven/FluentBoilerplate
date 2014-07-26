@@ -42,6 +42,5 @@ namespace FluentBoilerplate.Runtime.Contexts
             var downgradedErrorContext = this.bundle.Errors.Copy(includeHandlers: false);
             return this.bundle.Copy(errorContext: downgradedErrorContext);
         }
-        //TODO: Include Copy() call
     }
 }

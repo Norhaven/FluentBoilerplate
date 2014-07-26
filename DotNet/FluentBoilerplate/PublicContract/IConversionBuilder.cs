@@ -14,15 +14,18 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a type conversion
+    /// </summary>
     public interface IConversionBuilder
     {
+        /// <summary>
+        /// Converts the instance to the requested type
+        /// </summary>
+        /// <typeparam name="TType">The target type</typeparam>
+        /// <returns>An instance of <typeparamref name="TType"/></returns>
         TType As<TType>();
     }
 }

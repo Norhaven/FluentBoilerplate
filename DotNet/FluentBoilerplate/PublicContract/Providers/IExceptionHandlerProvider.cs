@@ -15,17 +15,61 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a provider of exception handlers
+    /// </summary>
     public interface IExceptionHandlerProvider 
     {
+        /// <summary>
+        /// Gets the handled exception types
+        /// </summary>
+        /// <value>
+        /// The handled exception types
+        /// </value>
         IImmutableSet<Type> HandledExceptionTypes { get; }
+
+        /// <summary>
+        /// Gets the handled types in catch order
+        /// </summary>
+        /// <value>
+        /// The handled types in catch order
+        /// </value>
         IImmutableQueue<Type> HandledTypesInCatchOrder { get; }
+
+        /// <summary>
+        /// Tries to get an exception handler for the exception type
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <returns>An instance of the exception handler, or null if not found</returns>
         IExceptionHandler<TException> TryGetHandler<TException>() where TException : Exception;
+
+        /// <summary>
+        /// Tries to get an exception handler for the exception type
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <returns>An instance of the exception handler, or null if not found</returns>
         IExceptionHandler<TException, TResult> TryGetHandler<TException, TResult>() where TException : Exception;
-        IExceptionHandlerProvider Add<TException>(string sectionName, Action<TException> action) where TException : Exception;
-        IExceptionHandlerProvider Add<TException, TResult>(string sectionName, Func<TException, TResult> action) where TException : Exception;
+        
+        /// <summary>
+        /// Adds the specified action as an exception handler
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>An instance of <see cref="IExceptionHandlerProvider"/> that contains the given exception handler</returns>
+        IExceptionHandlerProvider Add<TException>(Action<TException> action) where TException : Exception;
+
+        /// <summary>
+        /// Adds the specified function as an exception handler
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>An instance of <see cref="IExceptionHandlerProvider"/> that contains the given exception handler</returns>
+        IExceptionHandlerProvider Add<TException, TResult>(Func<TException, TResult> action) where TException : Exception;
     }
 }

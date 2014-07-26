@@ -14,12 +14,22 @@
    limitations under the License.
  */
 
-using System;
 namespace FluentBoilerplate.Contexts
 {
+    /// <summary>
+    /// Represents a condition that's included in a contract
+    /// </summary>
     public interface IContractCondition
     {
+        /// <summary>
+        /// Marks the contract as failed
+        /// </summary>
         void Fail();
+
+        /// <summary>
+        /// Determines whether the condition has been met
+        /// </summary>
+        /// <returns>True if it was met, false otherwise</returns>
         bool IsConditionMet();
     }
 }

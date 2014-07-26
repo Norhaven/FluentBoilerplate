@@ -14,16 +14,19 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a provider that validates types
+    /// </summary>
     public interface IValidationProvider
     {
+        /// <summary>
+        /// Perform validation on an instance of <typeparamref name="TType"/>
+        /// </summary>
+        /// <typeparam name="TType">The validated type</typeparam>
+        /// <param name="instance">The validated instance</param>
+        /// <returns>An instance of <see cref="IValidationResult"/></returns>
         IValidationResult Validate<TType>(TType instance);
     }
 }

@@ -16,17 +16,35 @@
 
 using FluentBoilerplate.Traits;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents an initial context for constructing a contract
+    /// </summary>
     public interface IInitialContractContext : IContractualTrait<IInitialContractContext>
     {
-        IResultContractContext<TResult> Handles<TException, TResult>(string sectionName, Func<TException, TResult> action = null) where TException : Exception;
-        IVoidReturnContractContext Handles<TException>(string sectionName, Action<TException> action = null) where TException : Exception;
+        /// <summary>
+        /// Indicates that <see cref="TException"/> will be handled if thrown during a context action
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="action">How the exception will be handled (if omitted, falls back to default handler)</param>
+        /// <returns>A context geared towards result-based contract definitions</returns>
+        IResultContractContext<TResult> Handles<TException, TResult>(Func<TException, TResult> action = null) where TException : Exception;
+
+        /// <summary>
+        /// Indicates that <see cref="TException"/> will be handled if thrown during a context action
+        /// </summary>
+        /// <typeparam name="TException">The exception type</typeparam>
+        /// <param name="action">How the exception will be handled (if omitted, falls back to default handler)</param>
+        /// <returns>A context geared towards void-returning contract definitions</returns>
+        IVoidReturnContractContext Handles<TException>(Action<TException> action = null) where TException : Exception;
+
+        /// <summary>
+        /// Ends the contract definition for the context
+        /// </summary>
+        /// <returns>The context that this contract applies to</returns>
         IContext EndContract();
     }
 }

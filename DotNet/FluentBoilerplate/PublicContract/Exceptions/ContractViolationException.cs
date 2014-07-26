@@ -15,15 +15,18 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a violation of a contract
+    /// </summary>
     public sealed class ContractViolationException:Exception
     {
+        /// <summary>
+        /// Creates an instance of <see cref="ContractViolationException"/>
+        /// </summary>
+        /// <param name="message">The message</param>
         public ContractViolationException(string message):base(message)
         {
         }

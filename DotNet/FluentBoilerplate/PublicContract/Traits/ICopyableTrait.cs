@@ -15,17 +15,21 @@
  */
 
 using FluentBoilerplate.Contexts;
-using FluentBoilerplate.Runtime.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Traits
 {
+    /// <summary>
+    /// Represents a trait for copying a context
+    /// </summary>
+    /// <typeparam name="TContext">The context</typeparam>
     public interface ICopyableTrait<TContext>
     {
+        /// <summary>
+        /// Copies the current context
+        /// </summary>
+        /// <param name="bundle">A new bundle associated with the context</param>
+        /// <param name="contractBundle">A new contract bundle associated with the context</param>
+        /// <returns>An instance of <typeparamref name="TContext"/> that contains any applied bundle changes</returns>
         TContext Copy(IContextBundle bundle = null,
                       IContractBundle contractBundle = null);
     }

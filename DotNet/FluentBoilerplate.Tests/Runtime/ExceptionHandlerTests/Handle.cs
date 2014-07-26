@@ -33,10 +33,9 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
         public void ExceptionIsHandled()
         {
             var log = new Mock<ILogProvider>(MockBehavior.Strict).AllowEveryError();
-            var sectionName = "Test Section";
             var handled = false;
             Action<Exception> handler = ex => { handled = true; };
-            var wrapper = new ExceptionHandler<Exception>(log.Object, sectionName, handler);
+            var wrapper = new ExceptionHandler<Exception>(log.Object, handler);
             var exception = new Exception();
             wrapper.Handle(exception);
 
@@ -52,7 +51,7 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
             var message = LogErrors.ActionResultedInException.WithValues(exception.GetType(), sectionName);
             var log = new Mock<ILogProvider>(MockBehavior.Strict).AllowErrorsWithMessage(message);            
             Action<Exception> handler = ex => { };
-            var wrapper = new ExceptionHandler<Exception>(log.Object, sectionName, handler);
+            var wrapper = new ExceptionHandler<Exception>(log.Object, handler);
             
             wrapper.Handle(exception);
 

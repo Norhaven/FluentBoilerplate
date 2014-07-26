@@ -14,17 +14,19 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate.Traits
 {
-    public interface IConversionTrait<TContext>
+    /// <summary>
+    /// Represents a trait for allowing type conversion
+    /// </summary>
+    public interface IConversionTrait
     {
+        /// <summary>
+        /// Selects an instance to convert
+        /// </summary>
+        /// <typeparam name="TFrom">The type of the instance</typeparam>
+        /// <param name="instance">The instance to convert</param>
+        /// <returns>An instance of <see cref="IConversionBuilder"/> that will complete the conversion</returns>
         IConversionBuilder Use<TFrom>(TFrom instance);
     }
 }

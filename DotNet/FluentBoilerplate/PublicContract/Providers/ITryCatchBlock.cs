@@ -14,20 +14,33 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Runtime.Providers;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a try/catch block
+    /// </summary>
     public interface ITryCatchBlock
     {
+        /// <summary>
+        /// Gets the exception types that this try/catch block handles
+        /// </summary>
         IImmutableSet<Type> HandledExceptionTypes { get; }
+
+        /// <summary>
+        /// Tries to perform an action
+        /// </summary>
+        /// <param name="action">The action</param>
         void Try(Action action);
+
+        /// <summary>
+        /// Tries to perform an action
+        /// </summary>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>An instance of <typeparamref name="TResult"/></returns>
         TResult Try<TResult>(Func<TResult> action);
     }
 }

@@ -14,20 +14,28 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents the kind of validations that may apply to an instance
+    /// </summary>
     public enum ValidationKind
     {
+        /// <summary>
+        /// The validation kind is unknown
+        /// </summary>
         Unknown = 0,
-        All = 1,
-        RequireNotNull = 2,
-        StringLength = 3,
-        NumericCharacteristics = 4
+        /// <summary>
+        /// The validation kind does not matter
+        /// </summary>
+        Irrelevant = 1,
+        /// <summary>
+        /// The instance must not be null
+        /// </summary>
+        RequireNotNull = 1,
+        /// <summary>
+        /// The string length must conform to the specified range
+        /// </summary>
+        StringLength = 2
     }
 }

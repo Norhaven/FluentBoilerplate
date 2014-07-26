@@ -14,14 +14,11 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Indicates that this attribute is used for validation
+    /// </summary>
     public interface IValidationAttribute
     {
     }

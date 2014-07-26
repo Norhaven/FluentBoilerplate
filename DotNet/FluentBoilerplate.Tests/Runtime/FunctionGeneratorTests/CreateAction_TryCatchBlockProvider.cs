@@ -44,7 +44,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         public void TryCatchBodyPassesPEVerifyWithOneBlock()
         {
             var originalHandlerProvider = new ExceptionHandlerProvider(log.Object);
-            var handlerProvider = originalHandlerProvider.Add<Exception>(String.Empty, ex => { });
+            var handlerProvider = originalHandlerProvider.Add<Exception>(ex => { });
             provider.GetTryCatchFor(handlerProvider);
 
             RunPEVerifyOnAssembly(this.settings.FullPath);

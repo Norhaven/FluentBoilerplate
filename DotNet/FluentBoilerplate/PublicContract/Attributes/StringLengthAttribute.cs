@@ -14,20 +14,23 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Messages;
-using FluentBoilerplate.Messages.User;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Indicates that the string must have a length within the expected bounds.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
     public sealed class StringLengthAttribute:Attribute, IValidationAttribute
     {
+        /// <summary>
+        /// The inclusive minimum length of the string. Defaults to zero.
+        /// </summary>
         public uint MinLength { get; set; }
+        /// <summary>
+        /// The inclusive maximum length of the string. Defaults to zero, which indicates that there is no maximum length.
+        /// </summary>
         public uint MaxLength { get; set; }                
     }
 }
