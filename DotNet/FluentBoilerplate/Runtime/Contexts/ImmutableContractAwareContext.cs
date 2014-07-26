@@ -23,9 +23,9 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    public abstract class ImmutableContractAwareContext<TContext>:ImmutableContext<TContext>
+    internal abstract class ImmutableContractAwareContext<TContext> : ImmutableContext<TContext>
     {
-        public ImmutableContractAwareContext(ContextBundle bundle)
+        public ImmutableContractAwareContext(IContextBundle bundle)
             : base(bundle)
         {
         }

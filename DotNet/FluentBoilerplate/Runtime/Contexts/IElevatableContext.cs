@@ -23,9 +23,9 @@ using System.Text;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    public interface IElevatableContext:IContext, ICopyableTrait<IContext>
+    internal interface IElevatableContext : IContext, ICopyableTrait<IContext>
     {
-        IContext<TResult> Elevate<TResult>(ContextBundle bundle = null,
+        IContext<TResult> Elevate<TResult>(IContextBundle bundle = null,
                                            IContractBundle contractBundle = null,
                                            TResult result = default(TResult));
     }

@@ -66,12 +66,12 @@
     <Compile Include="PublicContract\Traits\IClientAccessTrait.cs" />
     <Compile Include="PublicContract\IConversionBuilder.cs" />
     <Compile Include="Runtime\Contexts\ContractContextBase.cs" />
+    <Compile Include="Runtime\Contexts\IContextBundle.cs" />
     <Compile Include="Runtime\Contexts\IElevatableContext.cs" />
     <Compile Include="Runtime\Contexts\ResultBoilerplateContext.cs" />
     <Compile Include="Runtime\Contexts\ContractContext.cs" />
     <Compile Include="Runtime\Contexts\ResultContractContext.cs" />
     <Compile Include="Runtime\Contexts\IBundledContractContext.cs" />
-    <Compile Include="PublicContract\Traits\ICopyableContractTrait.cs" />
     <Compile Include="Runtime\Contexts\ImmutableContractAwareContext.cs" />
     <Compile Include="Runtime\Contexts\Permissions.cs" />
     <Compile Include="PublicContract\Traits\IConversionTrait.cs" />

@@ -29,17 +29,17 @@ namespace FluentBoilerplate.Runtime.Contexts
         IContractualTrait<TContext>,
         ICopyableTrait<TContext>
     {
-        protected readonly ContextBundle bundle;
+        protected readonly IContextBundle bundle;
         protected readonly IContractBundle contractBundle;
 
-        public ContractContextBase(ContextBundle bundle,
-                           IContractBundle contractBundle)
+        public ContractContextBase(IContextBundle bundle,
+                                   IContractBundle contractBundle)
         {   
             this.bundle = bundle;
             this.contractBundle = contractBundle;
         }
 
-        public abstract TContext Copy(ContextBundle bundle = null,
+        public abstract TContext Copy(IContextBundle bundle = null,
                                       IContractBundle contractBundle = null);
 
         public TContext RequiresRights(params IRight[] rights)

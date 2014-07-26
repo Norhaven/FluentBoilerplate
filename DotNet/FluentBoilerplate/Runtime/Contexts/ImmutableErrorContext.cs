@@ -35,7 +35,7 @@ using FluentBoilerplate.Contexts;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    public sealed class ImmutableErrorContext : IImmutableErrorContext
+    internal sealed class ImmutableErrorContext : IImmutableErrorContext
     {
         public static IImmutableErrorContext Empty { get { return new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty); } }
         private readonly ILogProvider log;

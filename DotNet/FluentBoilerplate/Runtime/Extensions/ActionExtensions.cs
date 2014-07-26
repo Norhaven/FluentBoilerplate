@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class ActionExtensions
+    internal static class ActionExtensions
     {
         public static Func<T> AsFunc<T>(this Action action)
         {

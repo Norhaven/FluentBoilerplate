@@ -32,7 +32,7 @@ using FluentBoilerplate.Contexts;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    public class ResultBoilerplateContext<TResult> :
+    internal class ResultBoilerplateContext<TResult> :
         ImmutableContractAwareContext<ResultBoilerplateContext<TResult>>,
         IContext<TResult>
     {
@@ -41,7 +41,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IIdentity Identity { get; private set; }
         public TResult Result { get; private set; }
 
-        internal ResultBoilerplateContext(ContextBundle bundle,
+        internal ResultBoilerplateContext(IContextBundle bundle,
                                           IIdentity identity, 
                                           IContractBundle contractBundle,
                                           TResult result)
@@ -159,7 +159,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                          actualResult);
         }
 
-        public IContext<TResult> Copy(ContextBundle bundle = null, IContractBundle contractBundle = null)
+        public IContext<TResult> Copy(IContextBundle bundle = null, IContractBundle contractBundle = null)
         {
             return new ResultBoilerplateContext<TResult>(bundle ?? this.bundle,
                                                          this.Identity,

@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime
 {
-    public abstract class ContractCondition:IContractCondition
+    internal abstract class ContractCondition:IContractCondition
     {
         private readonly Func<bool> condition;
 

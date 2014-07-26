@@ -31,7 +31,7 @@ namespace FluentBoilerplate.Runtime.Contexts
     {
         private readonly ICopyableTrait<IContext> originalContext;
 
-        public VoidReturnContractContext(ContextBundle bundle,
+        public VoidReturnContractContext(IContextBundle bundle,
                                          IContractBundle contractBundle,
                                          ICopyableTrait<IContext> originalContext)
             : base(bundle, contractBundle)
@@ -39,7 +39,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.originalContext = originalContext;
         }
 
-        public override IVoidReturnContractContext Copy(ContextBundle bundle = null, IContractBundle contractBundle = null)
+        public override IVoidReturnContractContext Copy(IContextBundle bundle = null, IContractBundle contractBundle = null)
         {
             return new VoidReturnContractContext(bundle ?? this.bundle,
                                                  contractBundle ?? this.contractBundle,

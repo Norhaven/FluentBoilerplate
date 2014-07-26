@@ -29,7 +29,7 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
-    public interface IExceptionAwareAction
+    internal interface IExceptionAwareAction
     {
         void Do();
         void HandleException<TException>(TException exception) where TException : Exception;

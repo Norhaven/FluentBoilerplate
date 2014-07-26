@@ -28,13 +28,13 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {   
-    public class ContextBundle
+    internal sealed class ContextBundle : IContextBundle
     {
-        protected readonly IImmutableErrorContext errorContext;
-        protected readonly ITypeAccessProvider accessProvider;
-        protected readonly ITranslationProvider translationProvider;
-        protected readonly IValidationProvider validationProvider;
-        protected readonly IPermissionsProvider permissionsProvider;
+        private readonly IImmutableErrorContext errorContext;
+        private readonly ITypeAccessProvider accessProvider;
+        private readonly ITranslationProvider translationProvider;
+        private readonly IValidationProvider validationProvider;
+        private readonly IPermissionsProvider permissionsProvider;
 
         public IPermissionsProvider Permissions { get { return this.permissionsProvider; } }
         public IValidationProvider Validation { get { return this.validationProvider; } }
@@ -55,11 +55,11 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.validationProvider = validationProvider ?? ValidationProvider.Empty;
         }
 
-        public ContextBundle Copy(IPermissionsProvider permissionsProvider = null,
-                                  IImmutableErrorContext errorContext = null,
-                                  ITypeAccessProvider accessProvider = null,
-                                  ITranslationProvider translationProvider = null,
-                                  IValidationProvider validationProvider = null)
+        public IContextBundle Copy(IPermissionsProvider permissionsProvider = null,
+                                   IImmutableErrorContext errorContext = null,
+                                   ITypeAccessProvider accessProvider = null,
+                                   ITranslationProvider translationProvider = null,
+                                   IValidationProvider validationProvider = null)
         {
             return new ContextBundle(permissionsProvider ?? this.permissionsProvider,
                                      errorContext ?? this.errorContext,

@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class ISetExtensions
+    internal static class ISetExtensions
     {
         public static ISet<T> Merge<T>(this ISet<T> set, IEnumerable<T> extras)
         {

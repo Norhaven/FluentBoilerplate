@@ -32,13 +32,13 @@ namespace FluentBoilerplate.Runtime.Contexts
         IInitialContractContext,
         IVerifiableContractContext,
         IBundledContractContext,
-        ICopyableContractTrait<IInitialContractContext>                                
+        ICopyableTrait<IInitialContractContext>                                
     {
         private readonly IElevatableContext originalContext;
 
         public IContractBundle Bundle { get { return this.contractBundle; } }
 
-        public ContractContext(ContextBundle bundle,
+        public ContractContext(IContextBundle bundle,
                                IContractBundle contractBundle,
                                IElevatableContext originalContext)
             :base(bundle, contractBundle)
@@ -46,7 +46,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.originalContext = originalContext;
         }
 
-        public override IInitialContractContext Copy(ContextBundle bundle = null, IContractBundle contractBundle = null)
+        public override IInitialContractContext Copy(IContextBundle bundle = null, IContractBundle contractBundle = null)
         {
             return new ContractContext(bundle ?? this.bundle,
                                        contractBundle ?? this.contractBundle,

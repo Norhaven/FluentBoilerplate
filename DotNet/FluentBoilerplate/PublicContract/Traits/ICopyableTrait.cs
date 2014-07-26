@@ -26,7 +26,7 @@ namespace FluentBoilerplate.Traits
 {
     public interface ICopyableTrait<TContext>
     {
-        TContext Copy(ContextBundle bundle = null,
+        TContext Copy(IContextBundle bundle = null,
                       IContractBundle contractBundle = null);
     }
 }

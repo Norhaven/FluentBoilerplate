@@ -33,7 +33,7 @@ using FluentBoilerplate.Traits;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    public class InitialBoilerplateContext<TContract> : 
+    internal class InitialBoilerplateContext<TContract> : 
         ImmutableContractAwareContext<InitialBoilerplateContext<TContract>>,
         IContext,
         IElevatableContext
@@ -43,7 +43,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         private readonly IContractBundle contractBundle;
         public IIdentity Identity { get; private set; }
 
-        internal InitialBoilerplateContext(ContextBundle bundle,
+        internal InitialBoilerplateContext(IContextBundle bundle,
                                            IIdentity identity,
                                            IContractBundle contractBundle)
             :base(bundle)
@@ -141,7 +141,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
         }
         
-        public IContext Copy(ContextBundle bundle = null, 
+        public IContext Copy(IContextBundle bundle = null, 
                              IContractBundle contractBundle = null)
         {
             return new InitialBoilerplateContext<TContract>(bundle ?? this.bundle,
@@ -149,7 +149,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                             contractBundle ?? this.contractBundle);
         }
 
-        public IContext<TResult> Elevate<TResult>(ContextBundle bundle = null, IContractBundle contractBundle = null, TResult result = default(TResult))
+        public IContext<TResult> Elevate<TResult>(IContextBundle bundle = null, IContractBundle contractBundle = null, TResult result = default(TResult))
         {
             return new ResultBoilerplateContext<TResult>(bundle ?? this.bundle,
                                                          this.Identity,

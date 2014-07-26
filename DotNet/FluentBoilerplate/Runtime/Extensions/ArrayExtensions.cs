@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class ArrayExtensions
+    internal static class ArrayExtensions
     {
         public static bool HasContents<T>(this T[] array)
         {

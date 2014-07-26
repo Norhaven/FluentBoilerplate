@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         public static PropertyInfo[] GetPublicPropertiesWithGetter(this Type type)
         {

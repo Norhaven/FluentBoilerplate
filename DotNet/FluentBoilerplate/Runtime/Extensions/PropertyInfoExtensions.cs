@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class PropertyInfoExtensions
+    internal static class PropertyInfoExtensions
     {
         public static IEnumerable<T> GetAttributesOf<T>(this PropertyInfo property)
         {

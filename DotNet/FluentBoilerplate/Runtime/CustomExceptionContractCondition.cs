@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime
 {
-    public sealed class CustomExceptionContractCondition<TException> : ContractCondition where TException : Exception
+    internal sealed class CustomExceptionContractCondition<TException> : ContractCondition where TException : Exception
     {
         private readonly Func<TException> createException;
 

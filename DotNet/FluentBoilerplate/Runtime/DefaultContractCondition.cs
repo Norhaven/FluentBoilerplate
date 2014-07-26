@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime
 {
-    public sealed class DefaultContractCondition : ContractCondition
+    internal sealed class DefaultContractCondition : ContractCondition
     {
         private readonly string message;
 

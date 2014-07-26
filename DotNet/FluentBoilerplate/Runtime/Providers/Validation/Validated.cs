@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Providers.Validation
 {
-    public sealed class Validated<T>
+    internal sealed class Validated<T>
     {
         public T Value { get; private set; }
         public IEnumerable<IValidationResult> Results { get; private set; }

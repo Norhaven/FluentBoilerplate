@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class IImmutableSetExtensions
+    internal static class IImmutableSetExtensions
     {
         public static IImmutableSet<T> Merge<T>(this IImmutableSet<T> set, IEnumerable<T> extras)
         {

@@ -31,11 +31,11 @@ namespace FluentBoilerplate.Runtime.Contexts
         IResultContractContext<TResult>,
         IVerifiableContractContext
     {
-        private readonly ContextBundle bundle;
+        private readonly IContextBundle bundle;
         private readonly IContractBundle contractBundle;
         private readonly IContext<TResult> originalContext;
         
-        public ContractContext(ContextBundle bundle,
+        public ContractContext(IContextBundle bundle,
                                IContractBundle contractBundle,
                                IContext<TResult> originalContext)
         {   
@@ -187,7 +187,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             }
         }
 
-        private IResultContractContext<TResult> Copy(ContextBundle bundle = null,
+        private IResultContractContext<TResult> Copy(IContextBundle bundle = null,
                                                      IContractBundle contractBundle = null)
         {
             return new ContractContext<TResult>(bundle ?? this.bundle,

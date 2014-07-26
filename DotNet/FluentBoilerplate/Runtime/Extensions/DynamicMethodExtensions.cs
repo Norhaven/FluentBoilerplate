@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Extensions
 {
-    public static class DynamicMethodExtensions
+    internal static class DynamicMethodExtensions
     {
         public static T Create<T>(this DynamicMethod method)
         {

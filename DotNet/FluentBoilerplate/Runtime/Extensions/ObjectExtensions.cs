@@ -26,7 +26,7 @@ namespace FluentBoilerplate.Runtime.Extensions
 {
     using System.Diagnostics.Contracts;
 
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {       
         public static bool CanBe<T>(this object instance)
         {
