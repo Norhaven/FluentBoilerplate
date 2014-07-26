@@ -73,6 +73,7 @@
     <Compile Include="BasePEVerifyTest.cs" />
     <Compile Include="MockILogExtensions.cs" />
     <Compile Include="PublicContract\BoilerplateTests\New.cs" />
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\Do.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\Handle.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\ImplicitToLoweredExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,9 +97,7 @@
       <Name>FluentBoilerplate</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Runtime\Contexts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

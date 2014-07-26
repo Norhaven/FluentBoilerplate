@@ -22,7 +22,12 @@ using System.Text;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal interface IBundledContractContext
+#if DEBUG
+    public
+#else
+    internal
+#endif
+        interface IBundledContractContext
     {
         IContractBundle Bundle { get; }
     }

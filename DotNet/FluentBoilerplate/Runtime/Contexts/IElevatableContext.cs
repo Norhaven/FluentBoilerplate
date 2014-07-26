@@ -23,7 +23,12 @@ using System.Text;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal interface IElevatableContext : IContext, ICopyableTrait<IContext>
+#if DEBUG
+    public
+#else
+    internal 
+#endif
+        interface IElevatableContext : IContext, ICopyableTrait<IContext>
     {
         IContext<TResult> Elevate<TResult>(IContextBundle bundle = null,
                                            IContractBundle contractBundle = null,

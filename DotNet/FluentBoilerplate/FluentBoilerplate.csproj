@@ -78,7 +78,7 @@
     <Compile Include="PublicContract\Traits\IRightsBasedTrait.cs" />
     <Compile Include="PublicContract\Traits\IRolesBasedTrait.cs" />
     <Compile Include="PublicContract\Traits\ICopyableTrait.cs" />
-    <Compile Include="Runtime\Contexts\BoilerplateContext.cs" />
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContext.cs" />
     <Compile Include="Runtime\Contexts\ContextBundle.cs" />
     <Compile Include="PublicContract\Providers\ITranslationProvider.cs" />
     <Compile Include="PublicContract\Providers\IValidationProvider.cs" />

@@ -33,7 +33,12 @@ using FluentBoilerplate.Traits;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal class InitialBoilerplateContext<TContract> : 
+#if DEBUG
+    public
+#else
+    internal 
+#endif 
+        class InitialBoilerplateContext<TContract> : 
         ImmutableContractAwareContext<InitialBoilerplateContext<TContract>>,
         IContext,
         IElevatableContext
@@ -129,7 +134,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
         
-        public IContext Copy(ContextBundle bundle)
+        public IContext Copy(IContextBundle bundle)
         {
             return new InitialBoilerplateContext<TContract>(bundle, 
                                                             this.Identity,

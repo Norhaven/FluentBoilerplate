@@ -28,7 +28,12 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal abstract class ImmutableContext<TContext> 
+#if DEBUG
+    public
+#else
+    internal 
+#endif
+        abstract class ImmutableContext<TContext> 
     {
         protected readonly IContextBundle bundle;
 
