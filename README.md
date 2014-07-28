@@ -292,5 +292,16 @@ public void DoSomething(IContext boilerplate, From fromInstance)
 Provided Type Usage
 =================
 
-Additional information is forthcoming...
+That sounds fancy, but it's just a way of injecting your own type provider into the boilerplate.
 
+So what does that actually mean?
+
+There are quite a few scenarios in which you'd like to make use of a factory (e.g. WCF services, data access). The boilerplate context will help you get access to those.
+
+```C#
+boilerplate.Open<ISomeService>((context, service) => service.CallRemoteMethod());
+```
+
+Being able to accomplish that currently requires that you write a provider that implements FluentBoilerplate.Providers.ITypeProvider and send it in with your initial Boilerplate.New() call. The call attempts themselves will pass you the current IIdentity instance, in case you would like to do custom rights/roles verification (i.e. rights are required to make a WCF call).
+
+Providers for common situations are planned but have not been included yet.
