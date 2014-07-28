@@ -3,9 +3,9 @@ FluentBoilerplate
 
 All official release information / released builds is located at https://www.nuget.org/packages/FluentBoilerplate/.
 
-**This is still an alpha-quality work in progress. This means that things can and will break.**
+**This is a beta-quality work in progress. This means that things could break or behave in unexpected ways**
 
-That said, you're more than welcome to report any bugs you may find, contribute, etc., keeping in mind that the codebase may be changing fairly quickly.
+That said, you're more than welcome to report any bugs you may find, contribute, etc.
 
 Enjoy!
 
@@ -126,8 +126,111 @@ There are two kinds of postconditions.
 Permissions
 =================
 
+You might want to be a little more specific in terms of what a particular caller is allowed or restricted from doing.
+
+Let's say we have several rights that a given caller may or may not have.
+
+```C#
+public static class KnownRights
+{
+    public static IRight CanPerformAction = new Right(1, "User can perform an action");
+    public static IRight CanDoTerribleThings = new Right(2, "User can do terrible things");
+}
+```
+
+We'd like to make sure that the caller is allowed to perform an action, but not do anything terrible.
+
+```C#
+private void DoSomething(IContext boilerplate)
+{
+    boilerplate
+        .BeginContract()
+            .RequiresRights(KnownRights.CanPerformAction)
+            .MustNotHaveRights(KnownRights.CanDoTerribleThings)
+        .EndContract()
+        .Do(context => { /* Take some action */ });
+}
+```
+
+You can also do the same thing at a roles level. Here are some arbitrary roles that we've just defined.
+
+```C#
+public static class KnownRoles
+{
+    public static IRole BasicUser = new Role(1,
+                                             "A user",
+                                             new HashSet<IRight>
+                                             {
+                                                 KnownRights.CanPerformAction
+                                             }.ToImmutableHashSet());
+
+    public static IRole RestrictedUser = new Role(2,
+                                                  "A user with limited access",
+                                                  new HashSet<IRight>().ToImmutableHashSet());
+}
+```
+
+You could then include roles in your contract.
+
+```C#
+private void DoSomething(IContext boilerplate)
+{
+    boilerplate
+        .BeginContract()
+            .RequiresRoles(KnownRoles.BasicUser)
+            .MustNotHaveRoles(KnownRoles.RestrictedUser)
+        .EndContract()
+        .Do(context => { /* Take some action */ });
+}
+```
+
+How do we know what rights/roles the caller has, though?
+
+When you create a context, one of the parameters you may optionally specify is an IIdentity instance. This represents the current caller that the context will operate under, and includes sets of rights/roles that they are permitted and explicitly denied. You are welcome to use an instance of the Identity class, which implements IIdentity, or write your own.
+
+
 Validation
 =================
+
+The contract also offers a slightly more targeted approach to preconditions, by validating that a specific instance meets all of its requirements (in particular, its properties).
+
+There are currently two attributes that may be applied to properties for validation, with more planned.
+
+```C#
+public class SomeType
+{
+    [NotNull]
+    [StringLength(MinLength=3, MaxLength=10)]
+    public string Text { get; }
+}
+```
+
+The [NotNull] attribute does what it says. During validation, that property must not be null.
+The [StringLength] attribute enforces length requirements on a string property. MinLength is the inclusive lower bounds, meaning that the string must be three or more characters in length. MaxLength is the inclusive upper bounds, meaning that the string must be ten or less characters in length.
+
+Let's validate an instance of SomeType.
+
+```C#
+private void DoValidatedAction(IContext boilerplate, SomeType instance)
+{
+    boilerplate
+        .BeginContract()
+            .RequiresValidInstanceOf(instance)
+        .EndContract()
+        .Do(context => { /* Take some action */ });
+```
+
+When the Do() method executes, the validation will be performed. Validation is a precondition and will run prior to the Do() method execution, but it will run after any other preconditions.
+
+This gives us an execution path of:
+
+- Rights/Roles validations
+- Requirements preconditions
+- Instance validations
+
+- Do()
+
+- Postconditions
 
 Translation
 =================
