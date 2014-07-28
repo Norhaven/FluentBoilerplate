@@ -38,10 +38,10 @@ namespace FluentBoilerplate.Runtime.Contexts
                            IImmutableSet<IRight> requiredRights = null,
                            IImmutableSet<IRight> restrictedRights = null)
         {
-            this.RequiredRoles = requiredRoles;
-            this.RestrictedRoles = restrictedRoles;
-            this.RequiredRights = requiredRights;
-            this.RestrictedRights = restrictedRights;
+            this.RequiredRoles = requiredRoles ?? new HashSet<IRole>().ToImmutableHashSet(); ;
+            this.RestrictedRoles = restrictedRoles ?? new HashSet<IRole>().ToImmutableHashSet();
+            this.RequiredRights = requiredRights ?? new HashSet<IRight>().ToImmutableHashSet();
+            this.RestrictedRights = restrictedRights ?? new HashSet<IRight>().ToImmutableHashSet();
         }
 
         public Permissions Merge(IImmutableSet<IRole> requiredRoles = null,

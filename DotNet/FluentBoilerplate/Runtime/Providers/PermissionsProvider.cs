@@ -52,7 +52,10 @@ namespace FluentBoilerplate.Runtime.Providers
         }
 
         private IImmutableSet<IRight> ConsolidateRights(IImmutableSet<IRight> rights, IImmutableSet<IRole> roles)
-        {               
+        {
+            if (roles == null)
+                return rights;
+
             foreach (var role in roles)
             {
                 rights = rights.Merge(role.Rights);

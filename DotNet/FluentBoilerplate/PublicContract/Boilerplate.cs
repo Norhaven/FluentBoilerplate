@@ -17,6 +17,7 @@
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime;
 using FluentBoilerplate.Runtime.Contexts;
+using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using FluentBoilerplate.Runtime.Providers.Logging;
 using FluentBoilerplate.Runtime.Providers.Translation;
@@ -47,10 +48,11 @@ namespace FluentBoilerplate
             var translationProvider = new TranslationProvider(functionGenerator);
             var validationProvider = new ValidationProvider(functionGenerator);
 
-            var settings = new ContextBundle(errorContext: errorContext,
-                                               translationProvider: translationProvider,
-                                               validationProvider: validationProvider,
-                                               accessProvider: accessProvider);
+            var settings = new ContextBundle(PermissionsProvider.Empty,
+                                             errorContext: errorContext,
+                                             translationProvider: translationProvider,
+                                             accessProvider: accessProvider,
+                                             validationProvider: validationProvider);
 
             return new InitialBoilerplateContext<ContractContext>(settings, actualIdentity, null);
         }

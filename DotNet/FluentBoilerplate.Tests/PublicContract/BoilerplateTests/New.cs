@@ -16,6 +16,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 
 namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
 {
@@ -23,8 +24,11 @@ namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
     public class New
     {
         [TestMethod]
-        public void TestMethod1()
+        public void NewWithNoArgumentsCreatesContextSuccessfully()
         {
+            var context = Boilerplate.New();
+
+            context.Should().NotBeNull("because you should always get a context back");
         }
     }
 }
