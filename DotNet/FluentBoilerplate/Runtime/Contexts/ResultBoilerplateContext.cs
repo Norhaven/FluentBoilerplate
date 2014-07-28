@@ -59,7 +59,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContext<TResult> Get(Func<IContext, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle,
+            return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
@@ -72,7 +72,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContext<TResult> Get(Func<IContext, TResult, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle,
+            return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
@@ -85,7 +85,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContext<TResult> Open<TType>(Func<IContext<TResult>, TType, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle,
+            return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
@@ -101,7 +101,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         
         public IContext<TResult> Do(Action<IContext> action)
         {
-            return VerifyContractIfPossible(this.contractBundle,
+            return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
@@ -114,7 +114,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContext<TResult> Do(Action<IContext, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle,
+            return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
@@ -127,7 +127,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContext<TResult> OpenService<TType>(Action<IContext<TResult>, TType> action)
         {
-            return VerifyContractIfPossible(this.contractBundle,
+            return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);

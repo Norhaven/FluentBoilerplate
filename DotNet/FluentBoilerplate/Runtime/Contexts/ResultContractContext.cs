@@ -155,7 +155,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         }
 
         public void VerifyPreConditions()
-        {
+        {   
             VerifyConditions(this.contractBundle.Preconditions);
 
             foreach (var validate in this.contractBundle.InstanceValidations)

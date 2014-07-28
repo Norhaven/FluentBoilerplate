@@ -40,10 +40,10 @@ namespace FluentBoilerplate
         /// </summary>
         public IImmutableSet<IRight> DeniedRights { get; private set; }
 
-        private Identity(IImmutableSet<IRole> permittedRoles = null,
-                         IImmutableSet<IRole> deniedRoles = null,
-                         IImmutableSet<IRight> permittedRights = null,
-                         IImmutableSet<IRight> deniedRights = null)
+        public Identity(IImmutableSet<IRole> permittedRoles = null,
+                        IImmutableSet<IRole> deniedRoles = null,
+                        IImmutableSet<IRight> permittedRights = null,
+                        IImmutableSet<IRight> deniedRights = null)
         {
             this.PermittedRoles = permittedRoles;
             this.DeniedRoles = deniedRoles;

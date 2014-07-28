@@ -22,21 +22,16 @@ namespace FluentBoilerplate
     public interface IRight
     {
         /// <summary>
-        /// Gets or sets the identifier
+        /// Gets the identifier
         /// </summary>
-        int Id { get; set; }
+        int Id { get; }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Gets the description.
         /// </summary>
         /// <value>
         /// The description.
         /// </value>
-        string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the kind of permission this right grants
-        /// </summary>
-        PermissionKind PermissionKind { get; set; }
+        string Description { get; }
     }
 }

@@ -67,6 +67,9 @@
     <Compile Include="PublicContract\Exceptions\OperationWasNotSuccessfulException.cs" />
     <Compile Include="PublicContract\Identity.cs" />
     <Compile Include="PublicContract\IValidationAttribute.cs" />
+    <Compile Include="PublicContract\Providers\TypeAccessProvider.cs" />
+    <Compile Include="PublicContract\Right.cs" />
+    <Compile Include="PublicContract\Role.cs" />
     <Compile Include="PublicContract\Traits\IContractualTrait.cs" />
     <Compile Include="PublicContract\Exceptions\ContractViolationException.cs" />
     <Compile Include="PublicContract\IConversionBuilder.cs" />
@@ -166,7 +169,6 @@
     <Compile Include="Runtime\Providers\Translation\Translator.cs" />
     <Compile Include="Runtime\Providers\ErrorHandling\TryCatchBlockProvider.cs" />
     <Compile Include="Runtime\KnownMetadata.cs" />
-    <Compile Include="PublicContract\PermissionKind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicContract\IResponse.cs" />
     <Compile Include="PublicContract\IResultCode.cs" />
@@ -181,7 +183,7 @@
     <Compile Include="Runtime\Providers\Validation\ValidationResult.cs" />
     <Compile Include="Runtime\Response.cs" />
   </ItemGroup>
-  <ItemGroup>    
+  <ItemGroup>
     <None Include="FluentBoilerplate.snk" />
     <None Include="packages.config" />
   </ItemGroup>

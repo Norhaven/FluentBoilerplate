@@ -35,8 +35,11 @@ namespace FluentBoilerplate.Runtime.Contexts
         {
         }
 
-        public TResult VerifyContractIfPossible<TResult>(IContractBundle contractBundle, Func<TResult> action)
+        public TResult VerifyContractIfPossible<TResult>(IContractBundle contractBundle, IIdentity identity, Func<TResult> action)
         {
+            if (!this.bundle.Permissions.HasPermission(identity))
+                return default(TResult);
+
             if (contractBundle == null)
                 return action();
 

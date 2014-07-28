@@ -24,13 +24,18 @@ namespace FluentBoilerplate
     public interface IRole
     {
         /// <summary>
-        /// Gets or sets the description
+        /// Gets the identifier
         /// </summary>
-        string Description { get; set; }
+        int Id { get; }
 
         /// <summary>
-        /// Gets or sets the rights that this role contains
+        /// Gets the description
         /// </summary>
-        IImmutableSet<IRight> Rights { get; set; }
+        string Description { get; }
+
+        /// <summary>
+        /// Gets the rights that this role contains
+        /// </summary>
+        IImmutableSet<IRight> Rights { get; }
     }
 }

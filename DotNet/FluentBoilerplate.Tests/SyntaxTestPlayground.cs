@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Immutable;
 
 using FluentBoilerplate;
 
@@ -30,7 +31,7 @@ namespace FluentBoilerplate.Tests
         {
             IIdentity identity = null;
             var boilerplate = Boilerplate.New(identity);
-            SampleBoilerplate(boilerplate, null);
+            //SampleBoilerplate(boilerplate, null);
         }
 
         public class TestType
@@ -54,8 +55,27 @@ namespace FluentBoilerplate.Tests
                 //    .Do(context => /* Take some action */);
             }
         }
-        private void SampleBoilerplate(IContext boilerplate, object value)
-        {
+        //public static class KnownRights
+        //{
+        //    public static IRight CanPerformAction = new Right(1, "User can perform an action");
+        //    public static IRight CanDoTerribleThings = new Right(2, "User can do terrible things");
+        //}
+        //public static class KnownRoles
+        //{
+        //    public static IRole BasicUser = new Role(1,
+        //                                             "A user",
+        //                                             new HashSet<IRight>
+        //                                             {
+        //                                                 KnownRights.CanPerformAction
+        //                                             }.ToImmutableHashSet());
+
+        //    public static IRole RestrictedUser = new Role(2,
+        //                                                  "A user with limited access",
+        //                                                  new HashSet<IRight>().ToImmutableHashSet());
+        //}
+        
+        private void DoValidatedAction(IContext boilerplate)
+        {           
             //boilerplate.BeginContract()
             //    .EndContract()
             //    .BeginContract()
