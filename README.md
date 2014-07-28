@@ -235,6 +235,60 @@ This gives us an execution path of:
 Translation
 =================
 
+At some point in your program, you may want to treat an instance as another type. You could create a manual translation layer, or use reflection, but it would be nice if the context could just figure it out.
+
+Let's say you have a few classes.
+
+```C#
+public class From
+{
+    public string Text { get; set; }
+}
+
+public class To
+{
+    public string Text { get; set; }
+    public string Description { get; set; }
+}
+        
+```
+
+Translation is fairly easy.
+
+```C#
+public void DoSomething(IContext boilerplate, From fromInstance)
+{
+    fromInstance.Text = "Hello";
+    var toInstance = boilerplate.Use(fromInstance).As<To>();
+    
+    Console.WriteLine(toInstance.Text); //Prints out "Hello"
+}
+```
+
+The context will translate the properties based on the name and type of the property. If you would like to customize the translation mappings, use the [MapsTo] attribute on the specific properties.
+
+Let's redo the From class with an explicit mapping.
+
+```C#
+public class From
+{
+    [MapsTo(typeof(To), "Description"]
+    public string Text { get; set; }
+}
+```
+
+Now let's change the method a little bit.
+
+```C#
+public void DoSomething(IContext boilerplate, From fromInstance)
+{
+    fromInstance.Text = "Hello";
+    var toInstance = boilerplate.Use(fromInstance).As<To>();
+    
+    Console.WriteLine(toInstance.Description); //Prints out "Hello"
+}
+```
+
 Provided Type Usage
 =================
 
