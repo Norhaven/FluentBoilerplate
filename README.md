@@ -3,9 +3,9 @@ FluentBoilerplate
 
 All official release information / released builds is located at https://www.nuget.org/packages/FluentBoilerplate/.
 
-**This is still an alpha-quality work in progress. This means that things can and will break.**
+**This is a beta-quality work in progress. This means that things could break or behave in unexpected ways**
 
-That said, you're more than welcome to report any bugs you may find, contribute, etc., keeping in mind that the codebase may be changing fairly quickly.
+That said, you're more than welcome to report any bugs you may find, contribute, etc.
 
 Enjoy!
 
@@ -126,14 +126,182 @@ There are two kinds of postconditions.
 Permissions
 =================
 
+You might want to be a little more specific in terms of what a particular caller is allowed or restricted from doing.
+
+Let's say we have several rights that a given caller may or may not have.
+
+```C#
+public static class KnownRights
+{
+    public static IRight CanPerformAction = new Right(1, "User can perform an action");
+    public static IRight CanDoTerribleThings = new Right(2, "User can do terrible things");
+}
+```
+
+We'd like to make sure that the caller is allowed to perform an action, but not do anything terrible.
+
+```C#
+private void DoSomething(IContext boilerplate)
+{
+    boilerplate
+        .BeginContract()
+            .RequiresRights(KnownRights.CanPerformAction)
+            .MustNotHaveRights(KnownRights.CanDoTerribleThings)
+        .EndContract()
+        .Do(context => { /* Take some action */ });
+}
+```
+
+You can also do the same thing at a roles level. Here are some arbitrary roles that we've just defined.
+
+```C#
+public static class KnownRoles
+{
+    public static IRole BasicUser = new Role(1,
+                                             "A user",
+                                             new HashSet<IRight>
+                                             {
+                                                 KnownRights.CanPerformAction
+                                             }.ToImmutableHashSet());
+
+    public static IRole RestrictedUser = new Role(2,
+                                                  "A user with limited access",
+                                                  new HashSet<IRight>().ToImmutableHashSet());
+}
+```
+
+You could then include roles in your contract.
+
+```C#
+private void DoSomething(IContext boilerplate)
+{
+    boilerplate
+        .BeginContract()
+            .RequiresRoles(KnownRoles.BasicUser)
+            .MustNotHaveRoles(KnownRoles.RestrictedUser)
+        .EndContract()
+        .Do(context => { /* Take some action */ });
+}
+```
+
+How do we know what rights/roles the caller has, though?
+
+When you create a context, one of the parameters you may optionally specify is an IIdentity instance. This represents the current caller that the context will operate under, and includes sets of rights/roles that they are permitted and explicitly denied. You are welcome to use an instance of the Identity class, which implements IIdentity, or write your own.
+
+
 Validation
 =================
+
+The contract also offers a slightly more targeted approach to preconditions, by validating that a specific instance meets all of its requirements (in particular, its properties).
+
+There are currently two attributes that may be applied to properties for validation, with more planned.
+
+```C#
+public class SomeType
+{
+    [NotNull]
+    [StringLength(MinLength=3, MaxLength=10)]
+    public string Text { get; }
+}
+```
+
+The [NotNull] attribute does what it says. During validation, that property must not be null.
+The [StringLength] attribute enforces length requirements on a string property. MinLength is the inclusive lower bounds, meaning that the string must be three or more characters in length. MaxLength is the inclusive upper bounds, meaning that the string must be ten or less characters in length.
+
+Let's validate an instance of SomeType.
+
+```C#
+private void DoValidatedAction(IContext boilerplate, SomeType instance)
+{
+    boilerplate
+        .BeginContract()
+            .RequiresValidInstanceOf(instance)
+        .EndContract()
+        .Do(context => { /* Take some action */ });
+```
+
+When the Do() method executes, the validation will be performed. Validation is a precondition and will run prior to the Do() method execution, but it will run after any other preconditions.
+
+This gives us an execution path of:
+
+- Rights/Roles validations
+- Requirements preconditions
+- Instance validations
+
+- Do()
+
+- Postconditions
 
 Translation
 =================
 
+At some point in your program, you may want to treat an instance as another type. You could create a manual translation layer, or use reflection, but it would be nice if the context could just figure it out.
+
+Let's say you have a few classes.
+
+```C#
+public class From
+{
+    public string Text { get; set; }
+}
+
+public class To
+{
+    public string Text { get; set; }
+    public string Description { get; set; }
+}
+        
+```
+
+Translation is fairly easy.
+
+```C#
+public void DoSomething(IContext boilerplate, From fromInstance)
+{
+    fromInstance.Text = "Hello";
+    var toInstance = boilerplate.Use(fromInstance).As<To>();
+    
+    Console.WriteLine(toInstance.Text); //Prints out "Hello"
+}
+```
+
+The context will translate the properties based on the name and type of the property. If you would like to customize the translation mappings, use the [MapsTo] attribute on the specific properties.
+
+Let's redo the From class with an explicit mapping.
+
+```C#
+public class From
+{
+    [MapsTo(typeof(To), "Description"]
+    public string Text { get; set; }
+}
+```
+
+Now let's change the method a little bit.
+
+```C#
+public void DoSomething(IContext boilerplate, From fromInstance)
+{
+    fromInstance.Text = "Hello";
+    var toInstance = boilerplate.Use(fromInstance).As<To>();
+    
+    Console.WriteLine(toInstance.Description); //Prints out "Hello"
+}
+```
+
 Provided Type Usage
 =================
 
-Additional information is forthcoming...
+That sounds fancy, but it's just a way of injecting your own type provider into the boilerplate.
 
+So what does that actually mean?
+
+There are quite a few scenarios in which you'd like to make use of a factory (e.g. WCF services, data access). The boilerplate context will help you get access to those.
+
+```C#
+boilerplate.Open<ISomeService>((context, service) => service.CallRemoteMethod());
+```
+
+Being able to accomplish that currently requires that you write a provider that implements FluentBoilerplate.Providers.ITypeProvider and send it in with your initial Boilerplate.New() call. The call attempts themselves will pass you the current IIdentity instance, in case you would like to do custom rights/roles verification (i.e. rights are required to make a WCF call).
+
+Providers for common situations are planned but have not been included yet.
