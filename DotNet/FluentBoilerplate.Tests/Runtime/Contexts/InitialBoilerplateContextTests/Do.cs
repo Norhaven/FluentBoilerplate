@@ -42,8 +42,12 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
         [TestMethod]
         public void WillPerformActionWithNoContract()
         {
+            var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
+            permissions.Setup(x => x.HasPermission(It.IsAny<IIdentity>())).Returns(true);
+
             var bundle = new Mock<IContextBundle>(MockBehavior.Strict);
             bundle.Setup(x => x.Errors).Returns(() => new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty));
+            bundle.Setup(x => x.Permissions).Returns(permissions.Object);
             bundle.Setup(x => x.Copy(It.IsAny<IPermissionsProvider>(),
                                      It.IsAny<IImmutableErrorContext>(),
                                      It.IsAny<ITypeAccessProvider>(),
@@ -71,8 +75,12 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
             errorContext = errorContext.RegisterExceptionHandler<Exception>(ex => {});
 
+            var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
+            permissions.Setup(x => x.HasPermission(It.IsAny<IIdentity>())).Returns(true);
+            
             var bundle = new Mock<IContextBundle>(MockBehavior.Strict);
             bundle.Setup(x => x.Errors).Returns(() => errorContext);
+            bundle.Setup(x => x.Permissions).Returns(permissions.Object);
             bundle.Setup(x => x.Copy(It.IsAny<IPermissionsProvider>(),
                                      It.IsAny<IImmutableErrorContext>(),
                                      It.IsAny<ITypeAccessProvider>(),
@@ -101,8 +109,12 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
             errorContext = errorContext.RegisterExceptionHandler<Exception>(ex => { });
 
+            var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
+            permissions.Setup(x => x.HasPermission(It.IsAny<IIdentity>())).Returns(true);
+
             var bundle = new Mock<IContextBundle>(MockBehavior.Strict);
             bundle.Setup(x => x.Errors).Returns(() => errorContext);
+            bundle.Setup(x => x.Permissions).Returns(permissions.Object);
             bundle.Setup(x => x.Copy(It.IsAny<IPermissionsProvider>(),
                                      It.IsAny<IImmutableErrorContext>(),
                                      It.IsAny<ITypeAccessProvider>(),
@@ -129,9 +141,13 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
         {
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
             errorContext = errorContext.RegisterExceptionHandler<Exception>(ex => { });
-
+            
+            var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
+            permissions.Setup(x => x.HasPermission(It.IsAny<IIdentity>())).Returns(true);
+            
             var bundle = new Mock<IContextBundle>(MockBehavior.Strict);
             bundle.Setup(x => x.Errors).Returns(() => errorContext);
+            bundle.Setup(x => x.Permissions).Returns(permissions.Object);
             bundle.Setup(x => x.Copy(It.IsAny<IPermissionsProvider>(),
                                      It.IsAny<IImmutableErrorContext>(),
                                      It.IsAny<ITypeAccessProvider>(),
@@ -163,8 +179,12 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
             errorContext = errorContext.RegisterExceptionHandler<Exception>(ex => { });
             
+            var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
+            permissions.Setup(x => x.HasPermission(It.IsAny<IIdentity>())).Returns(true);
+            
             var bundle = new Mock<IContextBundle>(MockBehavior.Strict);
             bundle.Setup(x => x.Errors).Returns(() => errorContext);
+            bundle.Setup(x => x.Permissions).Returns(permissions.Object);
             bundle.Setup(x => x.Copy(It.IsAny<IPermissionsProvider>(),
                                      It.IsAny<IImmutableErrorContext>(),
                                      It.IsAny<ITypeAccessProvider>(),
@@ -190,8 +210,13 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
             errorContext = errorContext.RegisterExceptionHandler<Exception>(ex => { });
 
+            var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
+            permissions.Setup(x => x.HasPermission(It.IsAny<IIdentity>())).Returns(true);
+
             var bundle = new Mock<IContextBundle>(MockBehavior.Strict);
             bundle.Setup(x => x.Errors).Returns(() => errorContext);
+            bundle.Setup(x => x.Permissions).Returns(permissions.Object);
+
             bundle.Setup(x => x.Copy(It.IsAny<IPermissionsProvider>(),
                                      It.IsAny<IImmutableErrorContext>(),
                                      It.IsAny<ITypeAccessProvider>(),
