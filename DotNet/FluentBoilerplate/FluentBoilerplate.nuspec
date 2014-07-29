@@ -26,6 +26,9 @@
         </group>
     </dependencies>
     <references></references>
-    <tags>Fluent Boilerplate Require Ensure Exception Service Database Type Mapping Validation</tags>
+    <tags>Fluent Boilerplate Require Ensure Exception Service Database Type Mapping Validation linqpad-samples</tags>
   </metadata>
+  <files>
+    <file src="linqpad-samples\**" target="linqpad-samples" />
+  </files>
 </package>
