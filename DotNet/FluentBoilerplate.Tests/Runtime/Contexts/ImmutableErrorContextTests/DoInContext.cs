@@ -30,5 +30,29 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
 
             success.Should().BeTrue("because the action should have been run");
         }
+
+
+        [TestMethod]
+        public void HandledExceptionWillNotEscapeHandler()
+        {
+            var boilerplate = Boilerplate.New();
+            boilerplate
+                .BeginContract()
+                    .Handles<ArgumentException>(ex => Console.WriteLine(ex.Message))
+                .EndContract()
+                .Do(c => { throw new ArgumentException("Error"); });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void UnhandledExceptionWillEscapeHandler()
+        {
+            var boilerplate = Boilerplate.New();
+            boilerplate
+                .BeginContract()
+                    .Handles<DivideByZeroException>(ex => Console.WriteLine(ex.Message))
+                .EndContract()
+                .Do(c => { throw new ArgumentException("Error"); });
+        }
     }
 }

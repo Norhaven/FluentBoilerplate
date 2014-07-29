@@ -70,7 +70,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
                     var downgradedContext = Copy(bundle: downgradedSettings);
-                    var result = action(downgradedContext);
+                    var result = safeCall(downgradedContext);
                                         
                     return new ResultBoilerplateContext<TResult>(this.bundle,
                                                            this.Identity,
@@ -87,7 +87,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
                 var downgradedContext = Copy(bundle: downgradedSettings);
-                var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => action(downgradedContext, instance));
+                var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => safeCall(downgradedContext, instance));
 
                 if (!response.IsSuccess)
                     throw new OperationWasNotSuccessfulException(response.Result);
@@ -107,7 +107,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
                 var downgradedContext = Copy(bundle: downgradedSettings);
-                action(downgradedContext);
+                safeCall(downgradedContext);
                 
                 return new InitialBoilerplateContext<TContract>(this.bundle,
                                                                 this.Identity,
