@@ -21,6 +21,7 @@ namespace FluentBoilerplate
     /// <summary>
     /// Represents a serious problem with the underlying MSIL generator
     /// </summary>
+    [Serializable]
     public sealed class ILGenerationException:Exception
     {
         /// <summary>

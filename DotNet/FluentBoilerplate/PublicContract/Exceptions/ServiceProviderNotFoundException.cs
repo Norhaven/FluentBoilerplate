@@ -14,29 +14,30 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Messages.User;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Exceptions
 {
     /// <summary>
-    /// Represents a failure to accomplish an action
+    /// Represents a failure to locate a service provider
     /// </summary>
     [Serializable]
-    public sealed class OperationWasNotSuccessfulException : Exception
+    public sealed class ServiceProviderNotFoundException : Exception
     {
         /// <summary>
-        /// Gets the result code for the failed operation
+        /// Creates an instance of <see cref="ServiceProviderNotFoundException"/>
         /// </summary>
-        public IResultCode Result { get; private set; }
-
-        /// <summary>
-        /// Creates an instance of <see cref="OperationWasNotSuccessfulException"/>
-        /// </summary>
-        /// <param name="result">The result of the failed operation</param>
-        public OperationWasNotSuccessfulException(IResultCode result)
-            :base("Operation was not successful")
+        /// <param name="serviceType">The service type</param>
+        public ServiceProviderNotFoundException(Type serviceType)
+            :base(CommonErrors.ServiceProviderNotFound.WithValues(serviceType.FullName))
         {
-            this.Result = result;
+
         }
     }
 }

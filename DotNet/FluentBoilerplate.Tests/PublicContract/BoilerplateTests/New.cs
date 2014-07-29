@@ -30,5 +30,7 @@ namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
 
             context.Should().NotBeNull("because you should always get a context back");
         }
+            //var context = Boilerplate.New(accessProvider: TypeAccessProvider.: Identity.Default);
+            //context.Should().NotBeNull("because you should always get a context back");
     }
 }

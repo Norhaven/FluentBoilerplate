@@ -71,8 +71,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BasePEVerifyTest.cs" />
+    <Compile Include="Mock.cs" />
     <Compile Include="MockILogExtensions.cs" />
     <Compile Include="PublicContract\BoilerplateTests\New.cs" />
+    <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\DoInContext.cs" />
     <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\Do.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\Handle.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\ImplicitToLoweredExceptionHandler.cs" />

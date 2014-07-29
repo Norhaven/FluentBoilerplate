@@ -21,6 +21,7 @@ namespace FluentBoilerplate
     /// <summary>
     /// Represents a failure to locate an expected property
     /// </summary>
+    [Serializable]
     public sealed class PropertyIsMissingException : Exception
     {
     }

@@ -21,6 +21,7 @@ namespace FluentBoilerplate
     /// <summary>
     /// Represents a violation of a contract
     /// </summary>
+    [Serializable]
     public sealed class ContractViolationException:Exception
     {
         /// <summary>

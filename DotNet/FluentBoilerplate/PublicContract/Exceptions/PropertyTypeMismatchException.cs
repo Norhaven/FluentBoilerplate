@@ -21,7 +21,8 @@ namespace FluentBoilerplate
     /// <summary>
     /// Represents a failure to access a property due to the property type being unexpected
     /// </summary>
-    public sealed class PropertyTypeMismatchException:Exception
+    [Serializable]
+    public sealed class PropertyTypeMismatchException : Exception
     {
     }
 }
