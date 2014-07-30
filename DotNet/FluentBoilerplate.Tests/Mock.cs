@@ -9,9 +9,9 @@ namespace FluentBoilerplate.Tests
 {
     public static class Mock
     {
-        public static Mock<T> Strict<T>() where T:class
+        public static Mock<T> Strict<T>(params object[] parameters) where T:class
         {
-            return new Mock<T>(MockBehavior.Strict);
+            return new Mock<T>(MockBehavior.Strict, parameters);
         }
     }
 }

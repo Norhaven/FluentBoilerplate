@@ -22,85 +22,46 @@ using System.Threading.Tasks;
 using System.Collections.Immutable;
 
 using FluentBoilerplate;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace FluentBoilerplate.Tests
 {
-    class SyntaxTestPlayground
+    [TestClass]
+    public class SyntaxTestPlayground
     {
+        [TestMethod]
         public void Test()
         {
-            IIdentity identity = null;
-            var boilerplate = Boilerplate.New(identity);
-            //SampleBoilerplate(boilerplate, null);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            Go();
+            stopwatch.Stop();
+            Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            Go();
+            stopwatch.Stop();
+            Debug.WriteLine(stopwatch.ElapsedMilliseconds);
         }
 
-        public class TestType
+        private static void Go()
         {
-            [MapsTo(typeof(Object), "Name")]
-            [StringLength(MinLength=2)]
-            public string Value { get; set; }
-        }
+            IIdentity identity; IContext boilerplate;
+            identity = null;
+            boilerplate = Boilerplate.New(identity);
 
-        public class Example
-        {
-            public string Text { get; private set; }
-
-            public void DoSomething(IContext boilerplate)
-            {
-                //boilerplate
-                //    .BeginContract()
-                //        .EnsureOnReturn(() => this.Text != null, "Text must be non-null on return")
-                //        .EnsureOnThrow(() => this.Text == null, "Text must be null when an exception is thrown")
-                //    .EndContract()
-                //    .Do(context => /* Take some action */);
-            }
-        }
-        //public static class KnownRights
-        //{
-        //    public static IRight CanPerformAction = new Right(1, "User can perform an action");
-        //    public static IRight CanDoTerribleThings = new Right(2, "User can do terrible things");
-        //}
-        //public static class KnownRoles
-        //{
-        //    public static IRole BasicUser = new Role(1,
-        //                                             "A user",
-        //                                             new HashSet<IRight>
-        //                                             {
-        //                                                 KnownRights.CanPerformAction
-        //                                             }.ToImmutableHashSet());
-
-        //    public static IRole RestrictedUser = new Role(2,
-        //                                                  "A user with limited access",
-        //                                                  new HashSet<IRight>().ToImmutableHashSet());
-        //}
-        
-        private void DoValidatedAction(IContext boilerplate)
-        {           
-            //boilerplate.BeginContract()
-            //    .EndContract()
-            //    .BeginContract()
-            //    .Require(null)
-            //    .Handles<Exception, int>("")
-            //    .Handles<Exception>("")
-            //    .Require()
-            //    .EndContract()
-            //    .Do((c,r) => {})
-            //    .Get()
-            //object returnValue = null;
-            
-            //var r = boilerplate
-            //    .BeginContract()
-            //        .Require(() => value != null, "Value cannot be null")
-            //        .RequiresValidInstanceOf(value)
-            //        .EnsureOnReturn(() => returnValue != null, "Return value must not be null")
-            //        .EnsureOnThrow(() => returnValue != null, "HELP")
-            //        .RequiresRights(null)
-            //    .EndContract()
-            //    .Get<int>(c => 
-            //        {
-            //            var result = c.As<object, int>(value);
-            //        })
-            //    .Result;
+            boilerplate
+                .BeginContract()
+                    .Handles<ArgumentException>(ex => System.Diagnostics.Debug.WriteLine("Caught ArgumentException"))
+                    .Handles<Exception>(ex => System.Diagnostics.Debug.WriteLine("Caught Exception"))
+                .EndContract()
+                .Do(context =>
+                {
+                    throw new Exception();
+                });
         }
     }
 }

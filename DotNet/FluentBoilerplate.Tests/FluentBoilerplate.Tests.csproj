@@ -74,6 +74,7 @@
     <Compile Include="Mock.cs" />
     <Compile Include="MockILogExtensions.cs" />
     <Compile Include="PublicContract\BoilerplateTests\New.cs" />
+    <Compile Include="PublicContract\Providers\TypeAccessProviderTests\TryAccess.cs" />
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\DoInContext.cs" />
     <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\Do.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\Handle.cs" />

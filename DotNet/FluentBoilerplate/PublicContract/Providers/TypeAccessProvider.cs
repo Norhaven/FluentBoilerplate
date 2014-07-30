@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.PublicContract.Providers
+namespace FluentBoilerplate.Providers
 {
     public abstract class TypeAccessProvider:ITypeAccessProvider
     {
@@ -41,14 +41,17 @@ namespace FluentBoilerplate.PublicContract.Providers
 
         protected abstract TType CreateInstanceOf<TType>();
 
+        private bool VerifyPermissions(IIdentity identity)
+        {
+            if (this.permissionsProvider == null)
+                return true;
+
+            return this.permissionsProvider.HasPermission(identity);
+        }
         public IResponse<TResult> TryAccess<TType, TResult>(IIdentity identity, Func<TType, TResult> useType)
         {
-            if (this.permissionsProvider != null)
-            {
-                var success = this.permissionsProvider.HasPermission(identity);
-                if (!success)
-                    return Response<TResult>.Failed;
-            }
+            if (!VerifyPermissions(identity))
+                return Response<TResult>.Failed;
 
             if (!this.types.Contains(typeof(TType)))
                 return Response<TResult>.Failed;
@@ -60,12 +63,8 @@ namespace FluentBoilerplate.PublicContract.Providers
 
         public IResponse TryAccess<TType>(IIdentity identity, Action<TType> useType)
         {
-            if (this.permissionsProvider != null)
-            {
-                var success = this.permissionsProvider.HasPermission(identity);
-                if (!success)
-                    return Response.Failed;
-            }
+            if (!VerifyPermissions(identity))
+                return Response.Failed;
 
             if (!this.types.Contains(typeof(TType)))
                 return Response.Failed;
