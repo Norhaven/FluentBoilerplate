@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FluentBoilerplate.snk" />
+    <None Include="linqpad-samples\SimpleExample.linq" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -213,9 +214,7 @@
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="linqpad-samples\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
