@@ -34,27 +34,9 @@ namespace FluentBoilerplate.Runtime.Providers
 
         protected CacheProvider() { }
 
-        internal TValue GetOrAdd(TKey key, Func<TKey, TValue> value)            
+        protected TValue GetOrAdd(TKey key, Func<TKey, TValue> value)            
         {
             return cache.GetOrAdd(key, value);
-        }
-
-        internal TValue AddOrUpdate(TKey key, TValue value)
-        {
-            return cache.AddOrUpdate(key, value, (type, current) => value);
-        }
-
-        internal bool Contains(TKey key)
-        {
-            return cache.ContainsKey(key);
-        }
-
-        internal virtual TValue TryGetValue(TKey key)
-        {
-            TValue value;
-            if (!cache.TryGetValue(key, out value))
-                return default(TValue);
-            return value;
         }
     }
 }

@@ -89,6 +89,8 @@
     <Compile Include="Runtime\ILWriterTests\LoadThis.cs" />
     <Compile Include="Runtime\Providers\ErrorHandling\TryCatchBlockProviderTests\GetTryCatchBlockFor.cs" />
     <Compile Include="Runtime\Providers\Logging\LogProviderTests\Debug.cs" />
+    <Compile Include="Runtime\Providers\PermissionsProviderTests\Merge.cs" />
+    <Compile Include="Runtime\Providers\PermissionsProviderTests\HasPermission.cs" />
     <Compile Include="Runtime\Providers\Translation\TranslationProviderTests\Translate.cs" />
     <Compile Include="Runtime\Providers\Validation\ValidationProviderTests\Validate_StringLength.cs" />
     <Compile Include="Runtime\TryCatchBlockTests\Try.cs" />
@@ -100,7 +102,10 @@
       <Name>FluentBoilerplate</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Runtime\Contexts\ContractContextBaseTests\" />
+    <Folder Include="Runtime\Contexts\ContractContextTests\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

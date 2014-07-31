@@ -61,7 +61,7 @@ namespace FluentBoilerplate.Runtime.Providers
                 rights = rights.Merge(role.Rights);
             }
 
-            return rights;
+            return rights.DefaultIfNull();
         }
         
         public bool HasPermission(IIdentity identity)

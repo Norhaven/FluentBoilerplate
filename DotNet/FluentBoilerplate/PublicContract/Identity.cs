@@ -15,6 +15,7 @@
  */
 
 using System.Collections.Immutable;
+using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate
 {
@@ -45,10 +46,10 @@ namespace FluentBoilerplate
                         IImmutableSet<IRight> permittedRights = null,
                         IImmutableSet<IRight> deniedRights = null)
         {
-            this.PermittedRoles = permittedRoles;
-            this.DeniedRoles = deniedRoles;
-            this.PermittedRights = permittedRights;
-            this.DeniedRights = deniedRights;
+            this.PermittedRoles = permittedRoles.DefaultIfNull();
+            this.DeniedRoles = deniedRoles.DefaultIfNull();
+            this.PermittedRights = permittedRights.DefaultIfNull();
+            this.DeniedRights = deniedRights.DefaultIfNull();
         }
 
         /// <summary>

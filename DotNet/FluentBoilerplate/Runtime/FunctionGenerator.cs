@@ -83,6 +83,11 @@ namespace FluentBoilerplate.Runtime
                 if (File.Exists(this.assemblySettings.FullPath))
                     File.Delete(this.assemblySettings.FullPath);
 
+                //NOTE: Outputting a physical assembly is just for testing at the moment,
+                //      and because it's a separate assembly then the components in FluentBoilerplate
+                //      that it may call will have shifty visibility, exposed as 'public' in DEBUG 
+                //      and 'internal' otherwise. Ideally, find some other way of doing this in order to
+                //      remove the conditional visibility.
                 var assemblyName = new AssemblyName(this.assemblySettings.Name);
                 var assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, this.assemblySettings.DirectoryPath);
 

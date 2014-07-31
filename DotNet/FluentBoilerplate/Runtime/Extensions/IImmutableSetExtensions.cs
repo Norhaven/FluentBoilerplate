@@ -25,6 +25,11 @@ namespace FluentBoilerplate.Runtime.Extensions
 {
     internal static class IImmutableSetExtensions
     {
+        public static IImmutableSet<T> DefaultIfNull<T>(this IImmutableSet<T> set)
+        {
+            return set ?? new T[0].ToImmutableHashSet();
+        }
+
         public static IImmutableSet<T> Merge<T>(this IImmutableSet<T> set, IEnumerable<T> extras)
         {
             if (set == null)
