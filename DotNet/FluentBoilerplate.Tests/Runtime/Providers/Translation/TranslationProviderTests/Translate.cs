@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Providers.Translation;
 
@@ -26,7 +26,7 @@ using System.IO;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProviderTests
 {
-    [TestClass]
+    [TestFixture]
     public class Translate : BasePEVerifyTest
     {
         public class DefaultType
@@ -88,35 +88,35 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
 
         private ITranslationProvider provider;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             var functionGenerator = new FunctionGenerator();
             this.provider = new TranslationProvider(functionGenerator, shouldThrowExceptions: true);
         }
 
-        [TestMethod]
+        [Test]
         public void NullToClassWillSucceed()
         {
             var result = this.provider.Translate<object, object>(null);
             result.Should().BeNull("because a null instance becomes a null class instance");
         }
         
-        [TestMethod]
+        [Test]
         public void NullToInterfaceWillSucceed()
         {
             var result = this.provider.Translate<object, ITranslationProvider>(null);
             result.Should().BeNull("because a null instance becomes a null interface instance");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void NullToStructWillNotSucceed()
         {
             this.provider.Translate<object, int>(null);
         }
 
-        [TestMethod]
+        [Test]
         public void TypeToSameTypeWillSucceed()
         {
             var from = 5;
@@ -124,7 +124,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             result.Should().Be(5, "because that's the original value");
         }
 
-        [TestMethod]
+        [Test]
         public void ByNameImplicitWillSucceed()
         {
             var instance = new ByNameImplicitInteger() { Value = 5 };
@@ -133,7 +133,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             result.Value.Should().Be(5, "because that's the original value");
         }
 
-        [TestMethod]
+        [Test]
         public void ByNameImplicitWideningConversionWillSucceed()
         {
             var instance = new ByNameImplicitInteger() { Value = 5 };
@@ -142,7 +142,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             result.Value.Should().Be(5, "because that's the original value");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PropertyTypeMismatchException))]
         public void ByNameImplicitNarrowingConversionWillNotSucceed()
         {
@@ -150,7 +150,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             this.provider.Translate<ByNameImplicitInteger, ByNameImplicitShort>(instance);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PropertyTypeMismatchException))]
         public void ByNameImplicitIncompatibleTypesWillNotSucceed()
         {
@@ -158,7 +158,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             this.provider.Translate<ByNameImplicitInteger, ByNameImplicitString>(instance);
         }
 
-        [TestMethod]
+        [Test]
         public void ByNameExplicitWideningConversionWillSucceed()
         {
             var instance = new ByNameExplicitWideningFrom() { Value = 5 };
@@ -167,7 +167,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             result.DifferentValue.Should().Be(5, "because that's the original value");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PropertyTypeMismatchException))]
         public void ByNameExplicitNarrowingConversionWillNotSucceed()
         {
@@ -175,7 +175,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Translation.TranslationProvi
             this.provider.Translate<ByNameExplicitNarrowingFrom, ByNameExplicitNarrowingTo>(instance);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PropertyTypeMismatchException))]
         public void ByNameExplicitIncompatibleTypesWillNotSucceed()
         {

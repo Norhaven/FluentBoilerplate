@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Configuration;
 using System.IO;
 using FluentBoilerplate.Runtime;
@@ -26,7 +26,7 @@ using FluentBoilerplate.Runtime.Providers.Logging;
 
 namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
 {
-    [TestClass]
+    [TestFixture]
     public class Create_LogProvider:BasePEVerifyTest
     {
         [Log]
@@ -39,7 +39,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         private FunctionGenerator functionGenerator;
         private LogProvider provider;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             this.settings = new FunctionGenerator.PhysicalAssemblySettings("Log", "dll", AppDomain.CurrentDomain.BaseDirectory);
@@ -48,7 +48,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
             this.provider = new LogProvider(this.functionGenerator, LogVisibility.Debug | LogVisibility.Warning);
         }
 
-        [TestMethod]
+        [Test]
         [Conditional("PEVERIFY")]
         public void LogProviderBodyPassesPEVerify()
         {

@@ -28,7 +28,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 #else
     internal 
 #endif
-        abstract class ImmutableContractAwareContext<TContext> : ImmutableContext<TContext>
+        abstract class ImmutableContractAwareContext<TContext> : ImmutableContext
     {
         public ImmutableContractAwareContext(IContextBundle bundle)
             : base(bundle)

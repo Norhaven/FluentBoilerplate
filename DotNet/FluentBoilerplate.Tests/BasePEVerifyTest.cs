@@ -26,18 +26,18 @@ namespace FluentBoilerplate.Tests
     using System.Text;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using System.Diagnostics;
     using System.IO;
     using System.Configuration;
     using Microsoft.Build.Utilities;
 
-    [TestClass]
+    [TestFixture]
     public class BasePEVerifyTest
     {
         public static string PeVerifyPath { get; set; }
 
-        [TestInitialize]
+        [SetUp]
         [Conditional("PEVERIFY")]
         public void FindPeVerifySetUp()
         {

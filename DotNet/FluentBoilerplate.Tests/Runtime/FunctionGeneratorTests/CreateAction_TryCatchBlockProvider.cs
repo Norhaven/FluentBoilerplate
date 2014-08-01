@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using Moq;
@@ -23,7 +23,7 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
 {
-    [TestClass]
+    [TestFixture]
     public class CreateAction_TryCatchBlockProvider:BasePEVerifyTest
     {
         private FunctionGenerator.PhysicalAssemblySettings settings;
@@ -31,7 +31,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         private TryCatchBlockProvider provider;
         private Mock<ILogProvider> log = new Mock<ILogProvider>();
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             this.settings = new FunctionGenerator.PhysicalAssemblySettings("TryCatch", "dll", AppDomain.CurrentDomain.BaseDirectory);
@@ -40,7 +40,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
             this.provider = new TryCatchBlockProvider(this.functionGenerator);
         }
 
-        [TestMethod]
+        [Test]
         public void TryCatchBodyPassesPEVerifyWithOneBlock()
         {
             var originalHandlerProvider = new ExceptionHandlerProvider(log.Object);

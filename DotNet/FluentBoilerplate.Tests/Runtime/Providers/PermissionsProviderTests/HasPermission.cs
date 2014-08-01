@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentAssertions;
 using FluentBoilerplate.Runtime.Extensions;
 using FluentBoilerplate.Runtime.Providers;
@@ -24,10 +24,10 @@ using System.Collections.Immutable;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
 {
-    [TestClass]
+    [TestFixture]
     public class HasPermission
     {
-        [TestMethod]
+        [Test]
         public void EmptyPermissionSetWillPassIfIdentityHasNoPermissions()
         {
             var provider = new PermissionsProvider(Permissions.Empty);
@@ -37,7 +37,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
             success.Should().BeTrue("because there are no permissions to check");
         }
 
-        [TestMethod]
+        [Test]
         public void RequiredPermissionSetWillPassIfIdentityHasRequiredPermissions()
         {
             var right = new Right(0, "Test Right");
@@ -50,7 +50,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
             success.Should().BeTrue("because the identity has the correct permissions");
         }
 
-        [TestMethod]
+        [Test]
         public void RequiredPermissionSetWillFailIfIdentityDoesNotHaveRequiredPermissions()
         {
             var right = new Right(0, "Test Right");

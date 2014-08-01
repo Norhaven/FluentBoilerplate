@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using FluentAssertions;
 using FluentBoilerplate.Runtime.Providers;
@@ -28,10 +28,10 @@ using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 
 namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
 {
-    [TestClass]
+    [TestFixture]
     public class Try
     {
-        [TestMethod]
+        [Test]
         public void ThrownExceptionWillBeHandled()
         {
             var message = "Error message";
@@ -53,7 +53,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             tryCatch.Try(() => { throw new Exception(message); });
         }
 
-        [TestMethod]
+        [Test]
         public void ThrownArgumentExceptionWithTwoBlocksWillBeHandled()
         {
             var message = "Error message";
@@ -77,7 +77,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             tryCatch.Try(() => { throw new ArgumentException(message); });
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void ThrownArgumentNullExceptionWithArgumentExceptionBlockWillNotHandled()
         {
@@ -99,7 +99,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             tryCatch.Try(() => { throw new ArgumentException(message); });
         }
 
-        [TestMethod]
+        [Test]
         public void BlocksAreWrittenInTheCorrectOrder()
         {
             var message = "Error message";
@@ -123,7 +123,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             tryCatch.Try(() => { throw new ArgumentException(message); });
         }
 
-        [TestMethod]
+        [Test]
         public void ExceptionHandlerCanReturnResult()
         {
             var message = "Error message";
@@ -148,7 +148,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             result.Should().Be(5, "because that's what the handler returned");
         }
 
-        [TestMethod]
+        [Test]
         public void TryBlockBodyCanReturnResult()
         {
             var handledExceptionTypes = ImmutableQueue<Type>.Empty

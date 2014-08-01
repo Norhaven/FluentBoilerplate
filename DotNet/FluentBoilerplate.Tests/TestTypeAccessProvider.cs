@@ -14,38 +14,27 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Contexts;
-using FluentBoilerplate.Messages;
-using FluentBoilerplate.Messages.Developer;
 using FluentBoilerplate.Providers;
-using FluentBoilerplate.Runtime.Providers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Runtime.Contexts
+namespace FluentBoilerplate.Tests
 {
-#if DEBUG
-    public
-#else
-    internal 
-#endif
-        abstract class ImmutableContext 
+    public class TestTypeAccessProvider : TypeAccessProvider
     {
-        protected readonly IContextBundle bundle;
-
-        internal ImmutableContext(IContextBundle bundle)
+        public TestTypeAccessProvider(IPermissionsProvider provider, IEnumerable<Type> types)
+            : base(provider, types)
         {
-            this.bundle = bundle;
         }
 
-        protected IContextBundle DowngradeErrorHandling()
+        protected override TType CreateInstanceOf<TType>()
         {
-            var downgradedErrorContext = this.bundle.Errors.Copy(includeHandlers: false);
-            return this.bundle.Copy(errorContext: downgradedErrorContext);
+            if (typeof(TType) == typeof(int))
+                return (TType)(object)1;
+            return default(TType);
         }
     }
 }

@@ -79,24 +79,10 @@ namespace FluentBoilerplate.Runtime.Contexts
                 });
         }
 
-        public IContext<TResult> Open<TType, TResult>(Func<IContext, TType, TResult> action)
+        public ITypeAccessBuilder<TType> Open<TType>()
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
-                () =>
-            {
-                var safeCall = this.bundle.Errors.ExtendAround(action);
-                var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(bundle: downgradedSettings);
-                var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => safeCall(downgradedContext, instance));
-
-                if (!response.IsSuccess)
-                    throw new OperationWasNotSuccessfulException(response.Result);
-                
-                return new ResultBoilerplateContext<TResult>(this.bundle,
-                                                             this.Identity,
-                                                             this.contractBundle,
-                                                             response.Content);               
-            });
+                () => new TypeAccessBuilder<TType>(this.Identity, this.bundle, this.contractBundle, this));            
         }
         
         public IContext Do(Action<IContext> action)

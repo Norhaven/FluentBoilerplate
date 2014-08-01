@@ -39,6 +39,7 @@ namespace FluentBoilerplate
         public static IContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null)
         {
             var actualIdentity = identity ?? Identity.Default;
+            var actualTypeAccessProvider = accessProvider ?? TypeAccessProvider.Empty;
             var functionGenerator = new FunctionGenerator();
             var logProvider = new LogProvider(functionGenerator, LogVisibility.All);
             var tryCatchProvider = new TryCatchBlockProvider(functionGenerator);
@@ -51,7 +52,7 @@ namespace FluentBoilerplate
             var settings = new ContextBundle(PermissionsProvider.Empty,
                                              errorContext: errorContext,
                                              translationProvider: translationProvider,
-                                             accessProvider: accessProvider,
+                                             accessProvider: actualTypeAccessProvider,
                                              validationProvider: validationProvider);
 
             return new InitialBoilerplateContext<ContractContext>(settings, actualIdentity, null);

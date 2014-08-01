@@ -15,16 +15,16 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using FluentBoilerplate.Runtime;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.ErrorHandling.TryCatchBlockProviderTests
 {
-    [TestClass]
+    [TestFixture]
     public class GetTryCatchBlockFor
     {
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             //var generator = new FunctionGenerator();

@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Runtime.Contexts;
 using FluentAssertions;
@@ -24,10 +24,10 @@ using System.Collections.Immutable;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
 {
-    [TestClass]
+    [TestFixture]
     public class Merge
     {
-        [TestMethod]
+        [Test]
         public void NoNewItemsWillReturnIdenticalInstance()
         {
             var provider = new PermissionsProvider(Permissions.Empty);
@@ -40,7 +40,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
             merged.HasRequiredRights.Should().Be(provider.HasRequiredRights, "because it's an identical instance");
         }
 
-        [TestMethod]
+        [Test]
         public void NewRightsOnTopOfEmptyProviderWillReturnProviderWithNewRights()
         {
             var provider = new PermissionsProvider(Permissions.Empty);
@@ -53,7 +53,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
             merged.HasRequiredRights.Should().Be(true, "because required rights were added");
         }
 
-        [TestMethod]
+        [Test]
         public void NewRightsOnTopOfProviderWithRightsWillReturnProviderWithMergedRights()
         {
             var permissions = new Permissions(requiredRights: new IRight[] { new Right(1, "Some Test Right") }.ToImmutableHashSet());

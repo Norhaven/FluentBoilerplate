@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Configuration;
 using System.IO;
 using FluentBoilerplate.Runtime;
@@ -25,7 +25,7 @@ using System.Diagnostics;
 
 namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
 {
-    [TestClass]
+    [TestFixture]
     public class Create_TranslationProvider:BasePEVerifyTest
     {
         public class TranslateFrom
@@ -42,7 +42,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         private FunctionGenerator functionGenerator;
         private TranslationProvider provider;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             this.settings = new FunctionGenerator.PhysicalAssemblySettings("Translate", "dll", AppDomain.CurrentDomain.BaseDirectory);
@@ -51,7 +51,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
             this.provider = new TranslationProvider(this.functionGenerator, shouldThrowExceptions: true);
         }
 
-        [TestMethod]
+        [Test]
         [Conditional("PEVERIFY")]
         public void TranslatorBodyPassesPEVerify()
         {

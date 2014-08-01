@@ -15,14 +15,14 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Diagnostics;
 using FluentBoilerplate.Runtime;
 using FluentBoilerplate.Runtime.Providers.Validation;
 
 namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
 {
-    [TestClass]
+    [TestFixture]
     public class Create_ValidationProvider:BasePEVerifyTest
     {
         public class BasicValidatedTest
@@ -38,7 +38,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         private FunctionGenerator functionGenerator;
         private ValidationProvider provider;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             this.settings = new FunctionGenerator.PhysicalAssemblySettings("Translate", "dll", AppDomain.CurrentDomain.BaseDirectory);
@@ -48,7 +48,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         }
 
 
-        [TestMethod]
+        [Test]
         [Conditional("PEVERIFY")]
         public void ValidatorBodyPassessPEVerify()
         {            

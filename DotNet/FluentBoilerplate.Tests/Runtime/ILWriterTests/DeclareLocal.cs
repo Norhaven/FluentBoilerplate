@@ -15,16 +15,16 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Reflection.Emit;
 using FluentBoilerplate.Runtime;
 
 namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
 {
-    [TestClass]
+    [TestFixture]
     public class DeclareLocal
     {
-        [TestMethod]
+        [Test]
         public void DeclareLocalDoesNotUnbalanceTheStack()
         {
             var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
@@ -34,7 +34,7 @@ namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
             var localBuilder = il.DeclareLocal(typeof(object));            
             il.VerifyStack();
         }
-        [TestMethod]
+        [Test]
         public void DeclareLocalOverloadDoesNotUnbalanceTheStack()
         {
             var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);

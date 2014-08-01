@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Providers.Validation;
 using FluentBoilerplate.Runtime;
@@ -23,7 +23,7 @@ using FluentAssertions;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProviderTests
 {
-    [TestClass]
+    [TestFixture]
     public class Validate_StringLength
     {
         public class MinLengthTest
@@ -46,7 +46,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
 
         private IValidationProvider provider;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             var settings = new FunctionGenerator.PhysicalAssemblySettings("Test", "dll", AppDomain.CurrentDomain.BaseDirectory);
@@ -54,7 +54,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
             this.provider = new ValidationProvider(functionGenerator, shouldThrowExceptions: true);
         }
 
-        [TestMethod]
+        [Test]
         public void StringUnderMinLengthWillFail()
         {
             var instance = new MinLengthTest { Value = "a" };
@@ -65,7 +65,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
             result.IsSuccess.Should().BeFalse("because the string is less than the minimum length");
         }
 
-        [TestMethod]
+        [Test]
         public void StringAboveMaxLengthWillSucceedWhenMaxIsZero()
         {
             var instance = new MaxLengthTest { Value = "aaaaa" };
@@ -76,7 +76,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
             result.IsSuccess.Should().BeFalse("because the string is greater than the maximum length");
         }
 
-        [TestMethod]
+        [Test]
         public void StringAboveMaxLengthWillFail()
         {
             var instance = new MaxLengthTest { Value = "aaaaa" };
@@ -87,7 +87,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
             result.IsSuccess.Should().BeFalse("because the string is greater than the maximum length");
         }
 
-        [TestMethod]
+        [Test]
         public void StringWithinMinimumAndMaximumRangeWillSucceed()
         {
             var instance = new MinLengthTest { Value = "aaaa" };
@@ -98,7 +98,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
             result.IsSuccess.Should().BeTrue("because the string is within the min/max bounds");
         }
 
-        [TestMethod]
+        [Test]
         public void IncompatiblePropertyTypeWillReceiveNotApplicableResult()
         {
             var instance = new IncompatibleTest { Value = 5 };

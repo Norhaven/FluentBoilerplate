@@ -15,16 +15,16 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Reflection.Emit;
 using FluentBoilerplate.Runtime;
 
 namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
 {
-    [TestClass]
+    [TestFixture]
     public class CatchBlock
     {
-        [TestMethod]
+        [Test]
         public void CatchBlockDoesNotUnbalanceTheStack()
         {
             var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
@@ -37,7 +37,7 @@ namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
             il.VerifyStack();
         }
 
-        [TestMethod]
+        [Test]
         public void CatchBlockOverloadDoesNotUnbalanceTheStack()
         {
             var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);

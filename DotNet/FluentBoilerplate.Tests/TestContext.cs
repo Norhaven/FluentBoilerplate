@@ -15,37 +15,30 @@
  */
 
 using FluentBoilerplate.Contexts;
-using FluentBoilerplate.Messages;
-using FluentBoilerplate.Messages.Developer;
 using FluentBoilerplate.Providers;
-using FluentBoilerplate.Runtime.Providers;
+using FluentBoilerplate.Runtime.Contexts;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Runtime.Contexts
+namespace FluentBoilerplate.Tests
 {
-#if DEBUG
-    public
-#else
-    internal 
-#endif
-        abstract class ImmutableContext 
+    public sealed class TestContext
     {
-        protected readonly IContextBundle bundle;
-
-        internal ImmutableContext(IContextBundle bundle)
+        public IIdentity Identity { get; set; }
+        public IContext Boilerplate { get; set; }
+        public ITypeAccessProvider Access { get; set; }
+        public IImmutableErrorContext Errors { get; set; }
+        public IPermissionsProvider Permissions { get; set; }
+        public ITranslationProvider Translation { get; set; }
+        public IValidationProvider Validation { get; set; }
+        public bool ResultExpected { get; set; }
+        public IResponse Response { get; set; }
+       
+        public TestContext()
         {
-            this.bundle = bundle;
-        }
-
-        protected IContextBundle DowngradeErrorHandling()
-        {
-            var downgradedErrorContext = this.bundle.Errors.Copy(includeHandlers: false);
-            return this.bundle.Copy(errorContext: downgradedErrorContext);
         }
     }
 }

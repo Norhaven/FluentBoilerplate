@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime;
 using Moq;
 using FluentAssertions;
@@ -26,10 +26,10 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
 {
-    [TestClass]
+    [TestFixture]
     public class Handle
     {
-        [TestMethod]
+        [Test]
         public void ExceptionIsHandled()
         {
             var log = new Mock<ILogProvider>(MockBehavior.Strict).AllowEveryError();
@@ -43,7 +43,7 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
             log.Verify();
         }
 
-        [TestMethod]
+        [Test]
         public void ExceptionIsLogged()
         {
             var exception = new Exception("Error message");

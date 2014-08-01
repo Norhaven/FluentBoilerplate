@@ -38,7 +38,7 @@ namespace FluentBoilerplate
     /// Represents a response that contains an instance
     /// </summary>
     /// <typeparam name="T">The instance type</typeparam>
-    public interface IResponse<T>:IResponse
+    public interface IResponse<out T>:IResponse
     {
         /// <summary>
         /// Gets the response content

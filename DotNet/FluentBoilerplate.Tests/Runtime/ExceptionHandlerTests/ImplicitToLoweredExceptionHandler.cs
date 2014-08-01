@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Messages.Developer;
 using FluentBoilerplate.Runtime.Extensions;
 using Moq;
@@ -26,10 +26,10 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
 {
-    [TestClass]
+    [TestFixture]
     public class ImplicitToLoweredExceptionHandler
     {
-        [TestMethod]
+        [Test]
         public void BaseExceptionDoesNotChangeHandlingBehavior()
         {
             var exception = new ArgumentException("Error message");

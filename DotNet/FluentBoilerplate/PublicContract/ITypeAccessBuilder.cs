@@ -15,22 +15,21 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
+namespace FluentBoilerplate
 {
-    [TestClass]
-    public class New
+    public interface ITypeAccessBuilder<T>
     {
-        [TestMethod]
-        public void NewWithNoArgumentsCreatesContextSuccessfully()
-        {
-            var context = Boilerplate.New();
+        IContext AndDo(Action<IContext, T> useType);
+        IContext<TResult> AndGet<TResult>(Func<IContext, T, TResult> useType);
+    }
 
-            context.Should().NotBeNull("because you should always get a context back");
-        }
-            //var context = Boilerplate.New(accessProvider: TypeAccessProvider.: Identity.Default);
-            //context.Should().NotBeNull("because you should always get a context back");
+    public interface ITypeAccessBuilder<T, TResult>
+    {
+        IContext<TResult> AndGet(Func<IContext, T, TResult> useType);
     }
 }

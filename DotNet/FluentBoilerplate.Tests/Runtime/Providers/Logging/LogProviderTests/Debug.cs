@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime.Providers.Logging;
 using FluentBoilerplate.Runtime;
 using System.Diagnostics;
@@ -24,7 +24,7 @@ using FluentAssertions;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.Logging.LogProviderTests
 {
-    [TestClass]
+    [TestFixture]
     public class Debug
     {
         [Log]
@@ -86,14 +86,14 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Logging.LogProviderTests
         private LogProvider provider;
         private IFunctionGenerator generator;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             this.generator = new FunctionGenerator();
             this.provider = new LogProvider(this.generator, LogVisibility.Debug);
         }
 
-        [TestMethod]
+        [Test]
         public void LoggedTypeWithLogDebugWillWriteToLog()
         {
             var listener = new TestTraceListener();

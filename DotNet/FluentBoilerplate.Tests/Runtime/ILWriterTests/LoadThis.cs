@@ -15,16 +15,16 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Reflection.Emit;
 using FluentBoilerplate.Runtime;
 
 namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
 {
-    [TestClass]
+    [TestFixture]
     public class LoadThis
     {
-        //[TestMethod]
+        //[Test]
         //public void LoadAndPopWillNotUnbalanceTheStack()
         //{
         //    var method = new DynamicMethod(String.Empty, typeof(void), Type.EmptyTypes);
@@ -36,7 +36,7 @@ namespace FluentBoilerplate.Tests.Runtime.ILWriterTests
         //    il.VerifyStack();        
         //}
 
-        //[TestMethod]
+        //[Test]
         //[ExpectedException(typeof(ArgumentException))]
         //public void LoadWithoutPopWillUnbalanceTheStack()
         //{

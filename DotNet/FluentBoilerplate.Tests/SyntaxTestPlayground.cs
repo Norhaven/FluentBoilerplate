@@ -22,15 +22,15 @@ using System.Threading.Tasks;
 using System.Collections.Immutable;
 
 using FluentBoilerplate;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Diagnostics;
 
 namespace FluentBoilerplate.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class SyntaxTestPlayground
     {
-        [TestMethod]
+        [Test]
         public void Test()
         {
             var stopwatch = new Stopwatch();

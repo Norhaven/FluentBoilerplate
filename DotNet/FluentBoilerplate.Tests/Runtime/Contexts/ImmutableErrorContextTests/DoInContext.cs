@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime.Contexts;
 using FluentBoilerplate.Runtime.Providers.Logging;
 using FluentBoilerplate.Providers;
@@ -9,10 +9,10 @@ using FluentBoilerplate.Contexts;
 
 namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
 {
-    [TestClass]
+    [TestFixture]
     public class DoInContext
     {
-        [TestMethod]
+        [Test]
         public void WillPassWhenNoHandlersArePresent()
         {
             var success = false;
@@ -32,7 +32,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void HandledExceptionWillNotEscapeHandler()
         {
             var boilerplate = Boilerplate.New();
@@ -43,7 +43,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
                 .Do(c => { throw new ArgumentException("Error"); });
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void UnhandledExceptionWillEscapeHandler()
         {

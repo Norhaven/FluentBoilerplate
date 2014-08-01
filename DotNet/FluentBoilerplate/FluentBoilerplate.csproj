@@ -66,6 +66,7 @@
     <Compile Include="PublicContract\ContractExit.cs" />
     <Compile Include="PublicContract\Exceptions\OperationWasNotSuccessfulException.cs" />
     <Compile Include="PublicContract\Identity.cs" />
+    <Compile Include="PublicContract\ITypeAccessBuilder.cs" />
     <Compile Include="PublicContract\IValidationAttribute.cs" />
     <Compile Include="PublicContract\Providers\TypeAccessProvider.cs" />
     <Compile Include="PublicContract\Right.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="PublicContract\Traits\IContractualTrait.cs" />
     <Compile Include="PublicContract\Exceptions\ContractViolationException.cs" />
     <Compile Include="PublicContract\IConversionBuilder.cs" />
+    <Compile Include="PublicContract\Traits\IMergeableTrait.cs" />
+    <Compile Include="Runtime\Contexts\ContractBundle.cs" />
     <Compile Include="Runtime\Contexts\ContractContextBase.cs" />
     <Compile Include="Runtime\Contexts\IContextBundle.cs" />
     <Compile Include="Runtime\Contexts\IElevatableContext.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Runtime\Contexts\ContextBundle.cs" />
     <Compile Include="PublicContract\Providers\ITranslationProvider.cs" />
     <Compile Include="PublicContract\Providers\IValidationProvider.cs" />
+    <Compile Include="Runtime\Extensions\IImmutableQueueExtensions.cs" />
     <Compile Include="Runtime\Extensions\StringExtensions.cs" />
     <Compile Include="PublicContract\Contexts\IImmutableErrorContext.cs" />
     <Compile Include="Runtime\Contexts\ImmutableContext.cs" />
@@ -182,6 +186,7 @@
     <Compile Include="Runtime\Providers\Validation\Validated.cs" />
     <Compile Include="Runtime\Providers\Validation\ValidationResult.cs" />
     <Compile Include="Runtime\Response.cs" />
+    <Compile Include="Runtime\TypeAccessBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FluentBoilerplate.snk" />

@@ -16,6 +16,7 @@ limitations under the License.
 
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime;
+using FluentBoilerplate.Runtime.Providers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -27,6 +28,14 @@ namespace FluentBoilerplate.Providers
 {
     public abstract class TypeAccessProvider:ITypeAccessProvider
     {
+        private sealed class EmptyProvider : TypeAccessProvider
+        {
+            public EmptyProvider() : base(PermissionsProvider.Empty, Type.EmptyTypes) { }
+            protected override TType CreateInstanceOf<TType>() { return default(TType); }
+        }
+
+        public static ITypeAccessProvider Empty { get { return new EmptyProvider(); } }
+
         protected readonly IPermissionsProvider permissionsProvider;
         protected readonly IImmutableSet<Type> types;
 
@@ -44,7 +53,7 @@ namespace FluentBoilerplate.Providers
         private bool VerifyPermissions(IIdentity identity)
         {
             if (this.permissionsProvider == null)
-                return true;
+                return false;
 
             return this.permissionsProvider.HasPermission(identity);
         }

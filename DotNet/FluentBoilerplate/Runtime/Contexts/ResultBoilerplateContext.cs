@@ -29,12 +29,14 @@
     using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Messages.User;
 using FluentBoilerplate.Contexts;
+using FluentBoilerplate.Traits;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
     internal class ResultBoilerplateContext<TResult> :
         ImmutableContractAwareContext<ResultBoilerplateContext<TResult>>,
-        IContext<TResult>
+        IContext<TResult>,
+        IMergeableTrait<TResult>
     {
         private readonly IContractBundle contractBundle;
         
@@ -83,20 +85,10 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
 
-        public IContext<TResult> Open<TType>(Func<IContext<TResult>, TType, TResult> action)
+        public ITypeAccessBuilder<TType, TResult> Open<TType>()
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
-                () =>
-                {
-                    var safeCall = this.bundle.Errors.ExtendAround(action);
-                    var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new ResultBoilerplateContext<TResult>(downgradedSettings, this.Identity, this.contractBundle, this.Result);
-                    var response = this.bundle.Access.TryAccess<TType, TResult>(this.Identity, instance => safeCall(serviceContext, instance));
-
-                    if (response.IsSuccess)
-                        return MergeCopy(result: response.Content);
-                    return this;
-                });
+                () => new TypeAccessBuilder<TType, TResult>(this.Identity, this.bundle, this.contractBundle, this, this.Result));
         }
         
         public IContext<TResult> Do(Action<IContext> action)
@@ -146,7 +138,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
         }
 
-        public IContext<TResult> MergeCopy(ContextBundle settings = null,
+        public IContext<TResult> MergeCopy(IContextBundle settings = null,
                                            IIdentity account = null,
                                            IContractBundle contractBundle = null,
                                            TResult result = default(TResult))

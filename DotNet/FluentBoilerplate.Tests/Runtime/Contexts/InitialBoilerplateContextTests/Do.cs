@@ -15,7 +15,7 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using FluentBoilerplate.Runtime.Contexts;
 
 using FluentAssertions;
@@ -30,7 +30,7 @@ using FluentBoilerplate.Runtime;
 
 namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTests
 {
-    [TestClass]
+    [TestFixture]
     public class Do
     {
         public class ValidationFailureTest
@@ -39,7 +39,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             public string Text { get { return null; } }
         }
 
-        [TestMethod]
+        [Test]
         public void WillPerformActionWithNoContract()
         {
             var permissions = new Mock<IPermissionsProvider>(MockBehavior.Strict);
@@ -69,7 +69,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             success.Should().BeTrue("because the action should be performed");
         }
 
-        [TestMethod]
+        [Test]
         public void WillPerformActionWithOneExceptionHandler()
         {
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
@@ -102,7 +102,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             success.Should().BeTrue("because the action should be performed");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ContractViolationException))]
         public void WillNotPerformActionWithFailedRequirement()
         {
@@ -136,7 +136,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             context.Do(_ => { });
         }
 
-        [TestMethod]
+        [Test]
         public void WillPerformActionWithPassedRequirement()
         {
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
@@ -172,7 +172,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             success.Should().BeTrue("because the requirement should have passed");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ContractViolationException))]
         public void WillNotPerformActionWithFailedValidation()
         {
@@ -204,7 +204,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             context.Do(_ => { });
         }
 
-        [TestMethod]
+        [Test]
         public void WillPerformActionWithPassedValidation()
         {
             IImmutableErrorContext errorContext = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);

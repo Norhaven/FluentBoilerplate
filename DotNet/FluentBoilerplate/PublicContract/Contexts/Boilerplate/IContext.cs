@@ -48,10 +48,8 @@ namespace FluentBoilerplate
         /// Opens a particular type for use (e.g. service/database connection), applying any existing contract
         /// </summary>
         /// <typeparam name="TType">The requested type</typeparam>
-        /// <typeparam name="TResult">The result type</typeparam>
-        /// <param name="action">How you will use the type to get the result</param>
-        /// <returns>A boilerplate context that includes the result</returns>
-        IContext<TResult> Open<TType, TResult>(Func<IContext, TType, TResult> action);
+        /// <returns>A builder for access to this type</returns>
+        ITypeAccessBuilder<TType> Open<TType>();
 
         /// <summary>
         /// Performs an action, applying any existing contract
@@ -106,10 +104,8 @@ namespace FluentBoilerplate
         /// Opens a particular type for use (e.g. service/database connection), applying any existing contract
         /// </summary>
         /// <typeparam name="TType">The requested type</typeparam>
-        /// <typeparam name="TResult">The result type</typeparam>
-        /// <param name="action">How you will use the type to get the result</param>
-        /// <returns>A boilerplate context that includes the result</returns>
-        IContext<TResult> Open<TType>(Func<IContext<TResult>, TType, TResult> action);
+        /// <returns>A builder for access to this type</returns>
+        ITypeAccessBuilder<TType, TResult> Open<TType>();
 
         /// <summary>
         /// Performs an action, applying any existing contract

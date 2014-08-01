@@ -14,38 +14,20 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Contexts;
-using FluentBoilerplate.Messages;
-using FluentBoilerplate.Messages.Developer;
-using FluentBoilerplate.Providers;
-using FluentBoilerplate.Runtime.Providers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Runtime.Contexts
+namespace FluentBoilerplate.Runtime.Extensions
 {
-#if DEBUG
-    public
-#else
-    internal 
-#endif
-        abstract class ImmutableContext 
+    internal static class IImmutableQueueExtensions
     {
-        protected readonly IContextBundle bundle;
-
-        internal ImmutableContext(IContextBundle bundle)
+        public static IImmutableQueue<T> DefaultIfNull<T>(this IImmutableQueue<T> queue)
         {
-            this.bundle = bundle;
-        }
-
-        protected IContextBundle DowngradeErrorHandling()
-        {
-            var downgradedErrorContext = this.bundle.Errors.Copy(includeHandlers: false);
-            return this.bundle.Copy(errorContext: downgradedErrorContext);
+            return queue ?? ImmutableQueue<T>.Empty;
         }
     }
 }
