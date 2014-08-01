@@ -115,7 +115,6 @@
     <Compile Include="Runtime\ILWriterTests\CatchBlock.cs" />
     <Compile Include="Runtime\ILWriterTests\DeclareLocal.cs" />
     <Compile Include="Runtime\ILWriterTests\LoadThis.cs" />
-    <Compile Include="Runtime\Providers\ErrorHandling\TryCatchBlockProviderTests\GetTryCatchBlockFor.cs" />
     <Compile Include="Runtime\Providers\Logging\LogProviderTests\Debug.cs" />
     <Compile Include="Runtime\Providers\PermissionsProviderTests\Merge.cs" />
     <Compile Include="Runtime\Providers\PermissionsProviderTests\HasPermission.cs" />
@@ -135,6 +134,7 @@
   <ItemGroup>
     <Folder Include="Runtime\Contexts\ContractContextBaseTests\" />
     <Folder Include="Runtime\Contexts\ContractContextTests\" />
+    <Folder Include="Runtime\Providers\ErrorHandling\TryCatchBlockProviderTests\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
