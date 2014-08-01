@@ -93,6 +93,12 @@
     </Compile>
     <Compile Include="PublicContract\Providers\TypeAccessProviderTests\TryAccessSteps.cs" />
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\DoInContext.cs" />
+    <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RunWithErrorHandling.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandlingSteps.cs" />
     <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\Do.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\Handle.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\ImplicitToLoweredExceptionHandler.cs" />
@@ -135,6 +141,10 @@
     <None Include="PublicContract\Providers\TypeAccessProviderTests\TryAccess.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TryAccess.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RunWithErrorHandling.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Choose>

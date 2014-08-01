@@ -24,6 +24,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Extensions;
+using System.Collections.Immutable;
 
 namespace FluentBoilerplate.Runtime
 {
@@ -74,20 +75,36 @@ namespace FluentBoilerplate.Runtime
             Emit(OpCodes.Pop);
         }
 
-        public void TryCatch(Action<Label> tryBody, IEnumerable<Action<Label>> catchBlocks)
+        public Label DefineLabel()
         {
-            var endOfBlock = il.BeginExceptionBlock();
+            return this.il.DefineLabel();
+        }
 
-            tryBody(endOfBlock);
+        public void TryCatch(Action<Label> tryBody, IEnumerable<Action<Label>> getCatchBlocks)
+        {
+            var catchBlocks = getCatchBlocks.ToArray();
 
-            Emit(OpCodes.Leave, endOfBlock);
-
-            foreach (var block in catchBlocks)
-            {
-                block(endOfBlock);
+            if (catchBlocks.Length == 0)
+            {  
+                var endOfTry = DefineLabel();
+                tryBody(endOfTry);
+                MarkLabel(endOfTry);
             }
+            else
+            {
+                var endOfBlock = il.BeginExceptionBlock();
 
-            il.EndExceptionBlock();
+                tryBody(endOfBlock);
+
+                Emit(OpCodes.Leave, endOfBlock);
+
+                foreach (var block in catchBlocks)
+                {
+                    block(endOfBlock);
+                }
+
+                il.EndExceptionBlock();
+            }
         }
 
         public void WriteIncrement(LocalBuilder local, int number)

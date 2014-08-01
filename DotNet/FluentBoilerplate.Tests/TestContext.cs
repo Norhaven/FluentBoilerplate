@@ -36,6 +36,8 @@ namespace FluentBoilerplate.Tests
         public IValidationProvider Validation { get; set; }
         public bool ResultExpected { get; set; }
         public IResponse Response { get; set; }
+        public Action CustomAction { get; set; }
+        public Exception UnhandledException { get; set; }
        
         public TestContext()
         {
