@@ -92,7 +92,6 @@
       <DependentUpon>TryAccess.feature</DependentUpon>
     </Compile>
     <Compile Include="PublicContract\Providers\TypeAccessProviderTests\TryAccessSteps.cs" />
-    <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\DoInContext.cs" />
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -100,6 +99,12 @@
     </Compile>
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandlingSteps.cs" />
     <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\Do.cs" />
+    <Compile Include="Runtime\ExceptionHandlerTests\ExceptionHandlersAreStoredTogether.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionHandlersAreStoredTogether.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\ExceptionHandlerTests\ExceptionHandlersAreStoredTogetherSteps.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\Handle.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\ImplicitToLoweredExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -145,6 +150,10 @@
     <None Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RunWithErrorHandling.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\ExceptionHandlerTests\ExceptionHandlersAreStoredTogether.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExceptionHandlersAreStoredTogether.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Choose>

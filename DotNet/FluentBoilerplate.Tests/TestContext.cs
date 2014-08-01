@@ -17,6 +17,7 @@
 using FluentBoilerplate.Contexts;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Contexts;
+using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,8 @@ namespace FluentBoilerplate.Tests
         public IResponse Response { get; set; }
         public Action CustomAction { get; set; }
         public Exception UnhandledException { get; set; }
+        public IExceptionHandler<Exception> NonSpecificExceptionHandler { get; set; }
+        public IExceptionHandler<ArgumentException> SpecificExceptionHandler { get; set; }
        
         public TestContext()
         {
