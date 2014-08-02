@@ -21,24 +21,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Runtime.Extensions
+namespace FluentBoilerplate.Tests
 {
-    internal static class IImmutableSetExtensions
+    public sealed class TestPermissions
     {
-        public static IImmutableSet<T> DefaultIfNull<T>(this IImmutableSet<T> set)
-        {
-            return set ?? new T[0].ToImmutableHashSet();
-        }
+        public static readonly IRight CanUseBasicThings = new Right(1, "Can use basic things");
 
-        public static IImmutableSet<T> Merge<T>(this IImmutableSet<T> set, IEnumerable<T> extras)
-        {
-            if (set == null)
-                return extras.ToImmutableHashSet();
-
-            if (extras == null)
-                return set;
-
-            return set.Union(extras);
-        }
+        public static readonly IImmutableSet<IRight> BasicRights = new IRight[] { TestPermissions.CanUseBasicThings }.ToImmutableHashSet();
+        public static readonly IImmutableSet<IRight> NoRights = new IRight[0].ToImmutableHashSet();
     }
 }

@@ -44,6 +44,7 @@ namespace FluentBoilerplate.Tests
         public bool ContractRequirementsShouldPass { get; set; }
         public bool ArgumentExceptionHandlerShouldBeRun { get; set; }
         public bool ExceptionHandlerShouldBeRun { get; set; }
+        public bool IdentityHasPermission { get; set; }
        
         public TestContext()
         {

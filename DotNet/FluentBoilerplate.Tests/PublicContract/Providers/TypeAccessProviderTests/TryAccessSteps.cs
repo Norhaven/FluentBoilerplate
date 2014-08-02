@@ -27,7 +27,6 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
     [Binding]
     public class TryAccessSteps
     {
-        private readonly IImmutableSet<IRight> rights = new IRight[] { new Right(0, "Test Right") }.ToImmutableHashSet();
         private readonly TestContext testContext;
         
         public TryAccessSteps(TestContext testContext)
@@ -52,10 +51,10 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
             this.testContext.Response = null;
         }
 
-        [Given(@"I have a provider with required permissions")]
+        [Given(@"I have an access provider with required permissions")]
         public void GivenIHaveAProviderWithRequiredPermissions()
         {            
-            var permissions = new Permissions(requiredRights: this.rights);
+            var permissions = new Permissions(requiredRights: TestPermissions.BasicRights);
             var permissionsProvider = new PermissionsProvider(permissions);
             this.testContext.Access = new TestTypeAccessProvider(permissionsProvider, new[] { typeof(int) });
         }
@@ -66,7 +65,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
             this.testContext.Identity = Identity.Default;
         }
 
-        [Given(@"I have a provider with no permissions")]
+        [Given(@"I have an access provider with no permissions")]
         public void GivenIHaveAProviderWithNoPermissions()
         {
             this.testContext.Access = new TestTypeAccessProvider(PermissionsProvider.Empty, new[] { typeof(int) });
@@ -75,7 +74,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
         [Given(@"I have an identity with permissions")]
         public void GivenIHaveAnIdentityWithPermissions()
         {
-            this.testContext.Identity = new Identity(permittedRights: this.rights);
+            this.testContext.Identity = new Identity(permittedRights: TestPermissions.BasicRights);
         }
 
         [When(@"I try to access the type")]

@@ -127,7 +127,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("I have no identity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
- testRunner.And("I have a provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
  testRunner.When("I create the boilerplate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
@@ -151,7 +151,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
  testRunner.And("I have an identity with permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.And("I have a provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
  testRunner.When("I create the boilerplate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 36

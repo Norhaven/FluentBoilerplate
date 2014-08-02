@@ -23,7 +23,7 @@ Scenario: Custom identity is present
 Scenario: Custom type access provider is present
 	Given I have asked for a new boilerplate
 	And I have no identity
-	And I have a provider with no permissions
+	And I have an access provider with no permissions
 	When I create the boilerplate
 	Then I should receive an instance of a boilerplate context with the default identity and the custom type access
 
@@ -31,6 +31,6 @@ Scenario: Custom type access provider is present
 Scenario: Custom identity and custom type access provider are present
 	Given I have asked for a new boilerplate
 	And I have an identity with permissions
-	And I have a provider with required permissions
+	And I have an access provider with required permissions
 	When I create the boilerplate
 	Then I should receive an instance of a boilerplate context with the custom identity and the custom type access

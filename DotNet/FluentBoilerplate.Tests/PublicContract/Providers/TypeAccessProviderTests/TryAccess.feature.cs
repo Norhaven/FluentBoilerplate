@@ -77,7 +77,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.Given("I want to access a custom type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And("I have a provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
  testRunner.And("I have an identity with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
@@ -100,7 +100,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.Given("I want to access a custom type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 17
- testRunner.And("I have a provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.And("I have an identity with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
@@ -123,7 +123,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
  testRunner.Given("I want to access a custom type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
- testRunner.And("I have a provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
  testRunner.And("I have an identity with permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
  testRunner.Given("I want to access a custom type", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
- testRunner.And("I have a provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
  testRunner.And("I have an identity with permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
@@ -192,7 +192,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 48
  testRunner.Given("I want to access a custom type and get a result", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
- testRunner.And("I have a provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
  testRunner.And("I have an identity with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
@@ -215,7 +215,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 56
  testRunner.Given("I want to access a custom type and get a result", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 57
- testRunner.And("I have a provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
  testRunner.And("I have an identity with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
@@ -238,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 64
  testRunner.Given("I want to access a custom type and get a result", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 65
- testRunner.And("I have a provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with no permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
  testRunner.And("I have an identity with permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
@@ -261,7 +261,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 72
  testRunner.Given("I want to access a custom type and get a result", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 73
- testRunner.And("I have a provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an access provider with required permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
  testRunner.And("I have an identity with permissions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
