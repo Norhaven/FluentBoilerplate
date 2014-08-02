@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Providers.WCF
 {
-    public class WcfServiceClient<TService>: IWcfService where TService:class
+    public sealed class WcfServiceClient<TService>: IWcfService where TService:class
     {   
         private enum WcfInitializationKind
         {
@@ -55,7 +55,14 @@ namespace FluentBoilerplate.Providers.WCF
 
         public IWcfClient OpenClient()
         {
-            switch(this.initializationKind)
+            var client = CreateClient();
+            client.Open();
+            return client;
+        }
+
+        private ChannelClient<TService> CreateClient()
+        {
+            switch (this.initializationKind)
             {
                 case WcfInitializationKind.EndpointName: return new ChannelClient<TService>(this.endpointName);
                 case WcfInitializationKind.BindingAndEndpointAddress: return new ChannelClient<TService>(this.binding, this.endpointAddress);

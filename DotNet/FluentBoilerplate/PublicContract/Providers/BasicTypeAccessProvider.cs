@@ -23,7 +23,7 @@ using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate.Providers
 {
-    public class BasicTypeAccessProvider:TypeAccessProvider
+    public sealed class BasicTypeAccessProvider:TypeAccessProvider
     {
         private readonly ITypeProvider[] typeProviders;
 

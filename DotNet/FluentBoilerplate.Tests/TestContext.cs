@@ -21,6 +21,7 @@ using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,6 +46,8 @@ namespace FluentBoilerplate.Tests
         public bool ArgumentExceptionHandlerShouldBeRun { get; set; }
         public bool ExceptionHandlerShouldBeRun { get; set; }
         public bool IdentityHasPermission { get; set; }
+        public ServiceHost HostedWcfService { get; set; }
+        public bool WcfCallWasSuccessful { get; set; }
        
         public TestContext()
         {

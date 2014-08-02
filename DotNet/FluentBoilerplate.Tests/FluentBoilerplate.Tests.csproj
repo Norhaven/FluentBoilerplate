@@ -58,6 +58,7 @@
       <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TechTalk.SpecFlow">
@@ -79,6 +80,7 @@
   <ItemGroup>
     <Compile Include="BasePEVerifyTest.cs" />
     <Compile Include="BoolExtensions.cs" />
+    <Compile Include="ITestWcfService.cs" />
     <Compile Include="Mock.cs" />
     <Compile Include="MockILogExtensions.cs" />
     <Compile Include="PublicContract\BoilerplateTests\BoilerplateCreation.feature.cs">
@@ -93,6 +95,12 @@
       <DependentUpon>TryAccess.feature</DependentUpon>
     </Compile>
     <Compile Include="PublicContract\Providers\TypeAccessProviderTests\TryAccessSteps.cs" />
+    <Compile Include="PublicContract\Providers\WCF\CanConnectThroughWcf.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CanConnectThroughWcf.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PublicContract\Providers\WCF\CanConnectThroughWcfSteps.cs" />
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,6 +148,7 @@
     <Compile Include="TestFailureException.cs" />
     <Compile Include="TestPermissions.cs" />
     <Compile Include="TestTypeAccessProvider.cs" />
+    <Compile Include="TestWcfService.cs" />
     <Compile Include="ValidateableType.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +172,10 @@
     <None Include="PublicContract\Providers\TypeAccessProviderTests\TryAccess.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TryAccess.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PublicContract\Providers\WCF\CanConnectThroughWcf.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CanConnectThroughWcf.feature.cs</LastGenOutput>
     </None>
     <None Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
