@@ -23,10 +23,18 @@ using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a simple implementation of a usable type access provider
+    /// </summary>
     public sealed class BasicTypeAccessProvider:TypeAccessProvider
     {
         private readonly ITypeProvider[] typeProviders;
-
+        
+        /// <summary>
+        /// Creates a new instance of the <see cref="BasicTypeAccessProvider"/> class
+        /// </summary>
+        /// <param name="permissionsProvider">The permissions provider</param>
+        /// <param name="typeProviders">The type providers that may be accessed</param>
         public BasicTypeAccessProvider(IPermissionsProvider permissionsProvider, IEnumerable<ITypeProvider> typeProviders)
             :base(permissionsProvider, typeProviders.AggregateProvidableTypes())
         {
@@ -46,12 +54,24 @@ namespace FluentBoilerplate.Providers
             return null;
         }
 
+        /// <summary>
+        /// Uses the accessible type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <param name="action">How the type will be used</param>
         protected override void Use<TType>(Action<TType> action)
         {
             var provider = LocateProviderFor<TType>();
             provider.Use(action);
         }
 
+        /// <summary>
+        /// Uses the accessible type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="action">How the type will be used</param>
+        /// <returns>The result</returns>
         protected override TResult Use<TType, TResult>(Func<TType, TResult> action)
         {
             var provider = LocateProviderFor<TType>();

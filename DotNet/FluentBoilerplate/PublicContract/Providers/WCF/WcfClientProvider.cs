@@ -27,13 +27,23 @@ using System.Collections.Immutable;
 
 namespace FluentBoilerplate.Providers.WCF
 {
+    /// <summary>
+    /// Represents a provider of WCF client connections
+    /// </summary>
     public sealed class WcfClientProvider:ITypeProvider
     {
         private readonly IImmutableDictionary<Type, IWcfService> services;
         private readonly IImmutableSet<Type> providableTypes;
 
+        /// <summary>
+        /// Gets the service types that may be provided
+        /// </summary>
         public IImmutableSet<Type> ProvidableTypes { get { return this.providableTypes; } }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="WcfClientProvider"/> class.
+        /// </summary>
+        /// <param name="services">The services that may be provided</param>
         public WcfClientProvider(IEnumerable<IWcfService> services)
         {
             this.services = services.ToImmutableDictionary(service => service.ServiceType);
@@ -60,6 +70,11 @@ namespace FluentBoilerplate.Providers.WCF
                 throw new ServiceProviderNotFoundException(type);
         }
 
+        /// <summary>
+        /// Uses the requested service type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <param name="useType">How the type will be used</param>
         public void Use<TType>(Action<TType> useType)
         {
             VerifyTypeIsProvidable<TType>();
@@ -71,7 +86,14 @@ namespace FluentBoilerplate.Providers.WCF
                 UseChannel(typedChannel, useType);
             }
         }
-        
+
+        /// <summary>
+        /// Uses the requested service type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="useType">How the type will be used</param>
+        /// <returns>The result of using the type</returns>
         public TResult Use<TType, TResult>(Func<TType, TResult> useType)
         {
             VerifyTypeIsProvidable<TType>();

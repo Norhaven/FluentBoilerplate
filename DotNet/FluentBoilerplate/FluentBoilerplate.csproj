@@ -75,7 +75,7 @@
     <Compile Include="PublicContract\Providers\WCF\IWcfClient.cs" />
     <Compile Include="PublicContract\Providers\WCF\IWcfService.cs" />
     <Compile Include="PublicContract\Providers\TypeAccessProvider.cs" />
-    <Compile Include="PublicContract\Providers\WCF\WcfServiceClient.cs" />
+    <Compile Include="PublicContract\Providers\WCF\WcfService.cs" />
     <Compile Include="PublicContract\Providers\WCF\WcfClientProvider.cs" />
     <Compile Include="PublicContract\Right.cs" />
     <Compile Include="PublicContract\Role.cs" />

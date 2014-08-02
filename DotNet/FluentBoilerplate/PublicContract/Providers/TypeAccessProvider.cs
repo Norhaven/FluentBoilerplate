@@ -26,6 +26,9 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Providers
 {
+    /// <summary>
+    /// Represents a type access provider that may be extended to implement a custom type access provider
+    /// </summary>
     public abstract class TypeAccessProvider:ITypeAccessProvider
     {
         private sealed class EmptyProvider : TypeAccessProvider
@@ -36,11 +39,19 @@ namespace FluentBoilerplate.Providers
             protected override TResult Use<TType, TResult>(Func<TType, TResult> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
         }
 
+        /// <summary>
+        /// Gets an empty type access provider
+        /// </summary>
         public static ITypeAccessProvider Empty { get { return new EmptyProvider(); } }
 
         protected readonly IPermissionsProvider permissionsProvider;
         protected readonly IImmutableSet<Type> types;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="TypeAccessProvider"/> class
+        /// </summary>
+        /// <param name="permissionsProvider">The permissions provider</param>
+        /// <param name="types">The types that may be provided</param>
         public TypeAccessProvider(IPermissionsProvider permissionsProvider, IEnumerable<Type> types)
         {
             this.permissionsProvider = permissionsProvider;
@@ -50,7 +61,20 @@ namespace FluentBoilerplate.Providers
             this.types = types.ToImmutableHashSet();
         }
 
+        /// <summary>
+        /// Uses the accessible type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <param name="action">How the type will be used</param>
         protected abstract void Use<TType>(Action<TType> action);
+        
+        /// <summary>
+        /// Uses the accessible type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="action">How the type will be used</param>
+        /// <returns>The result</returns>
         protected abstract TResult Use<TType, TResult>(Func<TType, TResult> action);
 
         private bool VerifyPermissions(IIdentity identity)
@@ -60,6 +84,15 @@ namespace FluentBoilerplate.Providers
 
             return this.permissionsProvider.HasPermission(identity);
         }
+
+        /// <summary>
+        /// Tries to access an instance of the requested type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="identity">The identity</param>
+        /// <param name="useType">How the type will be used if it can be accessed</param>
+        /// <returns>A response containing information about the access attempt and the result</returns>
         public IResponse<TResult> TryAccess<TType, TResult>(IIdentity identity, Func<TType, TResult> useType)
         {
             if (!VerifyPermissions(identity))
@@ -72,6 +105,13 @@ namespace FluentBoilerplate.Providers
             return new Response<TResult>(result);
         }
 
+        /// <summary>
+        /// Tries to access an instance of the requested type
+        /// </summary>
+        /// <typeparam name="TType">The requested type</typeparam>
+        /// <param name="identity">The identity</param>
+        /// <param name="useType">How the type will be used if it can be accessed</param>
+        /// <returns>A response containing information about the access attempt</returns>
         public IResponse TryAccess<TType>(IIdentity identity, Action<TType> useType)
         {
             if (!VerifyPermissions(identity))

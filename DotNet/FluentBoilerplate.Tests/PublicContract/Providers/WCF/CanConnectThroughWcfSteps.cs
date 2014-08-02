@@ -29,7 +29,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.WCF
         [Given(@"I have a type provider for the named pipe endpoint")]
         public void GivenIHaveATypeProviderForTheNamedPipeEndpoint()
         {
-            var service = new WcfServiceClient<ITestWcfService>("PipeClient");
+            var service = new WcfService<ITestWcfService>("PipeClient");
             var provider = new WcfClientProvider(new [] { service });
             this.testContext.Access = new BasicTypeAccessProvider(PermissionsProvider.Empty, new[] { provider });
         }
@@ -43,7 +43,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.WCF
         [Given(@"I have a type provider for the TCP endpoint")]
         public void GivenIHaveATypeProviderForTheTCPEndpoint()
         {
-            var service = new WcfServiceClient<ITestWcfService>("TcpClient");
+            var service = new WcfService<ITestWcfService>("TcpClient");
             var provider = new WcfClientProvider(new[] { service });
             this.testContext.Access = new BasicTypeAccessProvider(PermissionsProvider.Empty, new[] { provider });
         }

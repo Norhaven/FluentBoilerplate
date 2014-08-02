@@ -25,7 +25,11 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Providers.WCF
 {
-    public sealed class WcfServiceClient<TService>: IWcfService where TService:class
+    /// <summary>
+    /// Represents a WCF service
+    /// </summary>
+    /// <typeparam name="TService">The service contract type</typeparam>
+    public sealed class WcfService<TService>: IWcfService where TService:class
     {   
         private enum WcfInitializationKind
         {
@@ -38,21 +42,37 @@ namespace FluentBoilerplate.Providers.WCF
         private readonly Binding binding;
         private readonly EndpointAddress endpointAddress;
 
+        /// <summary>
+        /// Gets the service type
+        /// </summary>
         public Type ServiceType { get { return typeof(TService); } }
-
-        public WcfServiceClient(string endpointName)
+        
+        /// <summary>
+        /// Creates a new instance of the <see cref="WcfService{TService}"/> class.
+        /// </summary>
+        /// <param name="endpointName">The name of the endpoint</param>
+        public WcfService(string endpointName)
         {
             this.endpointName = endpointName;
             this.initializationKind = WcfInitializationKind.EndpointName;
         }
 
-        public WcfServiceClient(Binding binding, EndpointAddress endpointAddress)
+        /// <summary>
+        /// Creates a new instance of the <see cref="WcfService{TService}"/> class.
+        /// </summary>
+        /// <param name="binding">The binding for the service</param>
+        /// <param name="endpointAddress">The endpoint address</param>
+        public WcfService(Binding binding, EndpointAddress endpointAddress)
         {
             this.binding = binding;
             this.endpointAddress = endpointAddress;
             this.initializationKind = WcfInitializationKind.BindingAndEndpointAddress;
         }
 
+        /// <summary>
+        /// Opens a client connection to this service
+        /// </summary>
+        /// <returns>An instance of the opened client connection</returns>
         public IWcfClient OpenClient()
         {
             var client = CreateClient();

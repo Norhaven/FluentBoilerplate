@@ -23,9 +23,20 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Providers.WCF
 {
+    /// <summary>
+    /// Represents a WCF service
+    /// </summary>
     public interface IWcfService
     {
+        /// <summary>
+        /// Gets the service type
+        /// </summary>
         Type ServiceType { get; }
+
+        /// <summary>
+        /// Opens a client connection to the service
+        /// </summary>
+        /// <returns>An instance of the client</returns>
         IWcfClient OpenClient();
     }
 }
