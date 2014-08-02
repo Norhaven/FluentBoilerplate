@@ -68,8 +68,8 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
             this.testContext.CustomAction = () => { };
         }
 
-        [When(@"I perform the action through the context")]
-        public void WhenIPerformTheActionThroughTheContext()
+        [When(@"I perform the action through the error context")]
+        public void WhenIPerformTheActionThroughTheErrorContext()
         {
             this.testContext.CustomAction.Should().NotBeNull("because we are trying to perform an action");
 
@@ -89,14 +89,14 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
             this.testContext.UnhandledException.Should().BeNull("because no exception should have been unhandled");
         }
 
-        [Then(@"I should handle the exception")]
-        public void ThenIShouldHandleTheException()
+        [Then(@"the exception should have been handled")]
+        public void ThenTheExceptionShouldHaveBeenHandled()
         {
             this.testContext.UnhandledException.Should().BeNull("because no exception should have been unhandled");
         }
 
-        [Then(@"I should not handle the exception")]
-        public void ThenIShouldNotHandleTheException()
+        [Then(@"the exception should not have been handled")]
+        public void ThenTheExceptionShouldNotHaveBeenHandled()
         {
             this.testContext.UnhandledException.Should().NotBeNull("because an unhandled exception should have been thrown");
         }

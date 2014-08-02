@@ -54,12 +54,12 @@ namespace FluentBoilerplate.Runtime.Contexts
             :base(bundle)
         {
             this.Identity = identity;
-            this.contractBundle = contractBundle;
+            this.contractBundle = contractBundle ?? new ContractBundle();
         }
 
         public IInitialContractContext BeginContract()
         {
-            return new ContractContext(this.bundle, null, this);
+            return new ContractContext(this.bundle, new ContractBundle(), this);
         }
 
         public IContext<TResult> Get<TResult>(Func<IContext, TResult> action)

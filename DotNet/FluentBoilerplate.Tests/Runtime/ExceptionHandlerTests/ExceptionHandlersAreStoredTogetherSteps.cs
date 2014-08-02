@@ -51,19 +51,13 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
             this.testContext.SpecificExceptionHandler = null;
         }
 
-        [When(@"I throw an ArgumentException within the exception handler")]
-        public void WhenIThrowAnArgumentExceptionWithinTheExceptionHandler()
+        [When(@"an ArgumentException reaches the exception handler")]
+        public void WhenAnArgumentExceptionReachesTheExceptionHandler()
         {
             if (this.testContext.SpecificExceptionHandler != null)
-                this.testContext.SpecificExceptionHandler.Handle()
-            {                
-                ExceptionHandler<ArgumentException> handler = this.testContext.ExceptionHandler;
-        }
-
-        [Then(@"the exception handler should handle the exception")]
-        public void ThenTheExceptionHandlerShouldHandleTheException()
-        {
-            ScenarioContext.Current.Pending();
+                this.testContext.SpecificExceptionHandler.Handle(new ArgumentException());
+            else
+                this.testContext.NonSpecificExceptionHandler.Handle(new ArgumentException());
         }
     }
 }

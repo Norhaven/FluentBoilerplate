@@ -41,6 +41,9 @@ namespace FluentBoilerplate.Tests
         public Exception UnhandledException { get; set; }
         public IExceptionHandler<Exception> NonSpecificExceptionHandler { get; set; }
         public IExceptionHandler<ArgumentException> SpecificExceptionHandler { get; set; }
+        public bool ContractRequirementsShouldPass { get; set; }
+        public bool ArgumentExceptionHandlerShouldBeRun { get; set; }
+        public bool ExceptionHandlerShouldBeRun { get; set; }
        
         public TestContext()
         {

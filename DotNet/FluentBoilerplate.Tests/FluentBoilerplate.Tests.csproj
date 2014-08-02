@@ -78,6 +78,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BasePEVerifyTest.cs" />
+    <Compile Include="BoolExtensions.cs" />
     <Compile Include="Mock.cs" />
     <Compile Include="MockILogExtensions.cs" />
     <Compile Include="PublicContract\BoilerplateTests\BoilerplateCreation.feature.cs">
@@ -99,6 +100,12 @@
     </Compile>
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandlingSteps.cs" />
     <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\Do.cs" />
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\RunWithinContext.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RunWithinContext.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\RunWithinContextSteps.cs" />
     <Compile Include="Runtime\ExceptionHandlerTests\ExceptionHandlersAreStoredTogether.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,9 +119,9 @@
     <Compile Include="Runtime\FunctionGeneratorTests\Create_TranslationProvider.cs" />
     <Compile Include="Runtime\FunctionGeneratorTests\Create_ValidationProvider.cs" />
     <Compile Include="Runtime\FunctionGeneratorTests\CreateAction_TryCatchBlockProvider.cs" />
-    <Compile Include="Runtime\ILWriterTests\CatchBlock.cs" />
-    <Compile Include="Runtime\ILWriterTests\DeclareLocal.cs" />
-    <Compile Include="Runtime\ILWriterTests\LoadThis.cs" />
+    <Compile Include="Runtime\FunctionGeneratorTests\ILWriterTests\CatchBlock.cs" />
+    <Compile Include="Runtime\FunctionGeneratorTests\ILWriterTests\DeclareLocal.cs" />
+    <Compile Include="Runtime\FunctionGeneratorTests\ILWriterTests\LoadThis.cs" />
     <Compile Include="Runtime\Providers\Logging\LogProviderTests\Debug.cs" />
     <Compile Include="Runtime\Providers\PermissionsProviderTests\Merge.cs" />
     <Compile Include="Runtime\Providers\PermissionsProviderTests\HasPermission.cs" />
@@ -123,7 +130,9 @@
     <Compile Include="Runtime\TryCatchBlockTests\Try.cs" />
     <Compile Include="SyntaxTestPlayground.cs" />
     <Compile Include="TestContext.cs" />
+    <Compile Include="TestFailureException.cs" />
     <Compile Include="TestTypeAccessProvider.cs" />
+    <Compile Include="ValidateableType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentBoilerplate\FluentBoilerplate.csproj">
@@ -150,6 +159,10 @@
     <None Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RunWithErrorHandling.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\Contexts\InitialBoilerplateContextTests\RunWithinContext.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RunWithinContext.feature.cs</LastGenOutput>
     </None>
     <None Include="Runtime\ExceptionHandlerTests\ExceptionHandlersAreStoredTogether.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

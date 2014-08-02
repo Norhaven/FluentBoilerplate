@@ -32,8 +32,8 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ExceptionHandlersAreStoredTogether", "In order to keep exception handlers strongly typed but easy to store\nAs an API co" +
-                    "nsumer\nI want to make the handlers more or less specific", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ExceptionHandlersAreStoredTogether", "In order to keep exception handlers strongly typed but easy to store\r\nAs an API d" +
+                    "eveloper\r\nI want to make the handlers more or less specific", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -79,9 +79,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("I have made the exception handler specific", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.When("I throw an ArgumentException within the exception handler", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("an ArgumentException reaches the exception handler", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.Then("the exception handler should handle the exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the exception should have been handled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -102,9 +102,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And("I have made the exception handler non-specific", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.When("I an ArgumentException reaches the exception handler", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("an ArgumentException reaches the exception handler", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
- testRunner.Then("the exception handler should handle the exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the exception should have been handled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -32,8 +32,8 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TryAccess", "In order to access a custom type easily\nAs an API consumer\nI want to have a type " +
-                    "access provider with the capability to attempt accessing the type", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TryAccess", "In order to access a custom type easily\r\nAs an API consumer\r\nI want to have a typ" +
+                    "e access provider with the capability to attempt accessing the type", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

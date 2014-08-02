@@ -32,8 +32,8 @@ namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BoilerplateCreation", "In order to avoid complicated boilerplate creation and types that are internal\nAs" +
-                    " an API consumer\nI want to be able to create a boilerplate easily", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BoilerplateCreation", "In order to avoid complicated boilerplate creation and types that are internal\r\nA" +
+                    "s an API consumer\r\nI want to be able to create a boilerplate easily", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
