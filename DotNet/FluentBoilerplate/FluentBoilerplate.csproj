@@ -70,6 +70,7 @@
     <Compile Include="PublicContract\Identity.cs" />
     <Compile Include="PublicContract\ITypeAccessBuilder.cs" />
     <Compile Include="PublicContract\IValidationAttribute.cs" />
+    <Compile Include="PublicContract\Providers\BasicTypeAccessProvider.cs" />
     <Compile Include="PublicContract\Providers\ITypeProvider.cs" />
     <Compile Include="PublicContract\Providers\WCF\IWcfClient.cs" />
     <Compile Include="PublicContract\Providers\WCF\IWcfService.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Runtime\Contexts\ContextBundle.cs" />
     <Compile Include="PublicContract\Providers\ITranslationProvider.cs" />
     <Compile Include="PublicContract\Providers\IValidationProvider.cs" />
+    <Compile Include="Runtime\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Runtime\Extensions\IImmutableQueueExtensions.cs" />
     <Compile Include="Runtime\Extensions\StringExtensions.cs" />
     <Compile Include="PublicContract\Contexts\IImmutableErrorContext.cs" />

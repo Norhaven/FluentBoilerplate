@@ -30,10 +30,14 @@ namespace FluentBoilerplate.Providers.WCF
     public sealed class WcfClientProvider:ITypeProvider
     {
         private readonly IImmutableDictionary<Type, IWcfService> services;
+        private readonly IImmutableSet<Type> providableTypes;
+
+        public IImmutableSet<Type> ProvidableTypes { get { return this.providableTypes; } }
 
         public WcfClientProvider(IEnumerable<IWcfService> services)
         {
             this.services = services.ToImmutableDictionary(service => service.ServiceType);
+            this.providableTypes = this.services.Keys.ToImmutableHashSet();
         }
         
         private void UseChannel<TChannel>(TChannel channel, Action<TChannel> useChannel)

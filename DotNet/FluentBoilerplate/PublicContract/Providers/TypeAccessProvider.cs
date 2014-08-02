@@ -31,7 +31,9 @@ namespace FluentBoilerplate.Providers
         private sealed class EmptyProvider : TypeAccessProvider
         {
             public EmptyProvider() : base(PermissionsProvider.Empty, Type.EmptyTypes) { }
-            protected override TType CreateInstanceOf<TType>() { return default(TType); }
+
+            protected override void Use<TType>(Action<TType> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
+            protected override TResult Use<TType, TResult>(Func<TType, TResult> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
         }
 
         public static ITypeAccessProvider Empty { get { return new EmptyProvider(); } }
@@ -48,7 +50,8 @@ namespace FluentBoilerplate.Providers
             this.types = types.ToImmutableHashSet();
         }
 
-        protected abstract TType CreateInstanceOf<TType>();
+        protected abstract void Use<TType>(Action<TType> action);
+        protected abstract TResult Use<TType, TResult>(Func<TType, TResult> action);
 
         private bool VerifyPermissions(IIdentity identity)
         {
@@ -65,8 +68,7 @@ namespace FluentBoilerplate.Providers
             if (!this.types.Contains(typeof(TType)))
                 return Response<TResult>.Failed;
 
-            var instance = CreateInstanceOf<TType>();
-            var result = useType(instance);
+            var result = Use<TType, TResult>(useType);
             return new Response<TResult>(result);
         }
 
@@ -78,8 +80,7 @@ namespace FluentBoilerplate.Providers
             if (!this.types.Contains(typeof(TType)))
                 return Response.Failed;
 
-            var instance = CreateInstanceOf<TType>();
-            useType(instance);
+            Use<TType>(useType);
             return new Response(true);
         }
     }

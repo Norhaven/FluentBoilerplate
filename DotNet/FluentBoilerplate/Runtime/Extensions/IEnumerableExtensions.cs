@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Providers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -21,12 +22,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Providers
+namespace FluentBoilerplate.Runtime.Extensions
 {
-    public interface ITypeProvider
+    internal static class IEnumerableExtensions
     {
-        IImmutableSet<Type> ProvidableTypes { get; }
-        void Use<TType>(Action<TType> useType);
-        TResult Use<TType, TResult>(Func<TType, TResult> useType);
+        public static IImmutableSet<Type> AggregateProvidableTypes(this IEnumerable<ITypeProvider> providers)
+        {
+            IImmutableSet<Type> currentTypes = null;
+
+            foreach (var provider in providers)
+            {
+                currentTypes = currentTypes.Merge(provider.ProvidableTypes);
+            }
+
+            return currentTypes;
+        }
     }
 }

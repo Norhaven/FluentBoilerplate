@@ -29,12 +29,15 @@ namespace FluentBoilerplate.Tests
             : base(provider, types)
         {
         }
-
-        protected override TType CreateInstanceOf<TType>()
+        
+        protected override void Use<TType>(Action<TType> action)
         {
-            if (typeof(TType) == typeof(int))
-                return (TType)(object)1;
-            return default(TType);
+            action(default(TType));
+        }
+
+        protected override TResult Use<TType, TResult>(Func<TType, TResult> action)
+        {
+            return action(default(TType));
         }
     }
 }
