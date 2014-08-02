@@ -129,4 +129,8 @@
     <value>The parameter '{0}' must not be null</value>
     <comment>Enforces non-null parameter values</comment>
   </data>
+  <data name="ServiceProviderNotFound" xml:space="preserve">
+    <value>The service provider '{0}' could not be found</value>
+    <comment>Enforces correct service provider usage</comment>
+  </data>
 </root>

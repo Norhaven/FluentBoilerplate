@@ -86,5 +86,14 @@ namespace FluentBoilerplate.Messages.User {
                 return ResourceManager.GetString("ParameterMustNotBeNull", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service provider &apos;{0}&apos; could not be found.
+        /// </summary>
+        public static string ServiceProviderNotFound {
+            get {
+                return ResourceManager.GetString("ServiceProviderNotFound", resourceCulture);
+            }
+        }
     }
 }

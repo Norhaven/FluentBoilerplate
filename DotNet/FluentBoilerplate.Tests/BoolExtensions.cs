@@ -35,5 +35,19 @@ namespace FluentBoilerplate.Tests
             if (!value)
                 throw new TestFailureException();
         }
+
+        [TestMethod]
+        public void NewWithIdentityCreatesContextSuccessfully()
+        {
+            var context = Boilerplate.New(identity: Identity.Default);
+
+            context.Should().NotBeNull("because you should always get a context back");
+        }
+
+        [TestMethod]
+        public void NewWithTypeProviderCreatesContextSuccessfully()
+        {
+
+        }
     }
 }
