@@ -19,21 +19,21 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("IdentityPermissionsCanBeVerified")]
-    public partial class IdentityPermissionsCanBeVerifiedFeature
+    [NUnit.Framework.DescriptionAttribute("IdentityPermissionsCanBeVerifiedManually")]
+    public partial class IdentityPermissionsCanBeVerifiedManuallyFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "IdentityPermissionsCanBeVerified.feature"
+#line 1 "IdentityPermissionsCanBeVerifiedManually.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "IdentityPermissionsCanBeVerified", "In order to restrict user code execution to users that have permission\nAs an API " +
-                    "developer\nI want to be able to verify a user\'s permissions", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "IdentityPermissionsCanBeVerifiedManually", "In order to restrict user code execution to users that have permission\r\nAs an API" +
+                    " developer\r\nI want to be able to verify a user\'s permissions manually", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

@@ -1,7 +1,7 @@
-﻿Feature: IdentityPermissionsCanBeVerified
+﻿Feature: IdentityPermissionsCanBeVerifiedManually
 	In order to restrict user code execution to users that have permission
 	As an API developer
-	I want to be able to verify a user's permissions
+	I want to be able to verify a user's permissions manually
 
 @Providers
 Scenario: Identity has no permissions and provider has no permissions

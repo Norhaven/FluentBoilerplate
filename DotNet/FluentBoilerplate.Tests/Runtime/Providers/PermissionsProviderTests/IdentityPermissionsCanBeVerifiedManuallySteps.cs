@@ -23,11 +23,11 @@ using FluentBoilerplate.Runtime.Contexts;
 namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
 {
     [Binding]
-    public class IdentityPermissionsCanBeVerifiedSteps
+    public class IdentityPermissionsCanBeVerifiedManuallySteps
     {
         private readonly TestContext testContext;
 
-        public IdentityPermissionsCanBeVerifiedSteps(TestContext testContext)
+        public IdentityPermissionsCanBeVerifiedManuallySteps(TestContext testContext)
         {
             this.testContext = testContext;
         }

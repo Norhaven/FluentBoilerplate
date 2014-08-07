@@ -129,12 +129,18 @@
     <Compile Include="Runtime\FunctionGeneratorTests\ILWriterTests\DeclareLocal.cs" />
     <Compile Include="Runtime\FunctionGeneratorTests\ILWriterTests\LoadThis.cs" />
     <Compile Include="Runtime\Providers\Logging\LogProviderTests\Debug.cs" />
-    <Compile Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerified.feature.cs">
+    <Compile Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedManually.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IdentityPermissionsCanBeVerified.feature</DependentUpon>
+      <DependentUpon>IdentityPermissionsCanBeVerifiedManually.feature</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedSteps.cs" />
+    <Compile Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedManuallySteps.cs" />
+    <Compile Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedWithActiveDirectory.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IdentityPermissionsCanBeVerifiedWithActiveDirectory.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedWithActiveDirectorySteps.cs" />
     <Compile Include="Runtime\Providers\PermissionsProviderTests\PermissionsCanBeMergedThroughProvider.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -190,9 +196,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExceptionHandlersAreStoredTogether.feature.cs</LastGenOutput>
     </None>
-    <None Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerified.feature">
+    <None Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedManually.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>IdentityPermissionsCanBeVerified.feature.cs</LastGenOutput>
+      <LastGenOutput>IdentityPermissionsCanBeVerifiedManually.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\Providers\PermissionsProviderTests\IdentityPermissionsCanBeVerifiedWithActiveDirectory.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>IdentityPermissionsCanBeVerifiedWithActiveDirectory.feature.cs</LastGenOutput>
     </None>
     <None Include="Runtime\Providers\PermissionsProviderTests\PermissionsCanBeMergedThroughProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
