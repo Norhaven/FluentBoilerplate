@@ -14,38 +14,23 @@
    limitations under the License.
  */
 
-using System.Collections.Immutable;
+using System;
 
 namespace FluentBoilerplate
 {
     /// <summary>
-    /// Represents a role that an identity may be a member of
+    /// Represents a violation of a contract
     /// </summary>
-    public interface IRole
+    [Serializable]
+    public sealed class IdentityConfigurationException:Exception
     {
         /// <summary>
-        /// Gets the identifier
+        /// Creates an instance of <see cref="IdentityConfigurationException"/>
         /// </summary>
-        int Id { get; }
-
-        /// <summary>
-        /// Gets the name
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets the description
-        /// </summary>
-        string Description { get; }
-
-        /// <summary>
-        /// Gets the rights that this role contains
-        /// </summary>
-        IImmutableSet<IRight> Rights { get; }
-
-        /// <summary>
-        /// Gets the source that controls this role
-        /// </summary>
-        PermissionsSource Source { get; }
+        /// <param name="message">The message</param>
+        public IdentityConfigurationException(string message)
+            : base(message)
+        {
+        }
     }
 }

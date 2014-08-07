@@ -16,18 +16,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Tests
+namespace FluentBoilerplate
 {
-    public sealed class TestPermissions
+    [Flags]
+    public enum PermissionsSource
     {
-        public static readonly IRight CanUseBasicThings = new Right(1, "Basic", "Can use basic things");
-
-        public static readonly IImmutableSet<IRight> BasicRights = new IRight[] { TestPermissions.CanUseBasicThings }.ToImmutableHashSet();
-        public static readonly IImmutableSet<IRight> NoRights = new IRight[0].ToImmutableHashSet();
+        Manual = 0,
+        ActiveDirectory = 1
     }
 }

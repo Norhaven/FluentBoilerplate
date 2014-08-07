@@ -30,6 +30,11 @@ namespace FluentBoilerplate
     public interface IIdentity
     {
         /// <summary>
+        /// Gets the name of this identity
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Gets the roles that this identity is a member of
         /// </summary>
         IImmutableSet<IRole> PermittedRoles { get; }

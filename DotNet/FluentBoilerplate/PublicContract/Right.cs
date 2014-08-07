@@ -16,6 +16,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,12 +25,16 @@ namespace FluentBoilerplate
 {
     public class Right:IRight
     {
+        public static IImmutableSet<IRight> EmptyRights { get { return new IRight[0].ToImmutableHashSet(); } }
+
         public int Id { get; private set; }
+        public string Name { get; private set; }
         public string Description { get; private set; }
 
-        public Right(int id, string description)
+        public Right(int id, string name, string description)
         {
             this.Id = id;
+            this.Name = name;
             this.Description = description;
         }
     }

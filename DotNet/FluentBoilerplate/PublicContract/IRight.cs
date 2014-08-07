@@ -27,11 +27,13 @@ namespace FluentBoilerplate
         int Id { get; }
 
         /// <summary>
+        /// Gets the name
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Gets the description.
         /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
         string Description { get; }
     }
 }

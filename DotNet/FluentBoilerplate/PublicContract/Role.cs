@@ -26,14 +26,18 @@ namespace FluentBoilerplate
     public class Role:IRole
     {
         public int Id { get; private set; }
+        public string Name { get; private set; }
         public string Description { get; private set; }
         public IImmutableSet<IRight> Rights { get; private set; }
+        public PermissionsSource Source { get; private set; }
 
-        public Role(int id, string description, IImmutableSet<IRight> rights)
+        public Role(int id, string name, string description, IImmutableSet<IRight> rights, PermissionsSource source)
         {
             this.Id = id;
+            this.Name = name;
             this.Description = description;
             this.Rights = rights;
+            this.Source = source;
         }
     }
 }

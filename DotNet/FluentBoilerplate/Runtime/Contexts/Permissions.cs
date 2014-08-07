@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Extensions;
+using FluentBoilerplate.Runtime.Providers;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
@@ -32,27 +33,32 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IImmutableSet<IRight> RestrictedRights { get; private set; }
         public IImmutableSet<IRole> RequiredRoles { get; private set; }
         public IImmutableSet<IRole> RestrictedRoles { get; private set; }
+        public PermissionsSource Source { get; private set; }
 
         public Permissions(IImmutableSet<IRole> requiredRoles = null,
                            IImmutableSet<IRole> restrictedRoles = null,
                            IImmutableSet<IRight> requiredRights = null,
-                           IImmutableSet<IRight> restrictedRights = null)
+                           IImmutableSet<IRight> restrictedRights = null,
+                           PermissionsSource source = PermissionsSource.Manual)
         {
             this.RequiredRoles = requiredRoles.DefaultIfNull();
             this.RestrictedRoles = restrictedRoles.DefaultIfNull();
             this.RequiredRights = requiredRights.DefaultIfNull();
             this.RestrictedRights = restrictedRights.DefaultIfNull();
+            this.Source = source;
         }
 
         public Permissions Merge(IImmutableSet<IRole> requiredRoles = null,
                                  IImmutableSet<IRole> restrictedRoles = null,
                                  IImmutableSet<IRight> requiredRights = null,
-                                 IImmutableSet<IRight> restrictedRights = null)
+                                 IImmutableSet<IRight> restrictedRights = null,
+                                 PermissionsSource source = PermissionsSource.Manual)
         {
             return new Permissions(requiredRoles.Merge(this.RequiredRoles),
                                    restrictedRoles.Merge(this.RestrictedRoles),
                                    requiredRights.Merge(this.RequiredRights),
-                                   restrictedRights.Merge(this.RestrictedRights));
+                                   restrictedRights.Merge(this.RestrictedRights),
+                                   source);
         }
     }
 }

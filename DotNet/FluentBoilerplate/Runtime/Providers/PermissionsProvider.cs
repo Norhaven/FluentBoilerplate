@@ -23,17 +23,26 @@ using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Extensions;
 using System.Collections.Immutable;
 using FluentBoilerplate.Providers;
+using System.Security.Principal;
+using System.DirectoryServices.AccountManagement;
+
 namespace FluentBoilerplate.Runtime.Providers
 {
     internal sealed class PermissionsProvider : IPermissionsProvider
     {
         public static IPermissionsProvider Empty { get { return new PermissionsProvider(Permissions.Empty); } }
+        public static IPermissionsProvider ActiveDirectoryDomain { get { return new PermissionsProvider(Permissions.Empty, ContextType.Domain); } }
+        public static IPermissionsProvider ActiveDirectoryApplicationDirectory { get { return new PermissionsProvider(Permissions.Empty, ContextType.ApplicationDirectory); } }
+        public static IPermissionsProvider ActiveDirectoryMachine { get { return new PermissionsProvider(Permissions.Empty, ContextType.Machine); } }
 
         private readonly Permissions permissions;
         private readonly IImmutableSet<IRight> requiredRights;
         private readonly IImmutableSet<IRight> restrictedRights;
         private readonly IImmutableSet<IRole> requiredRoles;
         private readonly IImmutableSet<IRole> restrictedRoles;
+        private readonly IImmutableQueue<IRole> requiredActiveDirectoryRoles;
+        private readonly IImmutableQueue<IRole> restrictedActiveDirectoryRoles;
+        private readonly ContextType activeDirectoryContextType = ContextType.Domain;
         
         public bool HasRequiredRights { get { return this.requiredRights.Count > 0; } }
         public bool HasRestrictedRights { get { return this.restrictedRights.Count > 0; } }
@@ -42,13 +51,29 @@ namespace FluentBoilerplate.Runtime.Providers
         public bool HasNoRestrictions { get { return !this.HasRestrictedRights && !this.HasRestrictedRoles; } }
         public bool HasNoRequirements { get { return !this.HasRequiredRights && !this.HasRequiredRoles; } }
 
-        public PermissionsProvider(Permissions permissions)
+        public PermissionsProvider(Permissions permissions, ContextType activeDirectoryContextType = ContextType.Domain)
         {
             this.permissions = permissions;
             this.requiredRights = ConsolidateRights(permissions.RequiredRights, permissions.RequiredRoles);
-            this.restrictedRights = ConsolidateRights(permissions.RestrictedRights, permissions.RestrictedRoles);
+            this.restrictedRights = ConsolidateRights(permissions.RestrictedRights, permissions.RestrictedRoles);            
             this.requiredRoles = permissions.RequiredRoles;
             this.restrictedRoles = permissions.RestrictedRoles;
+            this.requiredActiveDirectoryRoles = GetActiveDirectoryRoles(permissions.RequiredRoles);
+            this.restrictedActiveDirectoryRoles = GetActiveDirectoryRoles(permissions.RestrictedRoles);
+            this.activeDirectoryContextType = activeDirectoryContextType;
+        }
+        
+        private IImmutableQueue<IRole> GetActiveDirectoryRoles(IEnumerable<IRole> roles)
+        {
+            var queue = ImmutableQueue<IRole>.Empty;
+
+            foreach (var role in roles)
+            {
+                if (role.Source == PermissionsSource.ActiveDirectory)
+                    queue = queue.Enqueue(role);
+            }
+
+            return queue;
         }
 
         private IImmutableSet<IRight> ConsolidateRights(IImmutableSet<IRight> rights, IImmutableSet<IRole> roles)
@@ -89,6 +114,40 @@ namespace FluentBoilerplate.Runtime.Providers
 
             if (this.restrictedRights.Overlaps(identity.PermittedRights))
                 return false;
+
+            if (!VerifyActiveDirectoryRoles(identity, this.requiredActiveDirectoryRoles, isMember => isMember == true))
+                return false;
+
+            if (!VerifyActiveDirectoryRoles(identity, this.restrictedActiveDirectoryRoles, isMember => isMember == false))
+                return false;
+
+            return true;
+        }
+
+        private bool VerifyActiveDirectoryRoles(IIdentity identity, IImmutableQueue<IRole> roles, Func<bool,bool> isValid)
+        {
+            if (roles.IsEmpty)
+                return true;
+
+            var context = new PrincipalContext(this.activeDirectoryContextType);
+            var user = UserPrincipal.FindByIdentity(context, identity.Name);
+
+            if (user == null)
+                throw new IdentityConfigurationException(String.Format("Identity '{0}' requires Active Directory but could not be found", identity.Name));
+
+            for (var currentRoles = roles; !currentRoles.IsEmpty; currentRoles = currentRoles.Dequeue())
+            {
+                var role = currentRoles.Peek();
+                var group = GroupPrincipal.FindByIdentity(context, role.Name);
+
+                if (group == null)
+                    throw new IdentityConfigurationException(String.Format("Identity '{0}' requires Active Directory group '{1}' which could not be found", identity.Name, role.Name));
+
+                var isMember = user.IsMemberOf(group);
+
+                if (!isValid(isMember))
+                    return false;
+            }
 
             return true;
         }

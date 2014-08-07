@@ -15,7 +15,10 @@
  */
 
 using System.Collections.Immutable;
+using System.Linq;
 using FluentBoilerplate.Runtime.Extensions;
+using System.Security.Principal;
+using System;
 
 namespace FluentBoilerplate
 {
@@ -24,6 +27,32 @@ namespace FluentBoilerplate
     /// </summary>
     public class Identity : IIdentity
     {
+        /// <summary>
+        /// Creates the default instance of <see cref="IIdentity"/>
+        /// </summary>
+        public static IIdentity Default { get { return new Identity(); } }
+
+        /// <summary>
+        /// Gets the identity of the current Windows user
+        /// </summary>
+        public static IIdentity CurrentWindowsUser
+        {
+            get
+            {
+                var windowsIdentity = WindowsIdentity.GetCurrent();
+
+                var getRoles = (from g in windowsIdentity.Groups                                
+                                select (IRole)new Role(0, g.Value, String.Empty, Right.EmptyRights, PermissionsSource.ActiveDirectory));
+
+                var roles = getRoles.ToImmutableHashSet();
+                return new Identity(permittedRoles: roles);
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of this identity
+        /// </summary>
+        public string Name { get; private set; }
         /// <summary>
         /// Gets the roles that this identity is a member of
         /// </summary>
@@ -41,6 +70,13 @@ namespace FluentBoilerplate
         /// </summary>
         public IImmutableSet<IRight> DeniedRights { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Identity"/> class
+        /// </summary>
+        /// <param name="permittedRoles">The permitted roles</param>
+        /// <param name="deniedRoles">The denied roles</param>
+        /// <param name="permittedRights">The permitted rights</param>
+        /// <param name="deniedRights">The denied rights</param>
         public Identity(IImmutableSet<IRole> permittedRoles = null,
                         IImmutableSet<IRole> deniedRoles = null,
                         IImmutableSet<IRight> permittedRights = null,
@@ -51,12 +87,7 @@ namespace FluentBoilerplate
             this.PermittedRights = permittedRights.DefaultIfNull();
             this.DeniedRights = deniedRights.DefaultIfNull();
         }
-
-        /// <summary>
-        /// Creates the default instance of <see cref="IIdentity"/>
-        /// </summary>
-        public static IIdentity Default { get { return new Identity(); } }
-
+        
         /// <summary>
         /// Copies the identity
         /// </summary>
