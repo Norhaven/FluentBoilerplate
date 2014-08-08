@@ -72,11 +72,12 @@
     <Compile Include="PublicContract\Identity.cs" />
     <Compile Include="PublicContract\ITypeAccessBuilder.cs" />
     <Compile Include="PublicContract\IValidationAttribute.cs" />
-    <Compile Include="PublicContract\Providers\BasicTypeAccessProvider.cs" />
+    <Compile Include="PublicContract\Providers\TypeAccessProvider.cs" />
     <Compile Include="PublicContract\Providers\ITypeProvider.cs" />
+    <Compile Include="PublicContract\Providers\ExtendedPermissionsProviders.cs" />
     <Compile Include="PublicContract\Providers\WCF\IWcfClient.cs" />
     <Compile Include="PublicContract\Providers\WCF\IWcfService.cs" />
-    <Compile Include="PublicContract\Providers\TypeAccessProvider.cs" />
+    <Compile Include="PublicContract\Providers\TypeAccessProviderBase.cs" />
     <Compile Include="PublicContract\Providers\WCF\WcfService.cs" />
     <Compile Include="PublicContract\Providers\WCF\WcfClientProvider.cs" />
     <Compile Include="PublicContract\Right.cs" />

@@ -42,34 +42,45 @@ namespace FluentBoilerplate.Runtime.Providers
         private readonly IImmutableSet<IRole> restrictedRoles;
         private readonly IImmutableQueue<IRole> requiredActiveDirectoryRoles;
         private readonly IImmutableQueue<IRole> restrictedActiveDirectoryRoles;
-        private readonly ContextType activeDirectoryContextType = ContextType.Domain;
+        private readonly ContextType activeDirectoryContextType;
         
         public bool HasRequiredRights { get { return this.requiredRights.Count > 0; } }
         public bool HasRestrictedRights { get { return this.restrictedRights.Count > 0; } }
-        public bool HasRequiredRoles { get { return this.requiredRoles.Count > 0; } }
-        public bool HasRestrictedRoles { get { return this.restrictedRoles.Count > 0; } }
+        public bool HasRequiredRoles { get { return this.requiredRoles.Count > 0 || !this.requiredActiveDirectoryRoles.IsEmpty; } }
+        public bool HasRestrictedRoles { get { return this.restrictedRoles.Count > 0 || !this.restrictedActiveDirectoryRoles.IsEmpty; } }
         public bool HasNoRestrictions { get { return !this.HasRestrictedRights && !this.HasRestrictedRoles; } }
         public bool HasNoRequirements { get { return !this.HasRequiredRights && !this.HasRequiredRoles; } }
 
-        public PermissionsProvider(Permissions permissions, ContextType activeDirectoryContextType = ContextType.Domain)
+        public PermissionsProvider(Permissions permissions, ContextType activeDirectoryContextType = ContextType.Machine)
         {
             this.permissions = permissions;
             this.requiredRights = ConsolidateRights(permissions.RequiredRights, permissions.RequiredRoles);
-            this.restrictedRights = ConsolidateRights(permissions.RestrictedRights, permissions.RestrictedRoles);            
-            this.requiredRoles = permissions.RequiredRoles;
-            this.restrictedRoles = permissions.RestrictedRoles;
+            this.restrictedRights = ConsolidateRights(permissions.RestrictedRights, permissions.RestrictedRoles);
+            this.requiredRoles = GetManualRoles(permissions.RequiredRoles);
+            this.restrictedRoles = GetManualRoles(permissions.RestrictedRoles);
             this.requiredActiveDirectoryRoles = GetActiveDirectoryRoles(permissions.RequiredRoles);
             this.restrictedActiveDirectoryRoles = GetActiveDirectoryRoles(permissions.RestrictedRoles);
             this.activeDirectoryContextType = activeDirectoryContextType;
         }
         
+        private IImmutableSet<IRole> GetManualRoles(IEnumerable<IRole> roles)
+        {
+            var queue = GetFilteredRoles(roles, PermissionsSource.Manual);
+            return new HashSet<IRole>(queue).ToImmutableHashSet();
+        }
+
         private IImmutableQueue<IRole> GetActiveDirectoryRoles(IEnumerable<IRole> roles)
+        {
+            return GetFilteredRoles(roles, PermissionsSource.ActiveDirectory);
+        }
+
+        private IImmutableQueue<IRole> GetFilteredRoles(IEnumerable<IRole> roles, PermissionsSource source)
         {
             var queue = ImmutableQueue<IRole>.Empty;
 
             foreach (var role in roles)
             {
-                if (role.Source == PermissionsSource.ActiveDirectory)
+                if (role.Source == source)
                     queue = queue.Enqueue(role);
             }
 
@@ -94,6 +105,8 @@ namespace FluentBoilerplate.Runtime.Providers
             if (this.HasNoRestrictions && this.HasNoRequirements)
                 return true;
 
+            //Manual roles / rights
+
             //Were they explicitly denied any of the required roles or rights?  
             if (this.requiredRoles.Overlaps(identity.DeniedRoles))
                 return false;
@@ -114,6 +127,8 @@ namespace FluentBoilerplate.Runtime.Providers
 
             if (this.restrictedRights.Overlaps(identity.PermittedRights))
                 return false;
+
+            //Active Directory roles
 
             if (!VerifyActiveDirectoryRoles(identity, this.requiredActiveDirectoryRoles, isMember => isMember == true))
                 return false;
@@ -138,12 +153,7 @@ namespace FluentBoilerplate.Runtime.Providers
             for (var currentRoles = roles; !currentRoles.IsEmpty; currentRoles = currentRoles.Dequeue())
             {
                 var role = currentRoles.Peek();
-                var group = GroupPrincipal.FindByIdentity(context, role.Name);
-
-                if (group == null)
-                    throw new IdentityConfigurationException(String.Format("Identity '{0}' requires Active Directory group '{1}' which could not be found", identity.Name, role.Name));
-
-                var isMember = user.IsMemberOf(group);
+                var isMember = user.IsMemberOf(context, IdentityType.SamAccountName, role.Name);
 
                 if (!isValid(isMember))
                     return false;

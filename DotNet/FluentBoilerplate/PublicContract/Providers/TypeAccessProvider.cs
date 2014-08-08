@@ -14,51 +14,70 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using FluentBoilerplate.Providers;
-using FluentBoilerplate.Runtime;
-using FluentBoilerplate.Runtime.Providers;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
+using FluentBoilerplate.Runtime.Providers;
 
 namespace FluentBoilerplate.Providers
 {
     /// <summary>
-    /// Represents a type access provider that may be extended to implement a custom type access provider
+    /// Represents a simple implementation of a usable type access provider
     /// </summary>
-    public abstract class TypeAccessProvider:ITypeAccessProvider
+    public sealed class TypeAccessProvider:TypeAccessProviderBase
     {
-        private sealed class EmptyProvider : TypeAccessProvider
+        private readonly ITypeProvider[] typeProviders;
+        
+        /// <summary>
+        /// Creates a new instance of the <see cref="TypeAccessProvider"/> class.
+        /// Uses the given <see cref="IPermissionsProvider"/> to determine permissions.
+        /// </summary>
+        /// <param name="typeProviders">The type providers that may be accessed</param>
+        /// <param name="permissionsProvider">The permissions provider</param>
+        public TypeAccessProvider(IEnumerable<ITypeProvider> typeProviders, IPermissionsProvider permissionsProvider)
+            :base(permissionsProvider, typeProviders.AggregateProvidableTypes())
         {
-            public EmptyProvider() : base(PermissionsProvider.Empty, Type.EmptyTypes) { }
-
-            protected override void Use<TType>(Action<TType> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
-            protected override TResult Use<TType, TResult>(Func<TType, TResult> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
+            this.typeProviders = typeProviders.ToArray();
         }
 
         /// <summary>
-        /// Gets an empty type access provider
+        /// Creates a new instance of the <see cref="TypeAccessProvider"/> class.
+        /// Uses the default permissions provider and, optionally, an extended provider for greater permissions capabilities.
         /// </summary>
-        public static ITypeAccessProvider Empty { get { return new EmptyProvider(); } }
-
-        protected readonly IPermissionsProvider permissionsProvider;
-        protected readonly IImmutableSet<Type> types;
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="TypeAccessProvider"/> class
-        /// </summary>
-        /// <param name="permissionsProvider">The permissions provider</param>
-        /// <param name="types">The types that may be provided</param>
-        public TypeAccessProvider(IPermissionsProvider permissionsProvider, IEnumerable<Type> types)
+        /// <param name="typeProviders">The type providers that may be accessed</param>
+        /// <param name="extendedProvider">The extended permissions provider that should be used</param>
+        public TypeAccessProvider(IEnumerable<ITypeProvider> typeProviders, ExtendedPermissionsProviders extendedProvider = ExtendedPermissionsProviders.None)
+            : base(GetExtendedPermissionsProvider(extendedProvider), typeProviders.AggregateProvidableTypes())
         {
-            this.permissionsProvider = permissionsProvider;
+            this.typeProviders = typeProviders.ToArray();
+        }
+        
+        private static IPermissionsProvider GetExtendedPermissionsProvider(ExtendedPermissionsProviders provider)
+        {
+            switch(provider)
+            {
+                case ExtendedPermissionsProviders.ActiveDirectoryApplicationDirectory: return PermissionsProvider.ActiveDirectoryApplicationDirectory;
+                case ExtendedPermissionsProviders.ActiveDirectoryDomain: return PermissionsProvider.ActiveDirectoryDomain;
+                case ExtendedPermissionsProviders.ActiveDirectoryMachine: return PermissionsProvider.ActiveDirectoryMachine;
+                default:
+                    return PermissionsProvider.Empty;
+            }
+        }
 
-            if (types == null)
-                this.types = new HashSet<Type>().ToImmutableHashSet();
-            this.types = types.ToImmutableHashSet();
+        private ITypeProvider LocateProviderFor<TType>()
+        {
+            foreach (var provider in this.typeProviders)
+            {
+                if (provider.ProvidableTypes.Contains(typeof(TType)))
+                {
+                    return provider;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -66,8 +85,12 @@ namespace FluentBoilerplate.Providers
         /// </summary>
         /// <typeparam name="TType">The requested type</typeparam>
         /// <param name="action">How the type will be used</param>
-        protected abstract void Use<TType>(Action<TType> action);
-        
+        protected override void Use<TType>(Action<TType> action)
+        {
+            var provider = LocateProviderFor<TType>();
+            provider.Use(action);
+        }
+
         /// <summary>
         /// Uses the accessible type
         /// </summary>
@@ -75,53 +98,10 @@ namespace FluentBoilerplate.Providers
         /// <typeparam name="TResult">The result type</typeparam>
         /// <param name="action">How the type will be used</param>
         /// <returns>The result</returns>
-        protected abstract TResult Use<TType, TResult>(Func<TType, TResult> action);
-
-        private bool VerifyPermissions(IIdentity identity)
+        protected override TResult Use<TType, TResult>(Func<TType, TResult> action)
         {
-            if (this.permissionsProvider == null)
-                return false;
-
-            return this.permissionsProvider.HasPermission(identity);
-        }
-
-        /// <summary>
-        /// Tries to access an instance of the requested type
-        /// </summary>
-        /// <typeparam name="TType">The requested type</typeparam>
-        /// <typeparam name="TResult">The result type</typeparam>
-        /// <param name="identity">The identity</param>
-        /// <param name="useType">How the type will be used if it can be accessed</param>
-        /// <returns>A response containing information about the access attempt and the result</returns>
-        public IResponse<TResult> TryAccess<TType, TResult>(IIdentity identity, Func<TType, TResult> useType)
-        {
-            if (!VerifyPermissions(identity))
-                return Response<TResult>.Failed;
-
-            if (!this.types.Contains(typeof(TType)))
-                return Response<TResult>.Failed;
-
-            var result = Use<TType, TResult>(useType);
-            return new Response<TResult>(result);
-        }
-
-        /// <summary>
-        /// Tries to access an instance of the requested type
-        /// </summary>
-        /// <typeparam name="TType">The requested type</typeparam>
-        /// <param name="identity">The identity</param>
-        /// <param name="useType">How the type will be used if it can be accessed</param>
-        /// <returns>A response containing information about the access attempt</returns>
-        public IResponse TryAccess<TType>(IIdentity identity, Action<TType> useType)
-        {
-            if (!VerifyPermissions(identity))
-                return Response.Failed;
-
-            if (!this.types.Contains(typeof(TType)))
-                return Response.Failed;
-
-            Use<TType>(useType);
-            return new Response(true);
+            var provider = LocateProviderFor<TType>();
+            return provider.Use(action);
         }
     }
 }

@@ -30,9 +30,21 @@ namespace FluentBoilerplate.Tests
     [TestFixture]
     public class SyntaxTestPlayground
     {
+
         [Test]
         public void Test()
         {
+            var adrole = new Role(0, "Administrators", "", null, PermissionsSource.ActiveDirectory);
+            var me = Identity.CurrentWindowsUser;
+            var context = Boilerplate.New(me);
+            context.BeginContract()
+                .MustNotHaveRoles(adrole)
+                .EndContract()
+                .Do(c =>
+                {
+                    Debugger.Break();
+                });
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 

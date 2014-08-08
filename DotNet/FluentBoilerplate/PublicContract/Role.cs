@@ -25,6 +25,8 @@ namespace FluentBoilerplate
 {
     public class Role:IRole
     {
+        public static IImmutableSet<IRole> EmptyRoles { get { return new IRole[0].ToImmutableHashSet(); } }
+
         public int Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
@@ -36,7 +38,7 @@ namespace FluentBoilerplate
             this.Id = id;
             this.Name = name;
             this.Description = description;
-            this.Rights = rights;
+            this.Rights = rights ?? new HashSet<IRight>().ToImmutableHashSet();
             this.Source = source;
         }
     }

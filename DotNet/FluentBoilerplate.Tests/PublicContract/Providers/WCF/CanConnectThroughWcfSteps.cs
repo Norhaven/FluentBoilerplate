@@ -31,7 +31,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.WCF
         {
             var service = new WcfService<ITestWcfService>("PipeClient");
             var provider = new WcfClientProvider(new [] { service });
-            this.testContext.Access = new BasicTypeAccessProvider(PermissionsProvider.Empty, new[] { provider });
+            this.testContext.Access = new TypeAccessProvider(new[] { provider }, PermissionsProvider.Empty);
         }
 
         [Given(@"there is a hosted WCF service using TCP")]
@@ -45,7 +45,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.WCF
         {
             var service = new WcfService<ITestWcfService>("TcpClient");
             var provider = new WcfClientProvider(new[] { service });
-            this.testContext.Access = new BasicTypeAccessProvider(PermissionsProvider.Empty, new[] { provider });
+            this.testContext.Access = new TypeAccessProvider(new[] { provider }, PermissionsProvider.Empty);
         }
 
         [When(@"I ask for the WCF service contract type through the type provider")]

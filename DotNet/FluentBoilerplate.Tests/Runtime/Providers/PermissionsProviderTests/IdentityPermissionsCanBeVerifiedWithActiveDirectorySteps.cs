@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.DirectoryServices.AccountManagement;
 using TechTalk.SpecFlow;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
@@ -32,13 +33,34 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
         [Given(@"I have created a Windows user named ""(.*)""")]
         public void GivenIHaveCreatedAWindowsUserNamed(string userName)
         {
-            ScenarioContext.Current.Pending();
+            using (var context = new PrincipalContext(ContextType.Machine))
+            {
+                var user = UserPrincipal.FindByIdentity(context, userName);
+
+                if (user != null)
+                    user.Delete();
+
+                user = new UserPrincipal(context);
+                user.SamAccountName = userName;
+                user.Enabled = true;
+                user.Save();
+            }
         }
 
         [Given(@"I have created an Active Directory group named ""(.*)""")]
         public void GivenIHaveCreatedAnActiveDirectoryGroupNamed(string groupName)
         {
-            ScenarioContext.Current.Pending();
+            using (var context = new PrincipalContext(ContextType.Machine))
+            {
+                var group = GroupPrincipal.FindByIdentity(context, groupName);
+
+                if (group != null)
+                    group.Delete();
+
+                group = new GroupPrincipal(context);
+                group.SamAccountName = groupName;
+                group.Save();
+            }
         }
 
         [Given(@"I have added the Windows user to the Active Directory group")]

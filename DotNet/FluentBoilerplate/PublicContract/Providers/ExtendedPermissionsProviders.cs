@@ -14,30 +14,19 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Tests
+namespace FluentBoilerplate.Providers
 {
-    public class TestTypeAccessProvider : TypeAccessProviderBase
+    public enum ExtendedPermissionsProviders
     {
-        public TestTypeAccessProvider(IPermissionsProvider provider, IEnumerable<Type> types)
-            : base(provider, types)
-        {
-        }
-        
-        protected override void Use<TType>(Action<TType> action)
-        {
-            action(default(TType));
-        }
-
-        protected override TResult Use<TType, TResult>(Func<TType, TResult> action)
-        {
-            return action(default(TType));
-        }
+        None = 0,
+        ActiveDirectoryDomain = 1,
+        ActiveDirectoryMachine = 2,
+        ActiveDirectoryApplicationDirectory = 3
     }
 }

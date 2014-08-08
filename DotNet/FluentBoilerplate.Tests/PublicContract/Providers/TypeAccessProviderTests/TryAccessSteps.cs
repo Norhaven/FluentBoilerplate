@@ -74,7 +74,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
         [Given(@"I have an identity with permissions")]
         public void GivenIHaveAnIdentityWithPermissions()
         {
-            this.testContext.Identity = new Identity(permittedRights: TestPermissions.BasicRights);
+            this.testContext.Identity = new Identity("Test Identity", permittedRights: TestPermissions.BasicRights);
         }
 
         [When(@"I try to access the type")]

@@ -19,6 +19,7 @@ using System.Linq;
 using FluentBoilerplate.Runtime.Extensions;
 using System.Security.Principal;
 using System;
+using System.DirectoryServices.AccountManagement;
 
 namespace FluentBoilerplate
 {
@@ -30,7 +31,7 @@ namespace FluentBoilerplate
         /// <summary>
         /// Creates the default instance of <see cref="IIdentity"/>
         /// </summary>
-        public static IIdentity Default { get { return new Identity(); } }
+        public static IIdentity Default { get { return new Identity("Default Identity"); } }
 
         /// <summary>
         /// Gets the identity of the current Windows user
@@ -40,15 +41,10 @@ namespace FluentBoilerplate
             get
             {
                 var windowsIdentity = WindowsIdentity.GetCurrent();
-
-                var getRoles = (from g in windowsIdentity.Groups                                
-                                select (IRole)new Role(0, g.Value, String.Empty, Right.EmptyRights, PermissionsSource.ActiveDirectory));
-
-                var roles = getRoles.ToImmutableHashSet();
-                return new Identity(permittedRoles: roles);
+                return new Identity(windowsIdentity.Name);
             }
         }
-
+        
         /// <summary>
         /// Gets the name of this identity
         /// </summary>
@@ -73,15 +69,18 @@ namespace FluentBoilerplate
         /// <summary>
         /// Creates a new instance of the <see cref="Identity"/> class
         /// </summary>
+        /// <param name="name">The name of this identity</param>
         /// <param name="permittedRoles">The permitted roles</param>
         /// <param name="deniedRoles">The denied roles</param>
         /// <param name="permittedRights">The permitted rights</param>
         /// <param name="deniedRights">The denied rights</param>
-        public Identity(IImmutableSet<IRole> permittedRoles = null,
+        public Identity(string name,
+                        IImmutableSet<IRole> permittedRoles = null,
                         IImmutableSet<IRole> deniedRoles = null,
                         IImmutableSet<IRight> permittedRights = null,
                         IImmutableSet<IRight> deniedRights = null)
         {
+            this.Name = name;
             this.PermittedRoles = permittedRoles.DefaultIfNull();
             this.DeniedRoles = deniedRoles.DefaultIfNull();
             this.PermittedRights = permittedRights.DefaultIfNull();
@@ -101,7 +100,8 @@ namespace FluentBoilerplate
                               IImmutableSet<IRight> permittedRights = null, 
                               IImmutableSet<IRight> deniedRights = null)
         {
-            return new Identity(permittedRoles ?? this.PermittedRoles,
+            return new Identity(this.Name,
+                                permittedRoles ?? this.PermittedRoles,
                                 deniedRoles ?? this.DeniedRoles,
                                 permittedRights ?? this.PermittedRights,
                                 deniedRights ?? this.DeniedRights);
