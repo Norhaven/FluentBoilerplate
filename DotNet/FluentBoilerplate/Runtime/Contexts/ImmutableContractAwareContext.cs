@@ -38,7 +38,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         public TResult VerifyContractIfPossible<TResult>(IContractBundle contractBundle, IIdentity identity, Func<TResult> action)
         {
             if (!this.bundle.Permissions.HasPermission(identity))
-                return default(TResult);
+                throw new ContractViolationException("The current identity does not have permission to  perform this action");
 
             if (contractBundle == null)
                 return action();

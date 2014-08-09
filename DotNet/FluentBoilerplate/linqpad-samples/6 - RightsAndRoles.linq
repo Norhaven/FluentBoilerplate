@@ -15,13 +15,13 @@ var defaultIdentity = Identity.Default;
 var boilerplate = Boilerplate.New(identity: defaultIdentity);
 
 //You could require that the identity have those prior to executing an action.
-//This particular example will fail with a ContractViolationException because the default identity isn't permitted either of those.
+//This particular example will fail the permissions check and throw a ContractViolationException because the default identity isn't permitted either of those.
 boilerplate
 	.BeginContract()
 		.RequireRights(basicRight)
 		.RequireRoles(basicRole)
 	.EndContract()
-	.Do(context => { /* Take some action */ });
+	.Do(context => { throw new Exception(); });
 	
 //Alternately, you could make sure that the identity doesn't have either of those.
 //This particular example will succeed because the default identity isn't permitted either of those.

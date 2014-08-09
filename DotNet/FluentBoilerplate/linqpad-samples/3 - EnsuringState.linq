@@ -36,7 +36,7 @@ public class Stateful
 		
 		boilerplate
 			.BeginContract()
-				.EnsureOnReturn(() => this.State != null, (ex) => new IncorrectStateException(ex))
+				.EnsureOnReturn(() => this.State != null, () => new IncorrectStateException())
 				.EnsureOnThrow(() => this.State != null, (ex) => new IncorrectStateException(ex))
 			.EndContract()
 			.Do(context => 
@@ -51,6 +51,7 @@ public class Stateful
 
 public class IncorrectStateException:Exception
 {
+	public IncorrectStateException():base(){}
 	public IncorrectStateException(Exception innerException):base(String.Empty,innerException)
 	{
 	}

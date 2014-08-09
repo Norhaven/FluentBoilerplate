@@ -208,14 +208,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FluentBoilerplate.snk" />
-    <None Include="linqpad-samples\ActionsAndExceptions.linq" />
-    <None Include="linqpad-samples\ActiveDirectoryGroups.linq" />
-    <None Include="linqpad-samples\EnsuringState.linq" />
-    <None Include="linqpad-samples\RequiringState.linq" />
-    <None Include="linqpad-samples\RightsAndRoles.linq" />
-    <None Include="linqpad-samples\TypeConversion.linq" />
-    <None Include="linqpad-samples\TypeValidation.linq" />
-    <None Include="linqpad-samples\UsingWCF.linq" />
+    <None Include="linqpad-samples\1 - ActionsAndExceptions.linq" />
+    <None Include="linqpad-samples\7 - ActiveDirectoryGroups.linq" />
+    <None Include="linqpad-samples\3 - EnsuringState.linq" />
+    <None Include="linqpad-samples\2 - RequiringState.linq" />
+    <None Include="linqpad-samples\6 - RightsAndRoles.linq" />
+    <None Include="linqpad-samples\5- TypeConversion.linq" />
+    <None Include="linqpad-samples\4 - TypeValidation.linq" />
+    <None Include="linqpad-samples\8 - UsingWCF.linq" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -38,20 +38,18 @@ void Main()
 }
 
 private static Binding binding = new NetNamedPipeBinding();
-private static EndpointAddress endpoint = new EndpointAddress("net.pipe://localhost/FluentBoilerplateExampleService");
+private static string address = "net.pipe://localhost/FluentBoilerplateExampleService";
 
 private static ITypeProvider CreateWcfTypeProvider()
 {
-	var service = new WcfService<IExampleService>(binding, endpoint);
+	var service = new WcfService<IExampleService>(binding, new EndpointAddress(address));
 	return new WcfConnectionProvider(new [] { service });
 }
 
 private static void HostService()
-{            
-	var description = new ContractDescription("IExampleService");
-    var binding = new NetNamedPipeBinding();	
-	var host =  new ServiceHost(typeof(ExampleService));
-    host.AddServiceEndpoint(new ServiceEndpoint(description, binding, endpoint));
+{   
+	var host = new ServiceHost(typeof(ExampleService));
+    host.AddServiceEndpoint(typeof(IExampleService), binding, address);
     host.Open();
 }
 
