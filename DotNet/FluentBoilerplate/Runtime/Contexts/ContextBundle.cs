@@ -48,7 +48,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                              ITranslationProvider translationProvider = null, 
                              IValidationProvider validationProvider = null)
         {
-            this.permissionsProvider = permissionsProvider ?? PermissionsProvider.Empty;
+            this.permissionsProvider = permissionsProvider ?? PermissionsProvider.Default;
             this.errorContext = errorContext ?? ImmutableErrorContext.Empty;
             this.accessProvider = accessProvider; //TODO: Create empty access providers
             this.translationProvider = translationProvider ?? TranslationProvider.Empty;

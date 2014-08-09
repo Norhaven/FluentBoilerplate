@@ -26,7 +26,7 @@ namespace FluentBoilerplate.Providers.WCF
     /// <summary>
     /// Represents a WCF client connection
     /// </summary>
-    public interface IWcfClient:IDisposable
+    public interface IWcfConnection:IDisposable
     {
         /// <summary>
         /// The channel that the connection uses for communication

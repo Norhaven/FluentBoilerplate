@@ -25,8 +25,7 @@ namespace FluentBoilerplate.Providers
     public enum ExtendedPermissionsProviders
     {
         None = 0,
-        ActiveDirectoryDomain = 1,
-        ActiveDirectoryMachine = 2,
-        ActiveDirectoryApplicationDirectory = 3
+        ActiveDirectoryMachine = 1
+        //TODO: Include domain and application directory after they're solid
     }
 }

@@ -34,11 +34,10 @@ namespace FluentBoilerplate.Tests
         [Test]
         public void Test()
         {
-            var adrole = new Role(0, "Administrators", "", null, PermissionsSource.ActiveDirectory);
             var me = Identity.CurrentWindowsUser;
             var context = Boilerplate.New(me);
             context.BeginContract()
-                .MustNotHaveRoles(adrole)
+                .MustNotHaveRoles(ActiveDirectoryGroup.Administrators)
                 .EndContract()
                 .Do(c =>
                 {

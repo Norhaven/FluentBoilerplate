@@ -17,6 +17,7 @@
 using System;
 using System.DirectoryServices.AccountManagement;
 using TechTalk.SpecFlow;
+using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
 {
@@ -33,34 +34,41 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
         [Given(@"I have created a Windows user named ""(.*)""")]
         public void GivenIHaveCreatedAWindowsUserNamed(string userName)
         {
-            using (var context = new PrincipalContext(ContextType.Machine))
-            {
-                var user = UserPrincipal.FindByIdentity(context, userName);
+            ScenarioContext.Current.Pending();
 
-                if (user != null)
-                    user.Delete();
+            //using (var context = new PrincipalContext(ContextType.Machine))
+            //{
+            //    var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userName);
 
-                user = new UserPrincipal(context);
-                user.SamAccountName = userName;
-                user.Enabled = true;
-                user.Save();
-            }
+            //    if (user != null)
+            //        user.Delete();
+
+            //    user = new UserPrincipal(context);
+            //    user.SamAccountName = userName.WithMachineAuthentication();
+            //    user.Name = userName.WithMachineAuthentication();
+            //    user.Enabled = true;
+            //    user.UserPrincipalName = userName;
+            //    user.SetPassword("FluentBoilerplatePassword");
+            //    user.Save();
+            //}
         }
 
         [Given(@"I have created an Active Directory group named ""(.*)""")]
         public void GivenIHaveCreatedAnActiveDirectoryGroupNamed(string groupName)
         {
-            using (var context = new PrincipalContext(ContextType.Machine))
-            {
-                var group = GroupPrincipal.FindByIdentity(context, groupName);
+            ScenarioContext.Current.Pending();
 
-                if (group != null)
-                    group.Delete();
+            //using (var context = new PrincipalContext(ContextType.Machine))
+            //{
+            //    var group = GroupPrincipal.FindByIdentity(context, groupName);
 
-                group = new GroupPrincipal(context);
-                group.SamAccountName = groupName;
-                group.Save();
-            }
+            //    if (group != null)
+            //        group.Delete();
+
+            //    group = new GroupPrincipal(context);
+            //    group.SamAccountName = groupName;
+            //    group.Save();
+            //}
         }
 
         [Given(@"I have added the Windows user to the Active Directory group")]

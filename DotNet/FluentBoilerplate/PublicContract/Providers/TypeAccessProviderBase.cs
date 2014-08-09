@@ -30,20 +30,7 @@ namespace FluentBoilerplate.Providers
     /// Represents a type access provider that may be extended to implement a custom type access provider
     /// </summary>
     public abstract class TypeAccessProviderBase:ITypeAccessProvider
-    {
-        private sealed class EmptyProvider : TypeAccessProviderBase
-        {
-            public EmptyProvider() : base(PermissionsProvider.Empty, Type.EmptyTypes) { }
-
-            protected override void Use<TType>(Action<TType> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
-            protected override TResult Use<TType, TResult>(Func<TType, TResult> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
-        }
-
-        /// <summary>
-        /// Gets an empty type access provider
-        /// </summary>
-        public static ITypeAccessProvider Empty { get { return new EmptyProvider(); } }
-
+    {        
         protected readonly IPermissionsProvider permissionsProvider;
         protected readonly IImmutableSet<Type> types;
 

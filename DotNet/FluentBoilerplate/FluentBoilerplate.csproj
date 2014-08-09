@@ -43,6 +43,7 @@
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.ServiceModel" />
@@ -53,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PublicContract\ActiveDirectoryGroup.cs" />
     <Compile Include="PublicContract\Attributes\LogAttribute.cs" />
     <Compile Include="PublicContract\Attributes\LogVisibility.cs" />
     <Compile Include="PublicContract\Attributes\MapsToAttribute.cs" />
@@ -64,8 +66,9 @@
     <Compile Include="PublicContract\Contexts\Boilerplate\IVoidReturnContractContext.cs" />
     <Compile Include="PublicContract\Contexts\Boilerplate\IResultContractContext.cs" />
     <Compile Include="PublicContract\Contexts\IContractCondition.cs" />
-    <Compile Include="PublicContract\Contexts\IVerifiableContractContext.cs" />
-    <Compile Include="PublicContract\ContractExit.cs" />
+    <Compile Include="Runtime\Configuration\FluentBoilerplateConfigurationSection.cs" />
+    <Compile Include="Runtime\Contexts\IVerifiableContractContext.cs" />
+    <Compile Include="Runtime\ContractExit.cs" />
     <Compile Include="PublicContract\Exceptions\IdentityConfigurationException.cs" />
     <Compile Include="PublicContract\Exceptions\OperationWasNotSuccessfulException.cs" />
     <Compile Include="PublicContract\Exceptions\ServiceProviderNotFoundException.cs" />
@@ -75,11 +78,11 @@
     <Compile Include="PublicContract\Providers\TypeAccessProvider.cs" />
     <Compile Include="PublicContract\Providers\ITypeProvider.cs" />
     <Compile Include="PublicContract\Providers\ExtendedPermissionsProviders.cs" />
-    <Compile Include="PublicContract\Providers\WCF\IWcfClient.cs" />
+    <Compile Include="PublicContract\Providers\WCF\IWcfConnection.cs" />
     <Compile Include="PublicContract\Providers\WCF\IWcfService.cs" />
     <Compile Include="PublicContract\Providers\TypeAccessProviderBase.cs" />
     <Compile Include="PublicContract\Providers\WCF\WcfService.cs" />
-    <Compile Include="PublicContract\Providers\WCF\WcfClientProvider.cs" />
+    <Compile Include="PublicContract\Providers\WCF\WcfConnectionProvider.cs" />
     <Compile Include="PublicContract\Right.cs" />
     <Compile Include="PublicContract\Role.cs" />
     <Compile Include="PublicContract\Traits\IContractualTrait.cs" />
@@ -199,6 +202,7 @@
     <Compile Include="Runtime\Providers\Validation\Validated.cs" />
     <Compile Include="Runtime\Providers\Validation\ValidationResult.cs" />
     <Compile Include="Runtime\Providers\WCF\ChannelClient.cs" />
+    <Compile Include="Runtime\Providers\WCF\WcfClientEndpointExplorer.cs" />
     <Compile Include="Runtime\Response.cs" />
     <Compile Include="Runtime\TypeAccessBuilder.cs" />
   </ItemGroup>

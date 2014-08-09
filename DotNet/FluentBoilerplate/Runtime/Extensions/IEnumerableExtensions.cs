@@ -28,7 +28,10 @@ namespace FluentBoilerplate.Runtime.Extensions
     {
         public static IImmutableSet<Type> AggregateProvidableTypes(this IEnumerable<ITypeProvider> providers)
         {
-            IImmutableSet<Type> currentTypes = null;
+            IImmutableSet<Type> currentTypes = new HashSet<Type>().ToImmutableHashSet();
+
+            if (providers == null)
+                return currentTypes;
 
             foreach (var provider in providers)
             {

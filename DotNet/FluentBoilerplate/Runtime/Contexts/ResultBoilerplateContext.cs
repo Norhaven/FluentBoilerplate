@@ -66,7 +66,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 {
                     var safeCall = this.bundle.Errors.ExtendAround(action);
                     var downgradedSettings = DowngradeErrorHandling();
-                    var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
+                    var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                     var result = action(serviceContext);
                     return MergeCopy(result: result);
                 });
@@ -79,7 +79,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
+                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                 var result = action(serviceContext, this.Result);
                 return MergeCopy(result: result);
             });
@@ -98,7 +98,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
+                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                 safeCall(serviceContext);
                 return MergeCopy();
             });
@@ -111,7 +111,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             {
                 var safeCall = this.bundle.Errors.ExtendAround(action);
                 var downgradedSettings = DowngradeErrorHandling();
-                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity, null);
+                var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                 safeCall(serviceContext, this.Result);
                 return MergeCopy();
             });

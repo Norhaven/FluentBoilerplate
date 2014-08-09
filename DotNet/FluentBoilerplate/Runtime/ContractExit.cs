@@ -14,21 +14,20 @@
    limitations under the License.
  */
 
-namespace FluentBoilerplate.Contexts
+namespace FluentBoilerplate.Runtime
 {
     /// <summary>
-    /// Represents a context that can verify a contract
+    /// Represents possible ways that a contract-oriented method could be exited
     /// </summary>
-    public interface IVerifiableContractContext
+    internal enum ContractExit
     {
         /// <summary>
-        /// Verify all preconditions contained by the context
+        /// The method returned successfully
         /// </summary>
-        void VerifyPreConditions();
+        Returned,
         /// <summary>
-        /// Verify all postconditions contained by the context, for the given way of exiting the contract
+        /// The method threw an exception
         /// </summary>
-        /// <param name="exit">The way of exiting the contract</param>
-        void VerifyPostConditions(ContractExit exit);
+        ThrewException
     }
 }

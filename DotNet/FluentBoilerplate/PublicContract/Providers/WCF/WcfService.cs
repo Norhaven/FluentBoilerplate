@@ -73,7 +73,7 @@ namespace FluentBoilerplate.Providers.WCF
         /// Opens a client connection to this service
         /// </summary>
         /// <returns>An instance of the opened client connection</returns>
-        public IWcfClient OpenClient()
+        public IWcfConnection OpenClient()
         {
             var client = CreateClient();
             client.Open();

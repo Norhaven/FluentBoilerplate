@@ -50,7 +50,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         internal InitialBoilerplateContext(IContextBundle bundle,
                                            IIdentity identity,
-                                           IContractBundle contractBundle)
+                                           IContractBundle contractBundle = null)
             :base(bundle)
         {
             this.Identity = identity;

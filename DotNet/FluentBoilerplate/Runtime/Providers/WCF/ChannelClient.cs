@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Providers.WCF
 {
-    internal sealed class ChannelClient<TService> : ClientBase<TService>, IWcfClient where TService:class
+    internal sealed class ChannelClient<TService> : ClientBase<TService>, IWcfConnection where TService:class
     {
-        IChannel IWcfClient.Channel { get { return base.InnerChannel; } }
+        IChannel IWcfConnection.Channel { get { return base.InnerChannel; } }
 
         public ChannelClient(string endpointName) : base(endpointName) { }
         public ChannelClient(Binding binding, EndpointAddress endpointAddress) : base(binding, endpointAddress) { }

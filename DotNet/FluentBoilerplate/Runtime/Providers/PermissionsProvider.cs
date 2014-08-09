@@ -30,10 +30,11 @@ namespace FluentBoilerplate.Runtime.Providers
 {
     internal sealed class PermissionsProvider : IPermissionsProvider
     {
-        public static IPermissionsProvider Empty { get { return new PermissionsProvider(Permissions.Empty); } }
-        public static IPermissionsProvider ActiveDirectoryDomain { get { return new PermissionsProvider(Permissions.Empty, ContextType.Domain); } }
-        public static IPermissionsProvider ActiveDirectoryApplicationDirectory { get { return new PermissionsProvider(Permissions.Empty, ContextType.ApplicationDirectory); } }
-        public static IPermissionsProvider ActiveDirectoryMachine { get { return new PermissionsProvider(Permissions.Empty, ContextType.Machine); } }
+        public static IPermissionsProvider Default { get { return new PermissionsProvider(Permissions.Empty); } }
+        //TODO: Include when they're solid
+        //public static IPermissionsProvider ActiveDirectoryDomain { get { return new PermissionsProvider(Permissions.Empty, ContextType.Domain); } }
+        //public static IPermissionsProvider ActiveDirectoryApplicationDirectory { get { return new PermissionsProvider(Permissions.Empty, ContextType.ApplicationDirectory); } }
+        public static IPermissionsProvider IncludingActiveDirectoryMachine { get { return new PermissionsProvider(Permissions.Empty, ContextType.Machine); } }
 
         private readonly Permissions permissions;
         private readonly IImmutableSet<IRight> requiredRights;
@@ -42,7 +43,7 @@ namespace FluentBoilerplate.Runtime.Providers
         private readonly IImmutableSet<IRole> restrictedRoles;
         private readonly IImmutableQueue<IRole> requiredActiveDirectoryRoles;
         private readonly IImmutableQueue<IRole> restrictedActiveDirectoryRoles;
-        private readonly ContextType activeDirectoryContextType;
+        private readonly ContextType? activeDirectoryContextType;
         
         public bool HasRequiredRights { get { return this.requiredRights.Count > 0; } }
         public bool HasRestrictedRights { get { return this.restrictedRights.Count > 0; } }
@@ -51,7 +52,7 @@ namespace FluentBoilerplate.Runtime.Providers
         public bool HasNoRestrictions { get { return !this.HasRestrictedRights && !this.HasRestrictedRoles; } }
         public bool HasNoRequirements { get { return !this.HasRequiredRights && !this.HasRequiredRoles; } }
 
-        public PermissionsProvider(Permissions permissions, ContextType activeDirectoryContextType = ContextType.Machine)
+        public PermissionsProvider(Permissions permissions, ContextType? activeDirectoryContextType = null)
         {
             this.permissions = permissions;
             this.requiredRights = ConsolidateRights(permissions.RequiredRights, permissions.RequiredRoles);
@@ -60,7 +61,7 @@ namespace FluentBoilerplate.Runtime.Providers
             this.restrictedRoles = GetManualRoles(permissions.RestrictedRoles);
             this.requiredActiveDirectoryRoles = GetActiveDirectoryRoles(permissions.RequiredRoles);
             this.restrictedActiveDirectoryRoles = GetActiveDirectoryRoles(permissions.RestrictedRoles);
-            this.activeDirectoryContextType = activeDirectoryContextType;
+            this.activeDirectoryContextType = activeDirectoryContextType; 
         }
         
         private IImmutableSet<IRole> GetManualRoles(IEnumerable<IRole> roles)
@@ -105,7 +106,7 @@ namespace FluentBoilerplate.Runtime.Providers
             if (this.HasNoRestrictions && this.HasNoRequirements)
                 return true;
 
-            //Manual roles / rights
+            //Manual roles/rights will always apply first, regardless of extended permissions verification
 
             //Were they explicitly denied any of the required roles or rights?  
             if (this.requiredRoles.Overlaps(identity.DeniedRoles))
@@ -128,7 +129,9 @@ namespace FluentBoilerplate.Runtime.Providers
             if (this.restrictedRights.Overlaps(identity.PermittedRights))
                 return false;
 
-            //Active Directory roles
+            //TODO: Break extended permissions verifications into injectable types
+
+            //Active Directory roles (if specified) apply as an extended permissions verification
 
             if (!VerifyActiveDirectoryRoles(identity, this.requiredActiveDirectoryRoles, isMember => isMember == true))
                 return false;
@@ -144,7 +147,11 @@ namespace FluentBoilerplate.Runtime.Providers
             if (roles.IsEmpty)
                 return true;
 
-            var context = new PrincipalContext(this.activeDirectoryContextType);
+            if (this.activeDirectoryContextType == null)
+                return true;
+
+            var contextType = this.activeDirectoryContextType.Value;
+            var context = new PrincipalContext(contextType);
             var user = UserPrincipal.FindByIdentity(context, identity.Name);
 
             if (user == null)

@@ -14,20 +14,15 @@
    limitations under the License.
  */
 
-namespace FluentBoilerplate
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FluentBoilerplate.Runtime.Configuration
 {
-    /// <summary>
-    /// Represents possible ways that a contract-oriented method could be exited
-    /// </summary>
-    public enum ContractExit
+    class FluentBoilerplateConfigurationSection
     {
-        /// <summary>
-        /// The method returned successfully
-        /// </summary>
-        Returned,
-        /// <summary>
-        /// The method threw an exception
-        /// </summary>
-        ThrewException
     }
 }

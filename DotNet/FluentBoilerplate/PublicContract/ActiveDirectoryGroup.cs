@@ -30,19 +30,23 @@ namespace FluentBoilerplate
         /// <summary>
         /// Gets the "Administrators" role
         /// </summary>
-        public static readonly IRole Administrators { get { return new ActiveDirectoryGroup("Administrators"); } }
+        public static IRole Administrators { get { return new ActiveDirectoryGroup("Administrators"); } }
         /// <summary>
         /// Gets the "Everyone" role
         /// </summary>
-        public static readonly IRole Everyone { get { return new ActiveDirectoryGroup("Everyone"); } }
+        public static IRole Everyone { get { return new ActiveDirectoryGroup("Everyone"); } }
         /// <summary>
         /// Gets the "Users" role
         /// </summary>
-        public static readonly IRole Users { get { return new ActiveDirectoryGroup("Users"); } }
+        public static IRole Users { get { return new ActiveDirectoryGroup("Users"); } }
         /// <summary>
         /// Gets the "Authenticated Users" role
         /// </summary>
-        public static readonly IRole AuthenticatedUsers { get { return new ActiveDirectoryGroup("Authenticated Users"); } }
+        public static IRole AuthenticatedUsers { get { return new ActiveDirectoryGroup("Authenticated Users"); } }
+        /// <summary>
+        /// Gets the "SYSTEM" role
+        /// </summary>
+        public static IRole System { get { return new ActiveDirectoryGroup("SYSTEM"); } }
 
         /// <summary>
         /// Creates a new instance of the <see cref="ActiveDirectoryGroup"/> class.

@@ -35,7 +35,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.PermissionsProviderTests
         [Given(@"I have a permissions provider with no permissions")]
         public void GivenIHaveAPermissionsProviderWithNoPermissions()
         {
-            this.testContext.Permissions = PermissionsProvider.Empty;
+            this.testContext.Permissions = PermissionsProvider.Default;
         }
 
         [Given(@"I have a permissions provider with required permissions")]

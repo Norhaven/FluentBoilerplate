@@ -37,25 +37,25 @@ namespace FluentBoilerplate
         /// <param name="accessProvider">An access provider for specific types (available through IContext.Open())</param>
         /// <returns>An instance of <see cref="IContext"/></returns>
         public static IContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null)
-        {
+        {   
             var actualIdentity = identity ?? Identity.Default;
-            var actualTypeAccessProvider = accessProvider ?? TypeAccessProviderBase.Empty;
+            var actualTypeAccessProvider = accessProvider ?? TypeAccessProvider.Empty;
+
             var functionGenerator = new FunctionGenerator();
+            var translationProvider = new TranslationProvider(functionGenerator);
+            var validationProvider = new ValidationProvider(functionGenerator);
             var logProvider = new LogProvider(functionGenerator, LogVisibility.All);
             var tryCatchProvider = new TryCatchBlockProvider(functionGenerator);
             var exceptionHandlerProvider = new ExceptionHandlerProvider(logProvider);
             var errorContext = new ImmutableErrorContext(logProvider, tryCatchProvider, exceptionHandlerProvider);
 
-            var translationProvider = new TranslationProvider(functionGenerator);
-            var validationProvider = new ValidationProvider(functionGenerator);
+            var bundle = new ContextBundle(PermissionsProvider.Default,
+                                           errorContext: errorContext,
+                                           translationProvider: translationProvider,
+                                           accessProvider: actualTypeAccessProvider,
+                                           validationProvider: validationProvider);
 
-            var settings = new ContextBundle(PermissionsProvider.Empty,
-                                             errorContext: errorContext,
-                                             translationProvider: translationProvider,
-                                             accessProvider: actualTypeAccessProvider,
-                                             validationProvider: validationProvider);
-
-            return new InitialBoilerplateContext<ContractContext>(settings, actualIdentity, null);
+            return new InitialBoilerplateContext<ContractContext>(bundle, actualIdentity);
         }
     }
 }

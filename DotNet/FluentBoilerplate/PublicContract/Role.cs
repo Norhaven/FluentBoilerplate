@@ -20,6 +20,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate
 {
@@ -38,7 +39,7 @@ namespace FluentBoilerplate
             this.Id = id;
             this.Name = name;
             this.Description = description;
-            this.Rights = rights ?? new HashSet<IRight>().ToImmutableHashSet();
+            this.Rights = rights.DefaultIfNull();
             this.Source = source;
         }
     }

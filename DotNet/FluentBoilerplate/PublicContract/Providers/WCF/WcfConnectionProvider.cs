@@ -24,13 +24,14 @@ using System.Threading.Tasks;
 using FluentBoilerplate.Exceptions;
 using System.ServiceModel.Channels;
 using System.Collections.Immutable;
+using FluentBoilerplate.Runtime.Providers.WCF;
 
 namespace FluentBoilerplate.Providers.WCF
 {
     /// <summary>
     /// Represents a provider of WCF client connections
     /// </summary>
-    public sealed class WcfClientProvider:ITypeProvider
+    public sealed class WcfConnectionProvider:ITypeProvider
     {
         private readonly IImmutableDictionary<Type, IWcfService> services;
         private readonly IImmutableSet<Type> providableTypes;
@@ -39,12 +40,24 @@ namespace FluentBoilerplate.Providers.WCF
         /// Gets the service types that may be provided
         /// </summary>
         public IImmutableSet<Type> ProvidableTypes { get { return this.providableTypes; } }
+        
+        /// <summary>
+        /// Creates a new instance of the <see cref="WcfConnectionProvider"/> class.
+        /// This will attempt to discover WCF service endpoints in the &lt;system.serviceModel&gt;&lt;client&gt; configuration section.
+        /// </summary>
+        public WcfConnectionProvider()
+        {
+            var explorer = new WcfClientEndpointExplorer();
+            explorer.Load();
+            this.services = explorer.KnownServices.ToImmutableDictionary(service => service.ServiceType);
+            this.providableTypes = this.services.Keys.ToImmutableHashSet();
+        }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="WcfClientProvider"/> class.
+        /// Creates a new instance of the <see cref="WcfConnectionProvider"/> class.
         /// </summary>
         /// <param name="services">The services that may be provided</param>
-        public WcfClientProvider(IEnumerable<IWcfService> services)
+        public WcfConnectionProvider(IEnumerable<IWcfService> services)
         {
             this.services = services.ToImmutableDictionary(service => service.ServiceType);
             this.providableTypes = this.services.Keys.ToImmutableHashSet();

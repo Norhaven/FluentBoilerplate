@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Extensions;
 using FluentBoilerplate.Runtime.Providers;
+using FluentBoilerplate.Providers.WCF;
 
 namespace FluentBoilerplate.Providers
 {
@@ -29,41 +30,61 @@ namespace FluentBoilerplate.Providers
     /// </summary>
     public sealed class TypeAccessProvider:TypeAccessProviderBase
     {
+        private sealed class EmptyProvider : TypeAccessProviderBase
+        {
+            public EmptyProvider() : base(PermissionsProvider.Default, Type.EmptyTypes) { }
+
+            protected override void Use<TType>(Action<TType> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
+            protected override TResult Use<TType, TResult>(Func<TType, TResult> action) { throw new InvalidOperationException("Should never be able to attempt to use a type with an empty type provider"); }
+        }
+
+        /// <summary>
+        /// Gets an empty type access provider
+        /// </summary>
+        public static ITypeAccessProvider Empty { get { return new EmptyProvider(); } }
+
+        /// <summary>
+        /// Gets a type access provider for WCF connections.
+        /// Uses the default <see cref="IPermissionsProvider"/> to determine permissions.
+        /// </summary>
+        public static ITypeAccessProvider WcfAccessProvider { get { return new TypeAccessProvider(PermissionsProvider.Default, new WcfConnectionProvider()); } }
+
         private readonly ITypeProvider[] typeProviders;
         
         /// <summary>
         /// Creates a new instance of the <see cref="TypeAccessProvider"/> class.
         /// Uses the given <see cref="IPermissionsProvider"/> to determine permissions.
         /// </summary>
-        /// <param name="typeProviders">The type providers that may be accessed</param>
         /// <param name="permissionsProvider">The permissions provider</param>
-        public TypeAccessProvider(IEnumerable<ITypeProvider> typeProviders, IPermissionsProvider permissionsProvider)
+        /// <param name="typeProviders">The type providers that may be accessed</param>
+        public TypeAccessProvider(IPermissionsProvider permissionsProvider, params ITypeProvider[] typeProviders)
             :base(permissionsProvider, typeProviders.AggregateProvidableTypes())
         {
-            this.typeProviders = typeProviders.ToArray();
+            this.typeProviders = typeProviders;
         }
 
         /// <summary>
         /// Creates a new instance of the <see cref="TypeAccessProvider"/> class.
         /// Uses the default permissions provider and, optionally, an extended provider for greater permissions capabilities.
         /// </summary>
-        /// <param name="typeProviders">The type providers that may be accessed</param>
         /// <param name="extendedProvider">The extended permissions provider that should be used</param>
-        public TypeAccessProvider(IEnumerable<ITypeProvider> typeProviders, ExtendedPermissionsProviders extendedProvider = ExtendedPermissionsProviders.None)
+        /// <param name="typeProviders">The type providers that may be accessed</param>
+        public TypeAccessProvider(ExtendedPermissionsProviders extendedProvider = ExtendedPermissionsProviders.None, params ITypeProvider[] typeProviders)
             : base(GetExtendedPermissionsProvider(extendedProvider), typeProviders.AggregateProvidableTypes())
         {
-            this.typeProviders = typeProviders.ToArray();
+            this.typeProviders = typeProviders;
         }
         
         private static IPermissionsProvider GetExtendedPermissionsProvider(ExtendedPermissionsProviders provider)
         {
             switch(provider)
             {
-                case ExtendedPermissionsProviders.ActiveDirectoryApplicationDirectory: return PermissionsProvider.ActiveDirectoryApplicationDirectory;
-                case ExtendedPermissionsProviders.ActiveDirectoryDomain: return PermissionsProvider.ActiveDirectoryDomain;
-                case ExtendedPermissionsProviders.ActiveDirectoryMachine: return PermissionsProvider.ActiveDirectoryMachine;
+                //TODO: Include after they're solid
+                //case ExtendedPermissionsProviders.ActiveDirectoryApplicationDirectory: return PermissionsProvider.ActiveDirectoryApplicationDirectory;
+                //case ExtendedPermissionsProviders.ActiveDirectoryDomain: return PermissionsProvider.ActiveDirectoryDomain;
+                case ExtendedPermissionsProviders.ActiveDirectoryMachine: return PermissionsProvider.IncludingActiveDirectoryMachine;
                 default:
-                    return PermissionsProvider.Empty;
+                    return PermissionsProvider.Default;
             }
         }
 

@@ -14,29 +14,21 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FluentBoilerplate.Providers.WCF
+namespace FluentBoilerplate.Runtime.Contexts
 {
     /// <summary>
-    /// Represents a WCF service
+    /// Represents a context that can verify a contract
     /// </summary>
-    public interface IWcfService
+    internal interface IVerifiableContractContext
     {
         /// <summary>
-        /// Gets the service type
+        /// Verify all preconditions contained by the context
         /// </summary>
-        Type ServiceType { get; }
-
+        void VerifyPreConditions();
         /// <summary>
-        /// Opens a client connection to the service
+        /// Verify all postconditions contained by the context, for the given way of exiting the contract
         /// </summary>
-        /// <returns>An instance of the client</returns>
-        IWcfConnection OpenClient();
+        /// <param name="exit">The way of exiting the contract</param>
+        void VerifyPostConditions(ContractExit exit);
     }
 }

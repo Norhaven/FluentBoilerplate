@@ -27,6 +27,11 @@ namespace FluentBoilerplate.Runtime.Extensions
 {
     internal static class StringExtensions
     {
+        public static string WithMachineAuthentication(this string text)
+        {
+            return String.Format(@"{0}\{1}", Environment.MachineName, text);
+        }
+
         public static string WithValues(this string text, params object[] values)
         {
             Debug.Assert(text != null, String.Format(AssertFailures.InstanceShouldNotBeNull, "text"));

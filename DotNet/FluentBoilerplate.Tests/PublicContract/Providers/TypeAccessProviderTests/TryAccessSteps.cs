@@ -68,7 +68,7 @@ namespace FluentBoilerplate.Tests.PublicContract.Providers.TypeAccessProviderTes
         [Given(@"I have an access provider with no permissions")]
         public void GivenIHaveAProviderWithNoPermissions()
         {
-            this.testContext.Access = new TestTypeAccessProvider(PermissionsProvider.Empty, new[] { typeof(int) });
+            this.testContext.Access = new TestTypeAccessProvider(PermissionsProvider.Default, new[] { typeof(int) });
         }
 
         [Given(@"I have an identity with permissions")]
