@@ -27,7 +27,7 @@ namespace FluentBoilerplate.Traits
         /// </summary>
         /// <param name="rights">The required rights</param>
         /// <returns>An instance of <typeparamref name="TContext"/> that contains the new requirements</returns>
-        TContext RequiresRoles(params IRole[] roles);
+        TContext RequireRoles(params IRole[] roles);
         /// <summary>
         /// Indicates that the current identity must not have a set of roles prior to performing a context action
         /// </summary>

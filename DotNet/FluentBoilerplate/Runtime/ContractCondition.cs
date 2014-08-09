@@ -36,6 +36,6 @@ namespace FluentBoilerplate.Runtime
             return this.condition();
         }
 
-        public abstract void Fail();
+        public abstract void Fail(Exception thrownException = null);
     }
 }

@@ -31,7 +31,7 @@ namespace FluentBoilerplate.Runtime
         {
             this.message = message;
         }
-        public override void Fail()
+        public override void Fail(Exception thrownException = null)
         {
             throw new ContractViolationException(this.message);
         }

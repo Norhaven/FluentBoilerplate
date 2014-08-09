@@ -28,7 +28,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         public class BasicValidatedTest
         {
             public int IntegerValue { get; set; }
-            [StringLength(MinLength=2, MaxLength=4)]
+            [StringLength(Minimum=2, Maximum=4)]
             public string StringValue { get; set; }
             [NotNull]
             public object ObjectValue { get; set; }

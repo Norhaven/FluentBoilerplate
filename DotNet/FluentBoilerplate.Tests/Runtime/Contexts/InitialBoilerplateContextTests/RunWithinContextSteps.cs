@@ -132,7 +132,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             this.testContext.Boilerplate =
                 this.testContext.Boilerplate
                     .BeginContract()
-                        .RequiresValidInstanceOf<ValidateableType>(new ValidateableType { NotNullText = null })
+                        .RequireValidInstanceOf<ValidateableType>(new ValidateableType { NotNullText = null })
                     .EndContract();
         }
 
@@ -142,7 +142,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.InitialBoilerplateContextTest
             this.testContext.Boilerplate =
                 this.testContext.Boilerplate
                     .BeginContract()
-                        .RequiresValidInstanceOf<ValidateableType>(new ValidateableType { NotNullText = String.Empty })
+                        .RequireValidInstanceOf<ValidateableType>(new ValidateableType { NotNullText = String.Empty })
                     .EndContract();
         }
 

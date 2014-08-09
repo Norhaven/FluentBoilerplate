@@ -50,7 +50,17 @@ namespace FluentBoilerplate.Providers
         public static ITypeAccessProvider WcfAccessProvider { get { return new TypeAccessProvider(PermissionsProvider.Default, new WcfConnectionProvider()); } }
 
         private readonly ITypeProvider[] typeProviders;
-        
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="TypeAccessProvider"/> class.
+        /// </summary>
+        /// <param name="typeProviders">The type providers that may be accessed</param>
+        public TypeAccessProvider(params ITypeProvider[] typeProviders)
+            :this(PermissionsProvider.Default, typeProviders)
+        {
+
+        }
+
         /// <summary>
         /// Creates a new instance of the <see cref="TypeAccessProvider"/> class.
         /// Uses the given <see cref="IPermissionsProvider"/> to determine permissions.

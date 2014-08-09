@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using System;
 namespace FluentBoilerplate.Contexts
 {
     /// <summary>
@@ -24,7 +25,7 @@ namespace FluentBoilerplate.Contexts
         /// <summary>
         /// Marks the contract as failed
         /// </summary>
-        void Fail();
+        void Fail(Exception thrownException = null);
 
         /// <summary>
         /// Determines whether the condition has been met

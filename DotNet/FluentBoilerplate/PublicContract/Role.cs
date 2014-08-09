@@ -34,7 +34,7 @@ namespace FluentBoilerplate
         public IImmutableSet<IRight> Rights { get; private set; }
         public PermissionsSource Source { get; private set; }
 
-        public Role(int id, string name, string description, IImmutableSet<IRight> rights, PermissionsSource source)
+        public Role(int id, string name, string description, IImmutableSet<IRight> rights = null, PermissionsSource source = PermissionsSource.Manual)
         {
             this.Id = id;
             this.Name = name;

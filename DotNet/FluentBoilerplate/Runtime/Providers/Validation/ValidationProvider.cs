@@ -130,7 +130,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
                 writer.GetPropertyValue(length);
                 writer.SetLocal(lengthValue);
 
-                var minValue = attribute.MinLength;
+                var minValue = attribute.Minimum;
 
                 writer.LoadVariable(lengthValue);
                 writer.LoadInt32((int)minValue);
@@ -142,7 +142,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
                 writer.MarkLabel(longerThanMinBlock);
                                 
-                var maxValue = attribute.MaxLength;
+                var maxValue = attribute.Maximum;
 
                 //The maximum value might not be set, if so then just ignore it
                 if (maxValue > 0)

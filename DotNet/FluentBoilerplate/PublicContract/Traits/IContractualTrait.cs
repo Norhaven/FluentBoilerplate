@@ -30,7 +30,7 @@ namespace FluentBoilerplate.Traits
         /// <typeparam name="TType">The validated type</typeparam>
         /// <param name="instances">Instances that require validation</param>
         /// <returns>The context that this trait applies to</returns>
-        TContext RequiresValidInstanceOf<TType>(params TType[] instances);
+        TContext RequireValidInstanceOf<TType>(params TType[] instances);
 
         /// <summary>
         /// Indicates that the given condition should be validated prior to a context action
@@ -87,7 +87,7 @@ namespace FluentBoilerplate.Traits
         /// <param name="createException">Creates the exception that will be thrown if the condition fails</param>
         /// <returns>The context that this trait applies to</returns>
         /// <exception cref="TException">Thrown if the condition fails</exception>
-        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception;   
+        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<Exception, TException> createException = null) where TException : Exception;   
     }
 
     /// <summary>

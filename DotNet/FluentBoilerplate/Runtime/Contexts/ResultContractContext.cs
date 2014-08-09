@@ -51,7 +51,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(bundle: elevatedSettings);
         }
 
-        public IResultContractContext<TResult> RequiresRights(params IRight[] rights)
+        public IResultContractContext<TResult> RequireRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
@@ -65,7 +65,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(bundle: elevatedSettings);
         }
 
-        public IResultContractContext<TResult> RequiresRoles(params IRole[] roles)
+        public IResultContractContext<TResult> RequireRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
@@ -84,7 +84,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return this.originalContext.Copy(this.bundle, this.contractBundle);
         }
 
-        public IResultContractContext<TResult> RequiresValidInstanceOf<TType>(params TType[] instances)
+        public IResultContractContext<TResult> RequireValidInstanceOf<TType>(params TType[] instances)
         {
             var localProvider = this.bundle.Validation;
             Action validate = () =>
@@ -140,7 +140,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(contractBundle: elevatedPostconditionsOnThrow);
         }
 
-        public IResultContractContext<TResult> EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public IResultContractContext<TResult> EnsureOnThrow<TException>(Func<bool> condition, Func<Exception, TException> createException = null) where TException : Exception
         {
             var contractCondition = new CustomExceptionContractCondition<TException>(condition, createException);
             var elevatedPostconditionsOnThrow = this.contractBundle.AddPostconditionOnThrow(contractCondition);

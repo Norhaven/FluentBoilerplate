@@ -28,19 +28,19 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Validation.ValidationProvide
     {
         public class MinLengthTest
         {
-            [StringLength(MinLength = 2)]
+            [StringLength(Minimum = 2)]
             public string Value { get; set; }
         }
 
         public class MaxLengthTest
         {
-            [StringLength(MaxLength = 4)]
+            [StringLength(Maximum = 4)]
             public string Value { get; set; }
         }
 
         public class IncompatibleTest
         {
-            [StringLength(MinLength = 2)]
+            [StringLength(Minimum = 2)]
             public int Value { get; set; }
         }
 

@@ -27,10 +27,10 @@ namespace FluentBoilerplate
         /// <summary>
         /// The inclusive minimum length of the string. Defaults to zero.
         /// </summary>
-        public uint MinLength { get; set; }
+        public uint Minimum { get; set; }
         /// <summary>
         /// The inclusive maximum length of the string. Defaults to zero, which indicates that there is no maximum length.
         /// </summary>
-        public uint MaxLength { get; set; }                
+        public uint Maximum { get; set; }                
     }
 }

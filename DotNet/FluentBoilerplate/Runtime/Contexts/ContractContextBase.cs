@@ -42,7 +42,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         public abstract TContext Copy(IContextBundle bundle = null,
                                       IContractBundle contractBundle = null);
 
-        public TContext RequiresRights(params IRight[] rights)
+        public TContext RequireRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
@@ -56,7 +56,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(bundle: elevatedSettings);
         }
 
-        public TContext RequiresRoles(params IRole[] roles)
+        public TContext RequireRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
             var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
@@ -70,7 +70,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(bundle: elevatedSettings);
         }
         
-        public TContext RequiresValidInstanceOf<TType>(params TType[] instances)
+        public TContext RequireValidInstanceOf<TType>(params TType[] instances)
         {
             var localProvider = this.bundle.Validation;
             Action validate = () =>
@@ -126,7 +126,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(contractBundle: elevatedPostconditionsOnThrow);
         }
 
-        public TContext EnsureOnThrow<TException>(Func<bool> condition, Func<TException> createException = null) where TException : Exception
+        public TContext EnsureOnThrow<TException>(Func<bool> condition, Func<Exception, TException> createException = null) where TException : Exception
         {
             var contractCondition = new CustomExceptionContractCondition<TException>(condition, createException);
             var elevatedPostconditionsOnThrow = this.contractBundle.AddPostconditionOnThrow(contractCondition);

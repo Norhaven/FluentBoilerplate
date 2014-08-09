@@ -24,6 +24,7 @@ namespace FluentBoilerplate.Runtime
 {
     internal sealed class CustomExceptionContractCondition<TException> : ContractCondition where TException : Exception
     {
+        private readonly Func<Exception, TException> createExceptionWithException;
         private readonly Func<TException> createException;
 
         public CustomExceptionContractCondition(Func<bool> condition, Func<TException> createException)
@@ -32,9 +33,18 @@ namespace FluentBoilerplate.Runtime
             this.createException = createException;
         }
 
-        public override void Fail()
+        public CustomExceptionContractCondition(Func<bool> condition, Func<Exception, TException> createException)
+            : base(condition)
         {
-            throw this.createException();
+            this.createExceptionWithException = createException;
+        }
+
+        public override void Fail(Exception thrownException = null)
+        {
+            if (this.createExceptionWithException != null)
+                throw this.createExceptionWithException(thrownException);
+            else
+                throw this.createException();
         }
     }
 }
