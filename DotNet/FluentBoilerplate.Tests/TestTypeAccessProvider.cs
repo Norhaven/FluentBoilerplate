@@ -39,5 +39,10 @@ namespace FluentBoilerplate.Tests
         {
             return action(default(TType));
         }
+
+        public override ITypeAccessProvider AddProvider(ITypeProvider provider)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

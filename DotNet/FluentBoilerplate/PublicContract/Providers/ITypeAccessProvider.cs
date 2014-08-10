@@ -24,6 +24,13 @@ namespace FluentBoilerplate.Providers
     public interface ITypeAccessProvider
     {
         /// <summary>
+        /// Adds the given <see cref="ITypeProvider"/> to the providers that may be accessed
+        /// </summary>
+        /// <param name="provider">The type provider</param>
+        /// <returns>An instance of <see cref="ITypeAccessProvider"/> that may access the given type provider</returns>
+        ITypeAccessProvider AddProvider(ITypeProvider provider);
+
+        /// <summary>
         /// Tries to access a type and use it
         /// </summary>
         /// <typeparam name="TType">The requested type</typeparam>

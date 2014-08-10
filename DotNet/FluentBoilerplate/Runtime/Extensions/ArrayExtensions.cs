@@ -24,6 +24,18 @@ namespace FluentBoilerplate.Runtime.Extensions
 {
     internal static class ArrayExtensions
     {
+        public static T[] Add<T>(this T[] array, T item)
+        {
+            if (array == null)
+                return new T[] { item };
+
+            var newLength = array.Length + 1;
+            var newArray = new T[newLength];
+            Array.Copy(array, newArray, array.Length);
+            newArray[newLength - 1] = item;
+            return newArray;
+        }
+
         public static bool HasContents<T>(this T[] array)
         {
             if (array == null)

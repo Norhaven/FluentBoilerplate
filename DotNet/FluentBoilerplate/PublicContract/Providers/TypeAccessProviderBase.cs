@@ -110,5 +110,7 @@ namespace FluentBoilerplate.Providers
             Use<TType>(useType);
             return new Response(true);
         }
+
+        public abstract ITypeAccessProvider AddProvider(ITypeProvider provider);
     }
 }

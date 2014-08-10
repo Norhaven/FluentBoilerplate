@@ -24,6 +24,7 @@ using System.Collections.Immutable;
 using FluentBoilerplate;
 using NUnit.Framework;
 using System.Diagnostics;
+using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Tests
 {
@@ -34,6 +35,7 @@ namespace FluentBoilerplate.Tests
         [Test]
         public void Test()
         {
+            //var boilerplate = Boilerplate.New(accessProvider: new TypeAccessProvider(TypeAccessProvider.w))
             var me = Identity.CurrentWindowsUser;
             var context = Boilerplate.New(me);
             context.BeginContract()
