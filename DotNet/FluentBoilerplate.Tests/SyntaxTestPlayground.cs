@@ -57,39 +57,39 @@ namespace FluentBoilerplate.Tests
         [Test]
         public void Test()
         {
-            var provider = new AdoNetConnectionProvider("FluentBoilerplate", DataSource.SQL);
-            var access = new TypeAccessProvider(provider);
-            var boilerplate = Boilerplate.New(accessProvider: access);
-            boilerplate.Open<IAdoNetConnection>().AndDo((_, connection) =>
-                {
-                    var parameter = connection.CreateParameter("count", 5);
-                    var result = connection.ExecuteStoredProcedure("GetPeople", new Interpreter(), parameter);
-                    foreach (var person in result)
-                        Console.WriteLine(person.Name + " " + person.Description);
-                });
+            //var provider = new AdoNetConnectionProvider("FluentBoilerplate", DataSource.SQL);
+            //var access = new TypeAccessProvider(provider);
+            //var boilerplate = Boilerplate.New(accessProvider: access);
+            //boilerplate.Open<IAdoNetConnection>().AndDo((_, connection) =>
+            //    {
+            //        var parameter = connection.CreateParameter("count", 5);
+            //        var result = connection.ExecuteStoredProcedure("GetPeople", new Interpreter(), parameter);
+            //        foreach (var person in result)
+            //            Console.WriteLine(person.Name + " " + person.Description);
+            //    });
             //var boilerplate = Boilerplate.New(accessProvider: new TypeAccessProvider(TypeAccessProvider.w))
-            var me = Identity.CurrentWindowsUser;
-            var context = Boilerplate.New(me);
-            context.BeginContract()
-                .MustNotHaveRoles(ActiveDirectoryGroup.Administrators)
-                .EndContract()
-                .Do(c =>
-                {
-                    Console.WriteLine("Did not have admin role");
-                });
+            //var me = Identity.CurrentWindowsUser;
+            //var context = Boilerplate.New(me);
+            //context.BeginContract()
+            //    .MustNotHaveRoles(ActiveDirectoryGroup.Administrators)
+            //    .EndContract()
+            //    .Do(c =>
+            //    {
+            //        Console.WriteLine("Did not have admin role");
+            //    });
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            //var stopwatch = new Stopwatch();
+            //stopwatch.Start();
 
-            Go();
-            stopwatch.Stop();
-            Debug.WriteLine(stopwatch.ElapsedMilliseconds);
-            stopwatch.Reset();
-            stopwatch.Start();
+            //Go();
+            //stopwatch.Stop();
+            //Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+            //stopwatch.Reset();
+            //stopwatch.Start();
 
-            Go();
-            stopwatch.Stop();
-            Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+            //Go();
+            //stopwatch.Stop();
+            //Debug.WriteLine(stopwatch.ElapsedMilliseconds);
         }
 
         private static void Go()

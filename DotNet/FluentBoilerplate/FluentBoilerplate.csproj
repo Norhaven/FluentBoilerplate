@@ -222,8 +222,9 @@
     <None Include="linqpad-samples\5.1 - Rights And Roles.linq" />
     <None Include="linqpad-samples\4 - Type Conversion.linq" />
     <None Include="linqpad-samples\3 - Type Validation.linq" />
+    <None Include="linqpad-samples\7 - Data Access.linq" />
     <None Include="linqpad-samples\6 - Using WCF.linq" />
-    <None Include="linqpad-samples\7 - Logging.linq" />
+    <None Include="linqpad-samples\8 - Logging.linq" />
     <None Include="linqpad-samples\8.1 - Extensibility - Identity.linq" />
     <None Include="linqpad-samples\8.2 - Extensibility - Permissions.linq" />
     <None Include="linqpad-samples\8.3 - Extensibility - Type Access.linq" />
