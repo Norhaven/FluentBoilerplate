@@ -14,6 +14,16 @@ Getting Started
 
 - Build the source (or get a release from NuGet, if available)
 - Reference the built assembly in your project
+- Use the latest free version of Linqpad, install the NuGet package. Comes with samples!
+
+This is a quick overview of the primary functionality. If you would like more in-depth samples, I would highly suggest that you look at the Linqpad samples in ./DotNet/FluentBoilerplate/linqpad-samples for more information.
+
+The Linqpad samples are easily usable through the latest free version of Linqpad (http://www.linqpad.net).
+
+Once you've downloaded and installed Linqpad, run it and press F4 while in a query window. There will be a button towards the bottom labelled "Add NuGet". Click it.
+
+You'll be able to see any NuGet packages that contain Linqpad samples. Among those is FluentBoilerplate. Installing the package will provide you with all of the samples. Enjoy!
+
 
 The Simplest Example
 =================
@@ -57,7 +67,7 @@ For example, it might be nice to handle an ArgumentException that might be throw
 ```C#
 boilerplate
     .BeginContract()
-         .Handles<ArgumentException>("Top Level", ex => Console.WriteLine(ex.Message))
+         .Handles<ArgumentException>(ex => Console.WriteLine(ex.Message))
     .EndContract()
     .Do(context => /* Take some action */);
 ```
@@ -76,7 +86,7 @@ public static void DoSomething(IContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
-             .Requires(text != null, "The parameter 'text' must not be null")
+             .Require(text != null, "The parameter 'text' must not be null")
         .EndContract()
         .Do(context => /* Take some action */);
 }
@@ -91,7 +101,7 @@ public static void DoSomething(IContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
-             .Requires(text != null, () => new ArgumentException("text", "The parameter must not be null"))
+             .Require(text != null, () => new ArgumentException("text", "The parameter must not be null"))
         .EndContract()
         .Do(context => /* Take some action */);
 }
@@ -145,7 +155,7 @@ private void DoSomething(IContext boilerplate)
 {
     boilerplate
         .BeginContract()
-            .RequiresRights(KnownRights.CanPerformAction)
+            .RequireRights(KnownRights.CanPerformAction)
             .MustNotHaveRights(KnownRights.CanDoTerribleThings)
         .EndContract()
         .Do(context => { /* Take some action */ });
@@ -177,7 +187,7 @@ private void DoSomething(IContext boilerplate)
 {
     boilerplate
         .BeginContract()
-            .RequiresRoles(KnownRoles.BasicUser)
+            .RequireRoles(KnownRoles.BasicUser)
             .MustNotHaveRoles(KnownRoles.RestrictedUser)
         .EndContract()
         .Do(context => { /* Take some action */ });
@@ -215,7 +225,7 @@ private void DoValidatedAction(IContext boilerplate, SomeType instance)
 {
     boilerplate
         .BeginContract()
-            .RequiresValidInstanceOf(instance)
+            .RequireValidInstanceOf(instance)
         .EndContract()
         .Do(context => { /* Take some action */ });
 ```
@@ -304,4 +314,4 @@ boilerplate.Open<ISomeService>((context, service) => service.CallRemoteMethod())
 
 Being able to accomplish that currently requires that you write a provider that implements FluentBoilerplate.Providers.ITypeProvider and send it in with your initial Boilerplate.New() call. The call attempts themselves will pass you the current IIdentity instance, in case you would like to do custom rights/roles verification (i.e. rights are required to make a WCF call).
 
-Providers for common situations are planned but have not been included yet.
+There is currently a WCF provider, with more planned.
