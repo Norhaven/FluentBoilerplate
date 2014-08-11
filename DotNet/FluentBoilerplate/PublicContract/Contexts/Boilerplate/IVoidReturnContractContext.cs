@@ -36,6 +36,6 @@ namespace FluentBoilerplate
         /// Ends the contract definition for the context
         /// </summary>
         /// <returns>The context that this contract applies to</returns>
-        IContext EndContract();
+        IBoilerplateContext EndContract();
     }
 }

@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Providers;
 using System;
 
 namespace FluentBoilerplate

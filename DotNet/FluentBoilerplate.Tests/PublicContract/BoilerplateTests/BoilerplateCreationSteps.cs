@@ -33,7 +33,7 @@ namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
             this.testContext = testContext;
         }
 
-        private static bool TryUseType<T>(IContext boilerplate, Action useType)
+        private static bool TryUseType<T>(IBoilerplateContext boilerplate, Action useType)
         {
             try
             {

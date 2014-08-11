@@ -31,13 +31,13 @@ namespace FluentBoilerplate
     public static class Boilerplate
     {
         /// <summary>
-        /// Creates an instance of <see cref="IContext"/>
+        /// Creates an instance of <see cref="IBoilerplateContext"/>
         /// </summary>
         /// <param name="identity">The current identity being used (rights and roles contract requirements/restrictions will apply to this identity)</param>
         /// <param name="accessProvider">An access provider for specific types (available through IContext.Open())</param>
         /// <param name="permissionsProvider">The provider that will be used for all permissions verification attempts</param>
-        /// <returns>An instance of <see cref="IContext"/></returns>
-        public static IContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null, IPermissionsProvider permissionsProvider = null)
+        /// <returns>An instance of <see cref="IBoilerplateContext"/></returns>
+        public static IBoilerplateContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null, IPermissionsProvider permissionsProvider = null)
         {   
             var actualIdentity = identity ?? Identity.Default;
             var actualTypeAccessProvider = accessProvider ?? TypeAccessProvider.Empty;

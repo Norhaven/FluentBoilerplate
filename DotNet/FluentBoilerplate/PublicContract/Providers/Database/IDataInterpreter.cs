@@ -14,30 +14,26 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.Messages.User;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FluentBoilerplate.Runtime.Extensions;
 
-namespace FluentBoilerplate.Exceptions
+namespace FluentBoilerplate.Providers.Database
 {
     /// <summary>
-    /// Represents a failure to locate a service provider
+    /// Represents a way of interpreting data as a custom type.
     /// </summary>
-    [Serializable]
-    public sealed class ServiceProviderNotFoundException : Exception
+    /// <typeparam name="TResult">The result type.</typeparam>
+    public interface IDataInterpreter<TResult>
     {
         /// <summary>
-        /// Creates an instance of <see cref="ServiceProviderNotFoundException"/>
+        /// Interprets the specified data reader.
         /// </summary>
-        /// <param name="serviceType">The service type</param>
-        public ServiceProviderNotFoundException(Type serviceType)
-            :base(CommonErrors.ServiceProviderNotFound.WithValues(serviceType.FullName))
-        {
-
-        }
+        /// <param name="dataReader">The data reader.</param>
+        /// <returns>An instance of the interpreted result.</returns>
+        IEnumerable<TResult> Interpret(IDataReader dataReader);
     }
 }

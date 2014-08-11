@@ -46,7 +46,9 @@ namespace FluentBoilerplate.Providers
 
         /// <summary>
         /// Gets a type access provider for WCF connections.
-        /// Uses the default <see cref="IPermissionsProvider"/> to determine permissions.
+        /// Uses the default <see cref="IPermissionsProvider"/> to determine permissions
+        /// and will attempt to inspect the &lt;system.serviceModel&gt;&lt;client&gt; configuration section
+        /// to determine which endpoints are providable.
         /// </summary>
         public static ITypeAccessProvider WcfAccessProvider { get { return new TypeAccessProvider(PermissionsProvider.Default, new WcfConnectionProvider()); } }
 

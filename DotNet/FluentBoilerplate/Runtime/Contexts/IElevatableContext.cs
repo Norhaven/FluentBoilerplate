@@ -28,9 +28,9 @@ namespace FluentBoilerplate.Runtime.Contexts
 #else
     internal 
 #endif
-        interface IElevatableContext : IContext, ICopyableTrait<IContext>
+        interface IElevatableContext : IBoilerplateContext, ICopyableTrait<IBoilerplateContext>
     {
-        IContext<TResult> Elevate<TResult>(IContextBundle bundle = null,
+        IBoilerplateContext<TResult> Elevate<TResult>(IContextBundle bundle = null,
                                            IContractBundle contractBundle = null,
                                            TResult result = default(TResult));
     }

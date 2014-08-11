@@ -29,12 +29,12 @@ namespace FluentBoilerplate.Runtime
     {
         private readonly IIdentity identity;
         private readonly IContractBundle contractBundle;
-        private readonly ICopyableTrait<IContext> context;
+        private readonly ICopyableTrait<IBoilerplateContext> context;
 
         public TypeAccessBuilder(IIdentity identity,
                                  IContextBundle bundle,
                                  IContractBundle contractBundle,
-                                 ICopyableTrait<IContext> context)
+                                 ICopyableTrait<IBoilerplateContext> context)
             : base(bundle)
         {
             this.identity = identity;
@@ -42,7 +42,7 @@ namespace FluentBoilerplate.Runtime
             this.context = context;
         }
 
-        public IContext AndDo(Action<IContext, T> useType)
+        public IBoilerplateContext AndDo(Action<IBoilerplateContext, T> useType)
         {   
             var safeCall = this.bundle.Errors.ExtendAround(useType);
             var downgradedSettings = DowngradeErrorHandling();
@@ -57,7 +57,7 @@ namespace FluentBoilerplate.Runtime
                                                                   this.contractBundle); 
         }
 
-        public IContext<TResult> AndGet<TResult>(Func<IContext, T, TResult> useType)
+        public IBoilerplateContext<TResult> AndGet<TResult>(Func<IBoilerplateContext, T, TResult> useType)
         {
             var safeCall = this.bundle.Errors.ExtendAround(useType);
             var downgradedSettings = DowngradeErrorHandling();
@@ -94,7 +94,7 @@ namespace FluentBoilerplate.Runtime
             this.result = result;
         }
 
-        public IContext<TResult> AndGet(Func<IContext, T, TResult> useType)
+        public IBoilerplateContext<TResult> AndGet(Func<IBoilerplateContext, T, TResult> useType)
         {
             var safeCall = this.bundle.Errors.ExtendAround(useType);
             var downgradedSettings = DowngradeErrorHandling();

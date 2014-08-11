@@ -30,7 +30,7 @@ namespace FluentBoilerplate.Tests
     public sealed class TestContext
     {
         public IIdentity Identity { get; set; }
-        public IContext Boilerplate { get; set; }
+        public IBoilerplateContext Boilerplate { get; set; }
         public ITypeAccessProvider Access { get; set; }
         public IImmutableErrorContext Errors { get; set; }
         public IPermissionsProvider Permissions { get; set; }

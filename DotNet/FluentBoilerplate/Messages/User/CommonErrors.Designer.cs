@@ -88,11 +88,11 @@ namespace FluentBoilerplate.Messages.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service provider &apos;{0}&apos; could not be found.
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; could not be found.
         /// </summary>
-        public static string ServiceProviderNotFound {
+        public static string TypeNotFound {
             get {
-                return ResourceManager.GetString("ServiceProviderNotFound", resourceCulture);
+                return ResourceManager.GetString("TypeNotFound", resourceCulture);
             }
         }
     }

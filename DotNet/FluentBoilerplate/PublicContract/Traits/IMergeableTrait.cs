@@ -25,7 +25,7 @@ namespace FluentBoilerplate.Traits
 {
     public interface IMergeableTrait<TResult>
     {
-        IContext<TResult> MergeCopy(IContextBundle settings = null,
+        IBoilerplateContext<TResult> MergeCopy(IContextBundle settings = null,
                                     IIdentity account = null,
                                     IContractBundle contractBundle = null,
                                     TResult result = default(TResult));

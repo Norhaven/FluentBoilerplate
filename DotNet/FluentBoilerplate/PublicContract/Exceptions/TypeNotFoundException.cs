@@ -14,22 +14,30 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Messages.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Exceptions
 {
-    public interface ITypeAccessBuilder<T>
+    /// <summary>
+    /// Represents a failure to locate a type
+    /// </summary>
+    [Serializable]
+    public sealed class TypeNotFoundException : Exception
     {
-        IBoilerplateContext AndDo(Action<IBoilerplateContext, T> useType);
-        IBoilerplateContext<TResult> AndGet<TResult>(Func<IBoilerplateContext, T, TResult> useType);
-    }
+        /// <summary>
+        /// Creates an instance of <see cref="TypeNotFoundException"/>
+        /// </summary>
+        /// <param name="type">The provider type</param>
+        public TypeNotFoundException(Type type)
+            :base(CommonErrors.TypeNotFound.WithValues(type.FullName))
+        {
 
-    public interface ITypeAccessBuilder<T, TResult>
-    {
-        IBoilerplateContext<TResult> AndGet(Func<IBoilerplateContext, T, TResult> useType);
+        }
     }
 }

@@ -17,7 +17,7 @@ public class Stateful
 {
 	public object State { get; private set; }
 	
-	public void DoWithEnsuring(IContext boilerplate)
+	public void DoWithEnsuring(IBoilerplateContext boilerplate)
 	{	
 		//Let's make sure that the state is still going to be valid after we get done.
 		boilerplate

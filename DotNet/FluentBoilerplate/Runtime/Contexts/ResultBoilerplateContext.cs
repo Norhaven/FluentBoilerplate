@@ -35,7 +35,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 {
     internal class ResultBoilerplateContext<TResult> :
         ImmutableContractAwareContext<ResultBoilerplateContext<TResult>>,
-        IContext<TResult>,
+        IBoilerplateContext<TResult>,
         IMergeableTrait<TResult>
     {
         private readonly IContractBundle contractBundle;
@@ -59,7 +59,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ContractContext<TResult>(this.bundle, null, this);
         }
 
-        public IContext<TResult> Get(Func<IContext, TResult> action)
+        public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext, TResult> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -72,7 +72,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 });
         }
 
-        public IContext<TResult> Get(Func<IContext, TResult, TResult> action)
+        public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext, TResult, TResult> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -91,7 +91,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 () => new TypeAccessBuilder<TType, TResult>(this.Identity, this.bundle, this.contractBundle, this, this.Result));
         }
         
-        public IContext<TResult> Do(Action<IContext> action)
+        public IBoilerplateContext<TResult> Do(Action<IBoilerplateContext> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -104,7 +104,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
 
-        public IContext<TResult> Do(Action<IContext, TResult> action)
+        public IBoilerplateContext<TResult> Do(Action<IBoilerplateContext, TResult> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -117,7 +117,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
 
-        public IContext<TResult> OpenService<TType>(Action<IContext<TResult>, TType> action)
+        public IBoilerplateContext<TResult> OpenService<TType>(Action<IBoilerplateContext<TResult>, TType> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -138,7 +138,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
         }
 
-        public IContext<TResult> MergeCopy(IContextBundle settings = null,
+        public IBoilerplateContext<TResult> MergeCopy(IContextBundle settings = null,
                                            IIdentity account = null,
                                            IContractBundle contractBundle = null,
                                            TResult result = default(TResult))
@@ -151,7 +151,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                          actualResult);
         }
 
-        public IContext<TResult> Copy(IContextBundle bundle = null, IContractBundle contractBundle = null)
+        public IBoilerplateContext<TResult> Copy(IContextBundle bundle = null, IContractBundle contractBundle = null)
         {
             return new ResultBoilerplateContext<TResult>(bundle ?? this.bundle,
                                                          this.Identity,

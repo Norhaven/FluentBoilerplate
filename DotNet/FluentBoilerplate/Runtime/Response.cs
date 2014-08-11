@@ -14,6 +14,7 @@
    limitations under the License.
  */
 
+using FluentBoilerplate.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

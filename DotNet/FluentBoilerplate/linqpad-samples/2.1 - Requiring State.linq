@@ -12,7 +12,7 @@ void Main()
 	DoWithRequirements(boilerplate, new object()); 		
 }
 
-public static void DoWithRequirements(IContext boilerplate, object value)
+public static void DoWithRequirements(IBoilerplateContext boilerplate, object value)
 {
 	//Let's state some basic requirements.
 	boilerplate

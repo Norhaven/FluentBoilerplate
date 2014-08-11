@@ -40,7 +40,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 #endif 
         class InitialBoilerplateContext<TContract> : 
         ImmutableContractAwareContext<InitialBoilerplateContext<TContract>>,
-        IContext,
+        IBoilerplateContext,
         IElevatableContext
         where TContract: IInitialContractContext, 
                          IBundledContractContext
@@ -62,7 +62,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ContractContext(this.bundle, new ContractBundle(), this);
         }
 
-        public IContext<TResult> Get<TResult>(Func<IContext, TResult> action)
+        public IBoilerplateContext<TResult> Get<TResult>(Func<IBoilerplateContext, TResult> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -85,7 +85,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 () => new TypeAccessBuilder<TType>(this.Identity, this.bundle, this.contractBundle, this));            
         }
         
-        public IContext Do(Action<IContext> action)
+        public IBoilerplateContext Do(Action<IBoilerplateContext> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -101,7 +101,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
 
-        public IContext Open<TType>(Action<IContext, TType> action)
+        public IBoilerplateContext Open<TType>(Action<IBoilerplateContext, TType> action)
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
@@ -120,7 +120,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             });
         }
         
-        public IContext Copy(IContextBundle bundle)
+        public IBoilerplateContext Copy(IContextBundle bundle)
         {
             return new InitialBoilerplateContext<TContract>(bundle, 
                                                             this.Identity,
@@ -132,7 +132,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
         }
         
-        public IContext Copy(IContextBundle bundle = null, 
+        public IBoilerplateContext Copy(IContextBundle bundle = null, 
                              IContractBundle contractBundle = null)
         {
             return new InitialBoilerplateContext<TContract>(bundle ?? this.bundle,
@@ -140,7 +140,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                             contractBundle ?? this.contractBundle);
         }
 
-        public IContext<TResult> Elevate<TResult>(IContextBundle bundle = null, IContractBundle contractBundle = null, TResult result = default(TResult))
+        public IBoilerplateContext<TResult> Elevate<TResult>(IContextBundle bundle = null, IContractBundle contractBundle = null, TResult result = default(TResult))
         {
             return new ResultBoilerplateContext<TResult>(bundle ?? this.bundle,
                                                          this.Identity,

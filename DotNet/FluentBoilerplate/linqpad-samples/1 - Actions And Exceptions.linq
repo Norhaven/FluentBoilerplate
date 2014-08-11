@@ -5,7 +5,7 @@
 
 void Main()
 {
-	//Everything is driven from an IContext implementation. You should get one.
+	//Everything is driven from an IBoilerplateContext implementation. You should get one.
 	var boilerplate = Boilerplate.New();
 	
 	//Doing something within the context is very simple. If you don't want to return a result, you may call Do().
@@ -73,7 +73,7 @@ private static void WriteExceptionToConsole(Exception exception)
 	Console.WriteLine(exception.Message);
 }
 
-private static void DoAllActionsSafely(IContext boilerplate)
+private static void DoAllActionsSafely(IBoilerplateContext boilerplate)
 {
 	boilerplate
 		.BeginContract()
@@ -82,7 +82,7 @@ private static void DoAllActionsSafely(IContext boilerplate)
 		.Do(FormatFileName);
 }
 
-private static void FormatFileName(IContext boilerplate)
+private static void FormatFileName(IBoilerplateContext boilerplate)
 {
 	var fileName = GetFileName();
 	var formattedFileName = GetFormattedFileName(boilerplate, fileName);
@@ -90,7 +90,7 @@ private static void FormatFileName(IContext boilerplate)
 	//Do something with the formatted file name				
 }
 
-private static string GetFormattedFileName(IContext boilerplate, string fileName)
+private static string GetFormattedFileName(IBoilerplateContext boilerplate, string fileName)
 {
 	return boilerplate
 		.BeginContract()

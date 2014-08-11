@@ -22,7 +22,7 @@ namespace FluentBoilerplate
     /// <summary>
     /// Represents a boilerplate context
     /// </summary>
-    public interface IContext : 
+    public interface IBoilerplateContext : 
         IConversionTrait
     {
         /// <summary>
@@ -42,7 +42,7 @@ namespace FluentBoilerplate
         /// <typeparam name="TResult">The result type</typeparam>
         /// <param name="action">How you will get the result</param>
         /// <returns>A boilerplate context that includes the result</returns>
-        IContext<TResult> Get<TResult>(Func<IContext, TResult> action);
+        IBoilerplateContext<TResult> Get<TResult>(Func<IBoilerplateContext, TResult> action);
 
         /// <summary>
         /// Opens a particular type for use (e.g. service/database connection), applying any existing contract
@@ -56,15 +56,15 @@ namespace FluentBoilerplate
         /// </summary>
         /// <param name="action">How you will perform the action</param>
         /// <returns>A boilerplate context</returns>
-        IContext Do(Action<IContext> action); 
+        IBoilerplateContext Do(Action<IBoilerplateContext> action); 
     }
 
     /// <summary>
     /// Represents a boilerplate context that contains a result
     /// </summary>
     /// <typeparam name="TResult">The result type</typeparam>
-    public interface IContext<TResult> :
-        ICopyableTrait<IContext<TResult>>,
+    public interface IBoilerplateContext<TResult> :
+        ICopyableTrait<IBoilerplateContext<TResult>>,
         IConversionTrait
     {
         /// <summary>
@@ -91,14 +91,14 @@ namespace FluentBoilerplate
         /// </summary>
         /// <param name="action">How you will get the result</param>
         /// <returns>A boilerplate context that includes the result</returns>
-        IContext<TResult> Get(Func<IContext, TResult> action);
+        IBoilerplateContext<TResult> Get(Func<IBoilerplateContext, TResult> action);
 
         /// <summary>
         /// Gets a value, applying any existing contract
         /// </summary>
         /// <param name="action">How you will get the result (current result value is included)</param>
         /// <returns>A boilerplate context that includes the result</returns>
-        IContext<TResult> Get(Func<IContext, TResult, TResult> action);
+        IBoilerplateContext<TResult> Get(Func<IBoilerplateContext, TResult, TResult> action);
 
         /// <summary>
         /// Opens a particular type for use (e.g. service/database connection), applying any existing contract
@@ -112,13 +112,13 @@ namespace FluentBoilerplate
         /// </summary>
         /// <param name="action">How you will perform the action</param>
         /// <returns>A boilerplate context</returns>
-        IContext<TResult> Do(Action<IContext> action);
+        IBoilerplateContext<TResult> Do(Action<IBoilerplateContext> action);
 
         /// <summary>
         /// Performs an action, applying any existing contract
         /// </summary>
         /// <param name="action">How you will perform the action (current result value is included)</param>
         /// <returns>A boilerplate context</returns>
-        IContext<TResult> Do(Action<IContext, TResult> action);
+        IBoilerplateContext<TResult> Do(Action<IBoilerplateContext, TResult> action);
     }    
 }

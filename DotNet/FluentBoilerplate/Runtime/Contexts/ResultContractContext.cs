@@ -33,11 +33,11 @@ namespace FluentBoilerplate.Runtime.Contexts
     {
         private readonly IContextBundle bundle;
         private readonly IContractBundle contractBundle;
-        private readonly IContext<TResult> originalContext;
+        private readonly IBoilerplateContext<TResult> originalContext;
         
         public ContractContext(IContextBundle bundle,
                                IContractBundle contractBundle,
-                               IContext<TResult> originalContext)
+                               IBoilerplateContext<TResult> originalContext)
         {   
             this.bundle = bundle;
             this.contractBundle = contractBundle;
@@ -79,7 +79,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             return Copy(bundle: elevatedSettings);
         }
 
-        public IContext<TResult> EndContract()
+        public IBoilerplateContext<TResult> EndContract()
         {
             return this.originalContext.Copy(this.bundle, this.contractBundle);
         }

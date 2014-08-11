@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Providers
 {
     /// <summary>
     /// Represents a response

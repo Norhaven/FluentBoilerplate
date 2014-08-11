@@ -74,7 +74,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                                                  this.originalContext);
         }
 
-        public IContext EndContract()
+        public IBoilerplateContext EndContract()
         {
             return this.originalContext.Copy(this.bundle, this.contractBundle);
         }        

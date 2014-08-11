@@ -80,7 +80,7 @@ namespace FluentBoilerplate.Providers.WCF
         {
             var type = typeof(TType);
             if (!this.services.ContainsKey(type))
-                throw new ServiceProviderNotFoundException(type);
+                throw new TypeNotFoundException(type);
         }
 
         /// <summary>

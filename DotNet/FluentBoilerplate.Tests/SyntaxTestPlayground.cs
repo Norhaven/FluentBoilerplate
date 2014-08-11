@@ -25,16 +25,48 @@ using FluentBoilerplate;
 using NUnit.Framework;
 using System.Diagnostics;
 using FluentBoilerplate.Providers;
+using FluentBoilerplate.Providers.Database;
+using System.Data;
 
 namespace FluentBoilerplate.Tests
 {
     [TestFixture]
     public class SyntaxTestPlayground
     {
+        class Person
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+        }
+
+        class Interpreter:IDataInterpreter<Person>
+        {
+            public IEnumerable<Person> Interpret(IDataReader dataReader)
+            {
+                while(dataReader.Read())
+                {
+                    var id = dataReader.GetInt32(0);
+                    var name = dataReader.GetString(1);
+                    var description = dataReader.GetString(2);
+                    yield return new Person { Id = id, Name = name, Description = description };
+                }
+            }
+        }
 
         [Test]
         public void Test()
         {
+            var provider = new AdoNetConnectionProvider("FluentBoilerplate", DataSource.SQL);
+            var access = new TypeAccessProvider(provider);
+            var boilerplate = Boilerplate.New(accessProvider: access);
+            boilerplate.Open<IAdoNetConnection>().AndDo((_, connection) =>
+                {
+                    var parameter = connection.CreateParameter("count", 5);
+                    var result = connection.ExecuteStoredProcedure("GetPeople", new Interpreter(), parameter);
+                    foreach (var person in result)
+                        Console.WriteLine(person.Name + " " + person.Description);
+                });
             //var boilerplate = Boilerplate.New(accessProvider: new TypeAccessProvider(TypeAccessProvider.w))
             var me = Identity.CurrentWindowsUser;
             var context = Boilerplate.New(me);
@@ -43,7 +75,7 @@ namespace FluentBoilerplate.Tests
                 .EndContract()
                 .Do(c =>
                 {
-                    Debugger.Break();
+                    Console.WriteLine("Did not have admin role");
                 });
 
             var stopwatch = new Stopwatch();
@@ -62,7 +94,7 @@ namespace FluentBoilerplate.Tests
 
         private static void Go()
         {
-            IIdentity identity; IContext boilerplate;
+            IIdentity identity; IBoilerplateContext boilerplate;
             identity = null;
             boilerplate = Boilerplate.New(identity);
 

@@ -20,16 +20,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Providers.Database
 {
-    public interface ITypeAccessBuilder<T>
+    /// <summary>
+    /// Represents a data source that can be connected to
+    /// </summary>
+    public enum DataSource
     {
-        IBoilerplateContext AndDo(Action<IBoilerplateContext, T> useType);
-        IBoilerplateContext<TResult> AndGet<TResult>(Func<IBoilerplateContext, T, TResult> useType);
-    }
-
-    public interface ITypeAccessBuilder<T, TResult>
-    {
-        IBoilerplateContext<TResult> AndGet(Func<IBoilerplateContext, T, TResult> useType);
+        /// <summary>
+        /// The data source is unknown
+        /// </summary>
+        Unknown = 0,
+        /// <summary>
+        /// The data source is SQL-based
+        /// </summary>
+        SQL = 1,
+        /// <summary>
+        /// The data source is ODBC-based
+        /// </summary>
+        ODBC = 2,
+        /// <summary>
+        /// The data source is OleDb-based
+        /// </summary>
+        OleDb = 3
     }
 }
