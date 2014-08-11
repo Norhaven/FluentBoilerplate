@@ -33,7 +33,7 @@ public class FactoryTypeProvider : ITypeProvider
 	//Implementation of ITypeProvider
 	public IImmutableSet<Type> ProvidableTypes { get; private set; }
 	
-    public void Use<TType>(Action<TType> useType)
+    public void Use<TType>(Action<TType> useType) 
 	{
 		if (!this.ProvidableTypes.Contains(typeof(TType)))
 			return;
@@ -42,7 +42,7 @@ public class FactoryTypeProvider : ITypeProvider
 		useType(instance);
 	}
 	
-    public TResult Use<TType, TResult>(Func<TType, TResult> useType)
+    public TResult Use<TType, TResult>(Func<TType, TResult> useType) 
 	{
 		if (!this.ProvidableTypes.Contains(typeof(TType)))
 			return default(TResult);
@@ -56,16 +56,22 @@ public class FactoryTypeProvider : ITypeProvider
 		this.ProvidableTypes = providableTypes;
 	}
 	
-	private TType CreateType<TType>()
+	private TType CreateType<TType>() 
 	{
 		return Activator.CreateInstance<TType>();
 	}
 }
 
+class CustomType
+{
+}
+class OtherCustomType
+{
+}
 private static void UseFactoryTypeProvider()
 {
 	//Okay, let's create it!
-	var knownTypes = new Type[] { typeof(int), typeof(string) };
+	var knownTypes = new Type[] { typeof(CustomType), typeof(OtherCustomType) };
 	var provider = new FactoryTypeProvider(knownTypes.ToImmutableHashSet());
 	
 	//If you'd like to just use the default access provider, we can do that.
@@ -75,7 +81,7 @@ private static void UseFactoryTypeProvider()
 	var boilerplate = Boilerplate.New(accessProvider: defaultAccessProvider);
 	
 	//There is a method on your boilerplate context called Open<T>() and this is where type access happens.
-	boilerplate.Open<string>().AndDo((context, value) => Console.WriteLine(value));
+	boilerplate.Open<CustomType>().AndDo((context, value) => Console.WriteLine(value));
 	
 	//What if you want to control your own access?
 	UseCustomTypeAccessProvider();
@@ -151,7 +157,7 @@ private static void UseCustomTypeAccessProvider()
 {
 	//Whew! These keep getting longer and longer. 
 	//So how is this used?
-	var knownTypes = new Type[] { typeof(int), typeof(string) };
+	var knownTypes = new Type[] { typeof(CustomType), typeof(OtherCustomType) };
 	var provider = new FactoryTypeProvider(knownTypes.ToImmutableHashSet());
 	ITypeAccessProvider customAccessProvider = new CustomTypeAccessProvider(ImmutableQueue<ITypeProvider>.Empty);
 	customAccessProvider = customAccessProvider.AddProvider(provider);
@@ -160,5 +166,5 @@ private static void UseCustomTypeAccessProvider()
 	var boilerplate = Boilerplate.New(accessProvider: customAccessProvider);
 	
 	//Now this will use your access provider as well as your type provider.
-	boilerplate.Open<string>().AndDo((context, value) => Console.WriteLine(value));
+	boilerplate.Open<OtherCustomType>().AndDo((context, value) => Console.WriteLine(value));
 }

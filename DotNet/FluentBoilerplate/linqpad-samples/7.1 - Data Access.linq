@@ -25,7 +25,7 @@ void Main()
 		.Open<IAdoNetConnection>()
 		.AndDo((context, connection) =>
 		{
-			var parameter = connection.CreateParameter("userName", "Bob");
+			var username = connection.CreateParameter("userName", "Bob");
 			connection.ExecuteStoredProcedure("SubscribeUserToObviouslyMeaningfulEmails", username);
 		});
 		

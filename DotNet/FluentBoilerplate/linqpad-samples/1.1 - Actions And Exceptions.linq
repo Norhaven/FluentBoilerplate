@@ -54,7 +54,7 @@ void Main()
 					.Get<string>(_ => String.Format("{0}.txt", fileName))
 					.Result;
 			
-			//Do something with the formatted file name
+			Console.WriteLine(formattedFileName);
 		});
 	
 	//That's a little bit cumbersome though. We're trying to reduce the concentration of boilerplate, not add to it!
@@ -68,6 +68,10 @@ void Main()
 	//Check out some of the other samples!
 }
 
+private static string GetFileName()
+{
+	return "SomeFileName";
+}
 private static void WriteExceptionToConsole(Exception exception)
 {
 	Console.WriteLine(exception.Message);
@@ -87,7 +91,7 @@ private static void FormatFileName(IBoilerplateContext boilerplate)
 	var fileName = GetFileName();
 	var formattedFileName = GetFormattedFileName(boilerplate, fileName);
 	
-	//Do something with the formatted file name				
+	Console.WriteLine(formattedFileName);			
 }
 
 private static string GetFormattedFileName(IBoilerplateContext boilerplate, string fileName)

@@ -77,7 +77,7 @@ namespace FluentBoilerplate.Tests
             //    {
             //        Console.WriteLine("Did not have admin role");
             //    });
-
+           
             //var stopwatch = new Stopwatch();
             //stopwatch.Start();
 
@@ -91,7 +91,10 @@ namespace FluentBoilerplate.Tests
             //stopwatch.Stop();
             //Debug.WriteLine(stopwatch.ElapsedMilliseconds);
         }
-
+        private TType CreateType<TType>()
+        {
+            return Activator.CreateInstance<TType>();
+        }
         private static void Go()
         {
             IIdentity identity; IBoilerplateContext boilerplate;
