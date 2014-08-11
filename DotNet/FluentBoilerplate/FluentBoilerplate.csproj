@@ -208,14 +208,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FluentBoilerplate.snk" />
-    <None Include="linqpad-samples\1 - ActionsAndExceptions.linq" />
-    <None Include="linqpad-samples\7 - ActiveDirectoryGroups.linq" />
-    <None Include="linqpad-samples\3 - EnsuringState.linq" />
-    <None Include="linqpad-samples\2 - RequiringState.linq" />
-    <None Include="linqpad-samples\6 - RightsAndRoles.linq" />
-    <None Include="linqpad-samples\5- TypeConversion.linq" />
-    <None Include="linqpad-samples\4 - TypeValidation.linq" />
-    <None Include="linqpad-samples\8 - UsingWCF.linq" />
+    <None Include="linqpad-samples\1 - Actions And Exceptions.linq" />
+    <None Include="linqpad-samples\5.2 - Active Directory Groups.linq" />
+    <None Include="linqpad-samples\2.2 - Ensuring State.linq" />
+    <None Include="linqpad-samples\2.1 - Requiring State.linq" />
+    <None Include="linqpad-samples\5.1 - Rights And Roles.linq" />
+    <None Include="linqpad-samples\4 - Type Conversion.linq" />
+    <None Include="linqpad-samples\3 - Type Validation.linq" />
+    <None Include="linqpad-samples\6 - Using WCF.linq" />
+    <None Include="linqpad-samples\7 - Logging.linq" />
+    <None Include="linqpad-samples\8.1 - Extensibility - Identity.linq" />
+    <None Include="linqpad-samples\8.2 - Extensibility - Permissions.linq" />
+    <None Include="linqpad-samples\8.3 - Extensibility - Type Access.linq" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

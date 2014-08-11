@@ -35,11 +35,13 @@ namespace FluentBoilerplate
         /// </summary>
         /// <param name="identity">The current identity being used (rights and roles contract requirements/restrictions will apply to this identity)</param>
         /// <param name="accessProvider">An access provider for specific types (available through IContext.Open())</param>
+        /// <param name="permissionsProvider">The provider that will be used for all permissions verification attempts</param>
         /// <returns>An instance of <see cref="IContext"/></returns>
-        public static IContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null)
+        public static IContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null, IPermissionsProvider permissionsProvider = null)
         {   
             var actualIdentity = identity ?? Identity.Default;
             var actualTypeAccessProvider = accessProvider ?? TypeAccessProvider.Empty;
+            var actualPermissionsProvider = permissionsProvider ?? PermissionsProvider.Default;
 
             var functionGenerator = new FunctionGenerator();
             var translationProvider = new TranslationProvider(functionGenerator);
@@ -49,7 +51,7 @@ namespace FluentBoilerplate
             var exceptionHandlerProvider = new ExceptionHandlerProvider(logProvider);
             var errorContext = new ImmutableErrorContext(logProvider, tryCatchProvider, exceptionHandlerProvider);
 
-            var bundle = new ContextBundle(PermissionsProvider.Default,
+            var bundle = new ContextBundle(permissionsProvider: actualPermissionsProvider,
                                            errorContext: errorContext,
                                            translationProvider: translationProvider,
                                            accessProvider: actualTypeAccessProvider,
