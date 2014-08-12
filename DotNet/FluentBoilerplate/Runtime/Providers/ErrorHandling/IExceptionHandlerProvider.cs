@@ -45,7 +45,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         /// </summary>
         /// <typeparam name="TException">The exception type</typeparam>
         /// <returns>An instance of the exception handler, or null if not found</returns>
-        IExceptionHandler<TException> TryGetHandler<TException>() where TException : Exception;
+        IVoidReturnExceptionHandler<TException> TryGetHandler<TException>() where TException : Exception;
 
         /// <summary>
         /// Tries to get an exception handler for the exception type
@@ -53,7 +53,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         /// <typeparam name="TException">The exception type</typeparam>
         /// <typeparam name="TResult">The result type</typeparam>
         /// <returns>An instance of the exception handler, or null if not found</returns>
-        IExceptionHandler<TException, TResult> TryGetHandler<TException, TResult>() where TException : Exception;
+        IResultExceptionHandler<TException, TResult> TryGetHandler<TException, TResult>() where TException : Exception;
         
         /// <summary>
         /// Adds the specified action as an exception handler

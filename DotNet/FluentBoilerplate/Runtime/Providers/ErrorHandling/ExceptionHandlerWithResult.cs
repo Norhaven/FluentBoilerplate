@@ -29,7 +29,7 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
-    internal sealed class ExceptionHandler<TException, TResult> : ExceptionHandler<TException>, IExceptionHandler<TException, TResult> where TException : Exception
+    internal sealed class ExceptionHandler<TException, TResult> : IResultExceptionHandler<TException, TResult> where TException : Exception
     {
         public static implicit operator ExceptionHandler<Exception, TResult>(ExceptionHandler<TException, TResult> handler)
         {
@@ -42,9 +42,9 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 
             //The call to Generalize() is a quick way to patch in non-typesafe conversions 
             //in what should be a typesafe way (as far as the caller is concerned).
-            //It amounts to covariantly converting a generically typed delegate (the patch) and
-            //then putting it back in line with a contravariant conversion, both below in the constructor
-            //and when retrieving it through the ExceptionHandlerProvider. 
+            //It amounts to non-typesafely covariantly converting a generically typed delegate (the patch) and
+            //then putting it back in line with a contravariant conversion to its previously known type
+            //when retrieving it through the ExceptionHandlerProvider. 
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
 
             var action = handler.funcHandler.Generalize();
@@ -52,13 +52,18 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         }
 
         private readonly Func<TException, TResult> funcHandler;
+        private readonly ILogProvider log;
 
-        public ExceptionHandler(ILogProvider log, Func<TException, TResult> func)
-            : base(log, func.AsAction())
+        public ExceptionHandler(ILogProvider log, Func<TException, TResult> funcHandler)
         {
-            this.funcHandler = func;
+            Debug.Assert(log != null, AssertFailures.InstanceShouldNotBeNull.WithValues("log"));
+            Debug.Assert(funcHandler != null, AssertFailures.InstanceShouldNotBeNull.WithValues("actionHandler"));
+
+            this.log = log;
+            this.funcHandler = funcHandler;
         }
-        public TResult HandleWithResult(TException exception)
+
+        public TResult Handle(TException exception)
         {
             LogException(exception);
 
@@ -77,6 +82,12 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
                 Debug.Fail(AssertFailures.NoExceptionHandlerForType.WithValues(typeof(TException)));
                 return default(TResult);
             }
+        }
+
+        private void LogException(TException exception)
+        {
+            var message = LogErrors.ActionResultedInException.WithValues(exception.GetType());
+            this.log.Error(message, exception);
         }
     }
 }

@@ -93,8 +93,8 @@ namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
             var typeUsed = false;
             var caughtException = TryUseType<int>(this.testContext.Boilerplate, () => { typeUsed = true; });
 
-            caughtException.Should().BeFalse("because the custom type access provider was used");
-            typeUsed.Should().BeTrue("because the type was useable");
+            caughtException.Should().BeFalse("because the custom type access provider requires rights and this identity has none");
+            typeUsed.Should().BeTrue("because the identity should fail the permissions check");
         }
 
         [Then(@"I should receive an instance of a boilerplate context with the custom identity and the custom type access")]
@@ -105,8 +105,8 @@ namespace FluentBoilerplate.Tests.PublicContract.BoilerplateTests
             var usedType = false;
             var caughtException = TryUseType<int>(this.testContext.Boilerplate, () => { usedType = true; });
 
-            caughtException.Should().BeFalse("because the custom type access provider was used");
-            usedType.Should().BeTrue("because the custom type access provider was used");
+            caughtException.Should().BeFalse("because the custom type access provider requires rights that the identity should have");
+            usedType.Should().BeTrue("because the identity should pass the permissions check");
         }    
     }
 }

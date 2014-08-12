@@ -54,7 +54,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         {
             this.permissionsProvider = permissionsProvider ?? PermissionsProvider.Default;
             this.errorContext = errorContext ?? ImmutableErrorContext.Empty;
-            this.accessProvider = accessProvider = TypeAccessProvider.Empty;
+            this.accessProvider = accessProvider ?? TypeAccessProvider.Empty;
             this.translationProvider = translationProvider ?? TranslationProvider.Empty;
             this.validationProvider = validationProvider ?? ValidationProvider.Empty;
             this.logProvider = logProvider ?? LogProvider.Default;

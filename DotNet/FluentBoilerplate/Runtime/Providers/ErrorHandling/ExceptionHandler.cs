@@ -29,7 +29,7 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
-    internal class ExceptionHandler<TException> : IExceptionHandler<TException> where TException : Exception
+    internal sealed class ExceptionHandler<TException> : IVoidReturnExceptionHandler<TException> where TException : Exception
     {
         public static implicit operator ExceptionHandler<Exception>(ExceptionHandler<TException> handler)
         {
@@ -42,16 +42,16 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 
             //The call to Generalize() is a quick way to patch in non-typesafe conversions 
             //in what should be a typesafe way (as far as the caller is concerned).
-            //It amounts to covariantly converting a generically typed delegate (the patch) and
-            //then putting it back in line with a contravariant conversion, both below in the constructor
-            //and when retrieving it through the ExceptionHandlerProvider. 
+            //It amounts to non-typesafely covariantly converting a generically typed delegate (the patch) and
+            //then putting it back in line with a contravariant conversion to its previously known type
+            //when retrieving it through the ExceptionHandlerProvider. 
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
 
             var action = handler.actionHandler.Generalize();
             return new ExceptionHandler<Exception>(handler.log, action);
         }
 
-        protected readonly ILogProvider log;
+        private readonly ILogProvider log;
         private readonly Action<TException> actionHandler;
 
         public ExceptionHandler(ILogProvider log, Action<TException> actionHandler)
@@ -72,7 +72,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             this.actionHandler(exception);
         }
 
-        protected void LogException(TException exception)
+        private void LogException(TException exception)
         {
             var message = LogErrors.ActionResultedInException.WithValues(exception.GetType());
             this.log.Error(message, exception);

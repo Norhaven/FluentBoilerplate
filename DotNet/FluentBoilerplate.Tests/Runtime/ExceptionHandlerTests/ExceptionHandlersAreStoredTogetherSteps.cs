@@ -16,6 +16,7 @@
 
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using FluentBoilerplate.Runtime.Providers.Logging;
+using FluentBoilerplate.Runtime.Extensions;
 using System;
 using TechTalk.SpecFlow;
 
@@ -55,9 +56,21 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
         public void WhenAnArgumentExceptionReachesTheExceptionHandler()
         {
             if (this.testContext.SpecificExceptionHandler != null)
-                this.testContext.SpecificExceptionHandler.Handle(new ArgumentException());
+            {
+                var voidReturnHandler = this.testContext.SpecificExceptionHandler.AsVoidReturnHandler();
+                if (voidReturnHandler == null)
+                    throw new ArgumentException("Expected a void return exception handler but specific exception handler was not");
+
+                voidReturnHandler.Handle(new ArgumentException());
+            }
             else
-                this.testContext.NonSpecificExceptionHandler.Handle(new ArgumentException());
-        }
+            {
+                var voidReturnHandler = this.testContext.NonSpecificExceptionHandler.AsVoidReturnHandler();
+                if (voidReturnHandler == null)
+                    throw new ArgumentException("Expected a void return exception handler but specific exception handler was not");
+
+                voidReturnHandler.Handle(new ArgumentException());
+            }
+        }        
     }
 }

@@ -3,6 +3,8 @@
 	As an API consumer
 	I want to be able to create a boilerplate easily
 
+#TODO: Break out the final 'then' into multiple steps for validating actual usage
+
 @Contexts
 Scenario: No customizations are present
 	Given I have asked for a new boilerplate

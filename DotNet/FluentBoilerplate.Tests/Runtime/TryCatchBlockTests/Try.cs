@@ -38,7 +38,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
 
             var handledExceptionTypes = ImmutableQueue<Type>.Empty.Enqueue(typeof(Exception));
 
-            var handler = new Mock<IExceptionHandler<Exception>>(MockBehavior.Strict);
+            var handler = new Mock<IVoidReturnExceptionHandler<Exception>>(MockBehavior.Strict);
             handler.Setup(x => x.Handle(It.Is<Exception>(p => p.Message == message)));
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
@@ -62,7 +62,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
                 .Enqueue(typeof(ArgumentException))
                 .Enqueue(typeof(Exception));
 
-            var handler = new Mock<IExceptionHandler<ArgumentException>>(MockBehavior.Strict);
+            var handler = new Mock<IVoidReturnExceptionHandler<ArgumentException>>(MockBehavior.Strict);
             handler.Setup(x => x.Handle(It.Is<ArgumentException>(p => p.Message == message)));
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
@@ -108,7 +108,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
                 .Enqueue(typeof(Exception))
                 .Enqueue(typeof(ArgumentException));
 
-            var handler = new Mock<IExceptionHandler<Exception>>(MockBehavior.Strict);
+            var handler = new Mock<IVoidReturnExceptionHandler<Exception>>(MockBehavior.Strict);
             handler.Setup(x => x.Handle(It.IsAny<Exception>()));
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
@@ -131,8 +131,8 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             var handledExceptionTypes = ImmutableQueue<Type>.Empty
                 .Enqueue(typeof(Exception));
 
-            var handler = new Mock<IExceptionHandler<Exception, int>>(MockBehavior.Strict);
-            handler.Setup(x => x.HandleWithResult(It.Is<Exception>(p => p.Message == message))).Returns(5);
+            var handler = new Mock<IResultExceptionHandler<Exception, int>>(MockBehavior.Strict);
+            handler.Setup(x => x.Handle(It.Is<Exception>(p => p.Message == message))).Returns(5);
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.TryGetHandler<Exception, int>()).Returns(handler.Object);
@@ -154,7 +154,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             var handledExceptionTypes = ImmutableQueue<Type>.Empty
                 .Enqueue(typeof(Exception));
 
-            var handler = new Mock<IExceptionHandler<Exception, int>>(MockBehavior.Strict);
+            var handler = new Mock<IResultExceptionHandler<Exception, int>>(MockBehavior.Strict);
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.HandledTypesInCatchOrder).Returns(handledExceptionTypes);

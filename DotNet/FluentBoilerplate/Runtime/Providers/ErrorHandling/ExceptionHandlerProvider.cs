@@ -58,23 +58,26 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             this.handlers = (from h in this.orderedHandlers select h).ToDictionary(k => k.Key, k => k.Value).ToImmutableDictionary();
         }
 
-        public IExceptionHandler<TException> TryGetHandler<TException>() where TException:Exception
+        public IVoidReturnExceptionHandler<TException> TryGetHandler<TException>() where TException:Exception
         {
             IExceptionHandler<Exception> handler;
             if (!this.handlers.TryGetValue(typeof(TException), out handler))
                 return null;
 
-            return handler;
+            if (handler.CanBe<IVoidReturnExceptionHandler<TException>>())
+                return (IVoidReturnExceptionHandler<TException>)handler;
+
+            return null;
         }
 
-        public IExceptionHandler<TException, TResult> TryGetHandler<TException, TResult>() where TException : Exception
+        public IResultExceptionHandler<TException, TResult> TryGetHandler<TException, TResult>() where TException : Exception
         {
             IExceptionHandler<Exception> handler;
             if (!this.handlers.TryGetValue(typeof(TException), out handler))
                 return null;
 
-            if (handler.CanBe<IExceptionHandler<TException, TResult>>())
-                return (IExceptionHandler<TException, TResult>)handler;
+            if (handler.CanBe<IResultExceptionHandler<TException, TResult>>())
+                return (IResultExceptionHandler<TException, TResult>)handler;
 
             return null;
         }
@@ -84,7 +87,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             //Lower the handler for storage and persist associated with actual type.
             //THIS IS DANGEROUS AND SHOULD ONLY BE DONE UNDER TIGHTLY CONTROLLED CIRCUMSTANCES!
             var typedHandler = new ExceptionHandler<TException, TResult>(this.log, action);
-            IExceptionHandler<Exception, TResult> loweredHandler = (ExceptionHandler<Exception, TResult>)typedHandler;
+            IResultExceptionHandler<Exception, TResult> loweredHandler = (ExceptionHandler<Exception, TResult>)typedHandler;
            
             var type = typeof(TException);
             if (this.handledTypes.Contains(type))

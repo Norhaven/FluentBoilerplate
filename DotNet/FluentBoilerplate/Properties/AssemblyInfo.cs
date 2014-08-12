@@ -53,4 +53,5 @@ using System.Runtime.InteropServices;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("FluentBoilerplate.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 #endif

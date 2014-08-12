@@ -22,6 +22,10 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
     /// <typeparam name="TException">The exception type</typeparam>
     internal interface IExceptionHandler<in TException>
     {
+    }
+
+    internal interface IVoidReturnExceptionHandler<in TException> : IExceptionHandler<TException>
+    {
         /// <summary>
         /// Handles the exception
         /// </summary>
@@ -34,13 +38,13 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
     /// </summary>
     /// <typeparam name="TException">The exception type</typeparam>
     /// <typeparam name="TResult">The result type</typeparam>
-    internal interface IExceptionHandler<in TException, out TResult> : IExceptionHandler<TException> //TODO: Don't inherit from something that could handle the exception without a result
+    internal interface IResultExceptionHandler<in TException, out TResult> : IExceptionHandler<TException> 
     {
         /// <summary>
         /// Handles the exception, returning a result
         /// </summary>
         /// <param name="exception">The exception</param>
         /// <returns>The result</returns>
-        TResult HandleWithResult(TException exception);
+        TResult Handle(TException exception);
     }
 }

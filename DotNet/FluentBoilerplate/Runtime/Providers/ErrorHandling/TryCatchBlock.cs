@@ -52,7 +52,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             public void HandleException<TException>(TException exception) where TException : Exception
             {
                 var handler = this.provider.TryGetHandler<TException, TResult>();
-                this.Result = handler.HandleWithResult(exception);
+                this.Result = handler.Handle(exception);
             }
         }
 
