@@ -34,7 +34,7 @@ The only namespace you should care about is FluentBoilerplate. Add that to your 
 using FluentBoilerplate;
 ```
 
-Everything is driven from an IContext implementation. You should get one.
+Everything is driven from an IBoilerplateContext implementation. You should get one.
 
 ```C#
 var boilerplate = Boilerplate.New();
@@ -82,11 +82,11 @@ You may be saying to yourself "Self, this sounds sort of like Code Contracts", a
 Let's require that a parameter is not null before we do something.
 
 ```C#
-public static void DoSomething(IContext boilerplate, string text)
+public static void DoSomething(IBoilerplateContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
-             .Require(text != null, "The parameter 'text' must not be null")
+             .Require(() => text != null, "The parameter 'text' must not be null")
         .EndContract()
         .Do(context => /* Take some action */);
 }
@@ -97,11 +97,11 @@ When the call to Do() is performed, the contract will be validated. If the param
 You're welcome to throw your own exceptions as well.
 
 ```C#
-public static void DoSomething(IContext boilerplate, string text)
+public static void DoSomething(IBoilerplateContext boilerplate, string text)
 {
     boilerplate
         .BeginContract()
-             .Require(text != null, () => new ArgumentException("text", "The parameter must not be null"))
+             .Require(() => text != null, () => new ArgumentException("text", "The parameter must not be null"))
         .EndContract()
         .Do(context => /* Take some action */);
 }
@@ -116,7 +116,7 @@ public class Example
 {
     public string Text { get; private set; }
 
-    public void DoSomething(IContext boilerplate)
+    public void DoSomething(IBoilerplateContext boilerplate)
     {
         boilerplate
             .BeginContract()
@@ -151,7 +151,7 @@ public static class KnownRights
 We'd like to make sure that the caller is allowed to perform an action, but not do anything terrible.
 
 ```C#
-private void DoSomething(IContext boilerplate)
+private void DoSomething(IBoilerplateContext boilerplate)
 {
     boilerplate
         .BeginContract()
@@ -183,7 +183,7 @@ public static class KnownRoles
 You could then include roles in your contract.
 
 ```C#
-private void DoSomething(IContext boilerplate)
+private void DoSomething(IBoilerplateContext boilerplate)
 {
     boilerplate
         .BeginContract()
@@ -210,18 +210,18 @@ There are currently two attributes that may be applied to properties for validat
 public class SomeType
 {
     [NotNull]
-    [StringLength(MinLength=3, MaxLength=10)]
+    [StringLength(Minimum=3, Maximum=10)]
     public string Text { get; }
 }
 ```
 
 The [NotNull] attribute does what it says. During validation, that property must not be null.
-The [StringLength] attribute enforces length requirements on a string property. MinLength is the inclusive lower bounds, meaning that the string must be three or more characters in length. MaxLength is the inclusive upper bounds, meaning that the string must be ten or less characters in length.
+The [StringLength] attribute enforces length requirements on a string property. Minimum is the inclusive lower bounds, meaning that the string must be three or more characters in length. Maximum is the inclusive upper bounds, meaning that the string must be ten or less characters in length.
 
 Let's validate an instance of SomeType.
 
 ```C#
-private void DoValidatedAction(IContext boilerplate, SomeType instance)
+private void DoValidatedAction(IBoilerplateContext boilerplate, SomeType instance)
 {
     boilerplate
         .BeginContract()
@@ -266,7 +266,7 @@ public class To
 Translation is fairly easy.
 
 ```C#
-public void DoSomething(IContext boilerplate, From fromInstance)
+public void DoSomething(IBoilerplateContext boilerplate, From fromInstance)
 {
     fromInstance.Text = "Hello";
     var toInstance = boilerplate.Use(fromInstance).As<To>();
@@ -290,7 +290,7 @@ public class From
 Now let's change the method a little bit.
 
 ```C#
-public void DoSomething(IContext boilerplate, From fromInstance)
+public void DoSomething(IBoilerplateContext boilerplate, From fromInstance)
 {
     fromInstance.Text = "Hello";
     var toInstance = boilerplate.Use(fromInstance).As<To>();
@@ -312,6 +312,5 @@ There are quite a few scenarios in which you'd like to make use of a factory (e.
 boilerplate.Open<ISomeService>((context, service) => service.CallRemoteMethod());
 ```
 
-Being able to accomplish that currently requires that you write a provider that implements FluentBoilerplate.Providers.ITypeProvider and send it in with your initial Boilerplate.New() call. The call attempts themselves will pass you the current IIdentity instance, in case you would like to do custom rights/roles verification (i.e. rights are required to make a WCF call).
-
-There is currently a WCF provider, with more planned.
+Currently, there are providers available for WCF and for ADO.Net, with more planned.
+You are also welcome to write your own provider that implements FluentBoilerplate.Providers.ITypeProvider and send it in with your initial Boilerplate.New() call.
