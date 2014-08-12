@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Immutable;
 
-namespace FluentBoilerplate.Providers
+namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
     /// <summary>
     /// Represents a try/catch block
     /// </summary>
-    public interface ITryCatchBlock
+    internal interface ITryCatchBlock
     {
         /// <summary>
         /// Gets the exception types that this try/catch block handles

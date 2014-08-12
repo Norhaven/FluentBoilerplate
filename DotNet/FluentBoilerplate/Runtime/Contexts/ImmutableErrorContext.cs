@@ -37,7 +37,8 @@ namespace FluentBoilerplate.Runtime.Contexts
 {
     internal sealed class ImmutableErrorContext : IImmutableErrorContext
     {
-        public static IImmutableErrorContext Empty { get { return new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty); } }
+        public static IImmutableErrorContext Empty { get { return new ImmutableErrorContext(LogProvider.Default, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty); } }
+
         private readonly ILogProvider log;
         private readonly IExceptionHandlerProvider handlerProvider;
         private readonly ITryCatchBlockProvider tryCatchBlockProvider;

@@ -14,12 +14,12 @@
    limitations under the License.
  */
 
-namespace FluentBoilerplate.Providers
+namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
     /// <summary>
     /// Represents a provider for try/catch blocks
     /// </summary>
-    public interface ITryCatchBlockProvider
+    internal interface ITryCatchBlockProvider
     {
         /// <summary>
         /// Gets a try/catch block for the given exception handler provider

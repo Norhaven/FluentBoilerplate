@@ -25,11 +25,13 @@ namespace FluentBoilerplate.Contexts
         IPermissionsProvider Permissions { get; }
         ITranslationProvider Translation { get; }
         IValidationProvider Validation { get; }
+        ILogProvider Log { get; }
 
         IContextBundle Copy(IPermissionsProvider permissionsProvider = null, 
                             IImmutableErrorContext errorContext = null, 
                             ITypeAccessProvider accessProvider = null, 
                             ITranslationProvider translationProvider = null, 
-                            IValidationProvider validationProvider = null);
+                            IValidationProvider validationProvider = null,
+                            ILogProvider logProvider = null);
     }
 }

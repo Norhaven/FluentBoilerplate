@@ -25,9 +25,9 @@ namespace FluentBoilerplate
     public enum LogVisibility
     {
         /// <summary>
-        /// Visible under all circumstances
+        /// Not visible
         /// </summary>
-        All = 0,
+        None = 0,
         /// <summary>
         /// Debug messages
         /// </summary>
@@ -43,6 +43,10 @@ namespace FluentBoilerplate
         /// <summary>
         /// Error messages
         /// </summary>
-        Error = 4
+        Error = 4,
+        /// <summary>
+        /// Visible under all circumstances
+        /// </summary>
+        All = Debug | Info | Warning | Error
     }
 }

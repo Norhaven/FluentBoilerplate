@@ -15,6 +15,7 @@ void Main()
 	
 	//First, let's host the WCF service that we're going to talk to.
 	HostService();
+  
 	try
 	{
 	
@@ -40,7 +41,7 @@ void Main()
 	}
 	finally
 	{
-		//Close the WCF service so that the query can be re-run
+		//We're done with the example service, so let's take it down again.
 		TearDownService();
 	}
 }

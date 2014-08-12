@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Immutable;
 
-namespace FluentBoilerplate.Providers
+namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
     /// <summary>
     /// Represents a provider of exception handlers
     /// </summary>
-    public interface IExceptionHandlerProvider 
+    internal interface IExceptionHandlerProvider 
     {
         /// <summary>
         /// Gets the handled exception types

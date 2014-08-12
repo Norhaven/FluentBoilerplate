@@ -47,5 +47,25 @@ namespace FluentBoilerplate.Runtime.Contexts
             var downgradedErrorContext = this.bundle.Errors.Copy(includeHandlers: false);
             return this.bundle.Copy(errorContext: downgradedErrorContext);
         }
+
+        protected void Error(string message, Exception thrownException, params object[] loggedInstances)
+        {
+            this.bundle.Log.Error(message, thrownException, loggedInstances);
+        }
+
+        protected void Warning(string message, params object[] loggedInstances)
+        {
+            this.bundle.Log.Warning(message, loggedInstances);
+        }
+
+        protected void Info(string message, params object[] loggedInstances)
+        {
+            this.bundle.Log.Info(message, loggedInstances);
+        }
+
+        protected void Debug(string message, params object[] loggedInstances)
+        {
+            this.bundle.Log.Debug(message, loggedInstances);
+        }
     }
 }

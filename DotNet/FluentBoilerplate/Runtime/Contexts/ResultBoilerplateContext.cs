@@ -68,6 +68,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                     var downgradedSettings = DowngradeErrorHandling();
                     var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                     var result = action(serviceContext);
+
                     return MergeCopy(result: result);
                 });
         }
@@ -81,6 +82,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 var downgradedSettings = DowngradeErrorHandling();
                 var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                 var result = action(serviceContext, this.Result);
+
                 return MergeCopy(result: result);
             });
         }
@@ -100,6 +102,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 var downgradedSettings = DowngradeErrorHandling();
                 var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                 safeCall(serviceContext);
+
                 return MergeCopy();
             });
         }
@@ -113,6 +116,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 var downgradedSettings = DowngradeErrorHandling();
                 var serviceContext = new InitialBoilerplateContext<ContractContext>(downgradedSettings, this.Identity);
                 safeCall(serviceContext, this.Result);
+
                 return MergeCopy();
             });
         }
@@ -139,12 +143,13 @@ namespace FluentBoilerplate.Runtime.Contexts
         }
 
         public IBoilerplateContext<TResult> MergeCopy(IContextBundle settings = null,
-                                           IIdentity account = null,
-                                           IContractBundle contractBundle = null,
-                                           TResult result = default(TResult))
+                                                      IIdentity account = null,
+                                                      IContractBundle contractBundle = null,
+                                                      TResult result = default(TResult))
         {
-            var resultWasNotSupplied = EqualityComparer<TResult>.Default.Equals(result, default(TResult));
-            var actualResult = (resultWasNotSupplied) ? this.Result : result;
+            var resultWasProvided = !EqualityComparer<TResult>.Default.Equals(result, default(TResult));
+            var actualResult = (resultWasProvided) ? result : this.Result;
+
             return new ResultBoilerplateContext<TResult>(settings ?? this.bundle,
                                                          account ?? this.Identity,
                                                          contractBundle ?? this.contractBundle,

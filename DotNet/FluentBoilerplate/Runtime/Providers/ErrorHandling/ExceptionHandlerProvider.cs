@@ -35,7 +35,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
     internal sealed class ExceptionHandlerProvider : IExceptionHandlerProvider
     {
-        public static IExceptionHandlerProvider Empty { get { return new ExceptionHandlerProvider(LogProvider.Empty); } }
+        public static IExceptionHandlerProvider Empty { get { return new ExceptionHandlerProvider(LogProvider.Default); } }
 
         public IImmutableSet<Type> HandledExceptionTypes { get { return this.handledTypes; } }
         public IImmutableQueue<Type> HandledTypesInCatchOrder { get { return this.handledTypesInCatchOrder; } }

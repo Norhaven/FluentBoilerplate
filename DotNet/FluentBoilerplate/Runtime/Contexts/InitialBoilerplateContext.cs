@@ -133,19 +133,21 @@ namespace FluentBoilerplate.Runtime.Contexts
         }
         
         public IBoilerplateContext Copy(IContextBundle bundle = null, 
-                             IContractBundle contractBundle = null)
+                                        IContractBundle contractBundle = null)
         {
             return new InitialBoilerplateContext<TContract>(bundle ?? this.bundle,
                                                             this.Identity,
                                                             contractBundle ?? this.contractBundle);
         }
 
-        public IBoilerplateContext<TResult> Elevate<TResult>(IContextBundle bundle = null, IContractBundle contractBundle = null, TResult result = default(TResult))
+        public IBoilerplateContext<TResult> Elevate<TResult>(IContextBundle bundle = null, 
+                                                             IContractBundle contractBundle = null, 
+                                                             TResult result = default(TResult))
         {
             return new ResultBoilerplateContext<TResult>(bundle ?? this.bundle,
                                                          this.Identity,
                                                          contractBundle ?? this.contractBundle,
-                                                         default(TResult));
+                                                         result);
         }
     }
 }

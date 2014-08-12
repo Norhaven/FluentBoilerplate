@@ -40,8 +40,8 @@ namespace FluentBoilerplate.Tests
         public IResponse Response { get; set; }
         public Action CustomAction { get; set; }
         public Exception UnhandledException { get; set; }
-        public IExceptionHandler<Exception> NonSpecificExceptionHandler { get; set; }
-        public IExceptionHandler<ArgumentException> SpecificExceptionHandler { get; set; }
+        internal IExceptionHandler<Exception> NonSpecificExceptionHandler { get; set; }
+        internal IExceptionHandler<ArgumentException> SpecificExceptionHandler { get; set; }
         public bool ContractRequirementsShouldPass { get; set; }
         public bool ArgumentExceptionHandlerShouldBeRun { get; set; }
         public bool ExceptionHandlerShouldBeRun { get; set; }

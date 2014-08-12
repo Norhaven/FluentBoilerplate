@@ -73,6 +73,7 @@ namespace FluentBoilerplate.Runtime.Contexts
         public TContext RequireValidInstanceOf<TType>(params TType[] instances)
         {
             var localProvider = this.bundle.Validation;
+
             Action validate = () =>
             {
                 foreach (var instance in instances)

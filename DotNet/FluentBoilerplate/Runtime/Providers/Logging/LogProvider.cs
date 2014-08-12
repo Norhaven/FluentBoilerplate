@@ -36,7 +36,8 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
 #endif
         sealed class LogProvider : CacheProvider<Type, Action<object, Action<LogProvider.CustomLoggableMember>>>, ILogProvider
     {
-        public static ILogProvider Empty { get { return new LogProvider(FunctionGenerator.Default, LogVisibility.All); } }
+        public static ILogProvider Empty { get { return new LogProvider(FunctionGenerator.Default, LogVisibility.None); } }
+        public static ILogProvider Default { get { return new LogProvider(FunctionGenerator.Default, LogVisibility.Warning | LogVisibility.Error); } }
 
         private const string DebugCategory = "DEBUG";
         private const string InfoCategory = "INFO";

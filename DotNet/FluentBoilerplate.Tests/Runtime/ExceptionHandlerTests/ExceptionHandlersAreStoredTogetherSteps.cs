@@ -34,7 +34,7 @@ namespace FluentBoilerplate.Tests.Runtime.ExceptionHandlerTests
         [Given(@"I have created an exception handler for ArgumentException")]
         public void GivenIHaveCreatedAnExceptionHandlerForArgumentException()
         {
-            var handler = new ExceptionHandler<ArgumentException>(LogProvider.Empty, _ => { });
+            var handler = new ExceptionHandler<ArgumentException>(LogProvider.Default, _ => { });
             this.testContext.NonSpecificExceptionHandler = (ExceptionHandler<Exception>)handler;
             this.testContext.SpecificExceptionHandler = handler;
         }

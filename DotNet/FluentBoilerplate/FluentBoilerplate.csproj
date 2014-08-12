@@ -120,11 +120,11 @@
     <Compile Include="PublicContract\Contexts\IImmutableErrorContext.cs" />
     <Compile Include="Runtime\Contexts\ImmutableContext.cs" />
     <Compile Include="Runtime\Contexts\ImmutableErrorContext.cs" />
-    <Compile Include="PublicContract\Providers\IExceptionHandler.cs" />
-    <Compile Include="PublicContract\Providers\IExceptionHandlerProvider.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\IExceptionHandler.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\IExceptionHandlerProvider.cs" />
     <Compile Include="PublicContract\Providers\ILogProvider.cs" />
-    <Compile Include="PublicContract\Providers\ITryCatchBlock.cs" />
-    <Compile Include="PublicContract\Providers\ITryCatchBlockProvider.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\ITryCatchBlock.cs" />
+    <Compile Include="Runtime\Providers\ErrorHandling\ITryCatchBlockProvider.cs" />
     <Compile Include="PublicContract\IValidationResult.cs" />
     <Compile Include="Runtime\Contexts\VoidReturnContractContext.cs" />
     <Compile Include="Runtime\ContractCondition.cs" />

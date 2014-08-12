@@ -14,13 +14,13 @@
    limitations under the License.
  */
 
-namespace FluentBoilerplate.Providers
+namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {
     /// <summary>
     /// Represents an exception handler
     /// </summary>
     /// <typeparam name="TException">The exception type</typeparam>
-    public interface IExceptionHandler<in TException>
+    internal interface IExceptionHandler<in TException>
     {
         /// <summary>
         /// Handles the exception
@@ -34,7 +34,7 @@ namespace FluentBoilerplate.Providers
     /// </summary>
     /// <typeparam name="TException">The exception type</typeparam>
     /// <typeparam name="TResult">The result type</typeparam>
-    public interface IExceptionHandler<in TException, out TResult> : IExceptionHandler<TException> //TODO: Don't inherit from something that could handle the exception without a result
+    internal interface IExceptionHandler<in TException, out TResult> : IExceptionHandler<TException> //TODO: Don't inherit from something that could handle the exception without a result
     {
         /// <summary>
         /// Handles the exception, returning a result

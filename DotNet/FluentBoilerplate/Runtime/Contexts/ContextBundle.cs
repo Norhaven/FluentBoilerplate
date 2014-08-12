@@ -17,6 +17,7 @@
 using FluentBoilerplate.Contexts;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Runtime.Providers;
+using FluentBoilerplate.Runtime.Providers.Logging;
 using FluentBoilerplate.Runtime.Providers.Translation;
 using FluentBoilerplate.Runtime.Providers.Validation;
 using System;
@@ -35,37 +36,43 @@ namespace FluentBoilerplate.Runtime.Contexts
         private readonly ITranslationProvider translationProvider;
         private readonly IValidationProvider validationProvider;
         private readonly IPermissionsProvider permissionsProvider;
+        private readonly ILogProvider logProvider;
 
         public IPermissionsProvider Permissions { get { return this.permissionsProvider; } }
         public IValidationProvider Validation { get { return this.validationProvider; } }
         public IImmutableErrorContext Errors { get { return errorContext; } }
         public ITypeAccessProvider Access { get { return accessProvider; } }
         public ITranslationProvider Translation { get { return translationProvider; } }
+        public ILogProvider Log { get { return logProvider; } }
 
         public ContextBundle(IPermissionsProvider permissionsProvider = null, 
                              IImmutableErrorContext errorContext = null, 
                              ITypeAccessProvider accessProvider = null,
                              ITranslationProvider translationProvider = null, 
-                             IValidationProvider validationProvider = null)
+                             IValidationProvider validationProvider = null,
+                             ILogProvider logProvider = null)
         {
             this.permissionsProvider = permissionsProvider ?? PermissionsProvider.Default;
             this.errorContext = errorContext ?? ImmutableErrorContext.Empty;
-            this.accessProvider = accessProvider; //TODO: Create empty access providers
+            this.accessProvider = accessProvider = TypeAccessProvider.Empty;
             this.translationProvider = translationProvider ?? TranslationProvider.Empty;
             this.validationProvider = validationProvider ?? ValidationProvider.Empty;
+            this.logProvider = logProvider ?? LogProvider.Default;
         }
 
         public IContextBundle Copy(IPermissionsProvider permissionsProvider = null,
                                    IImmutableErrorContext errorContext = null,
                                    ITypeAccessProvider accessProvider = null,
                                    ITranslationProvider translationProvider = null,
-                                   IValidationProvider validationProvider = null)
+                                   IValidationProvider validationProvider = null,
+                                   ILogProvider logProvider = null)
         {
             return new ContextBundle(permissionsProvider ?? this.permissionsProvider,
                                      errorContext ?? this.errorContext,
                                      accessProvider ?? this.accessProvider,
                                      translationProvider ?? this.translationProvider,
-                                     validationProvider ?? this.validationProvider);
+                                     validationProvider ?? this.validationProvider,
+                                     logProvider ?? this.logProvider);
         }
     }
 }

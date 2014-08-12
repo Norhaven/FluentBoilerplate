@@ -36,7 +36,7 @@ namespace FluentBoilerplate.Tests.Runtime.Contexts.ImmutableErrorContextTests
         [Given(@"I have created an error context")]
         public void GivenIHaveCreatedAnErrorContext()
         {
-            this.testContext.Errors = new ImmutableErrorContext(LogProvider.Empty, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
+            this.testContext.Errors = new ImmutableErrorContext(LogProvider.Default, TryCatchBlockProvider.Empty, ExceptionHandlerProvider.Empty);
         }
 
         [Given(@"I have not added any exception handlers")]
