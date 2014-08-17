@@ -36,24 +36,24 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
 #endif
         sealed class LogProvider : CacheProvider<Type, Action<object, Action<LogProvider.CustomLoggableMember>>>, ILogProvider
     {
-        public static ILogProvider Empty { get { return new LogProvider(FunctionGenerator.Default, LogVisibility.None); } }
-        public static ILogProvider Default { get { return new LogProvider(FunctionGenerator.Default, LogVisibility.Warning | LogVisibility.Error); } }
+        public static ILogProvider Empty { get { return new LogProvider(FunctionGenerator.Default, Visibility.None); } }
+        public static ILogProvider Default { get { return new LogProvider(FunctionGenerator.Default, Visibility.Warning | Visibility.Error); } }
 
         private const string DebugCategory = "DEBUG";
         private const string InfoCategory = "INFO";
         private const string WarningCategory = "WARNING";
         private const string ErrorCategory = "ERROR";
 
-        private readonly LogVisibility visibility;
+        private readonly Visibility visibility;
         private readonly IFunctionGenerator functionGenerator;
 
-        public LogProvider(IFunctionGenerator functionGenerator, LogVisibility visibility)
+        public LogProvider(IFunctionGenerator functionGenerator, Visibility visibility)
         {
             this.functionGenerator = functionGenerator;
             this.visibility = visibility;
         }
 
-        private bool VisibilityIs(LogVisibility possibleVisibility)
+        private bool VisibilityIs(Visibility possibleVisibility)
         {
             return this.visibility.HasFlag(possibleVisibility);
         }
@@ -65,7 +65,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
         
         public void Info(string message, params object[] instances)
         {
-            if (!VisibilityIs(LogVisibility.Error))
+            if (!VisibilityIs(Visibility.Info))
                 return;
 
             Trace.WriteLine(message, CreateCategory(InfoCategory));
@@ -75,7 +75,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
 
         public void Error(string message, Exception exception, params object[] instances)
         {
-            if (!VisibilityIs(LogVisibility.Error))
+            if (!VisibilityIs(Visibility.Error))
                 return;
             
             Trace.WriteLine(message, CreateCategory(ErrorCategory));
@@ -94,7 +94,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
 
         public void Warning(string message, params object[] instances)
         {
-            if (!VisibilityIs(LogVisibility.Warning))
+            if (!VisibilityIs(Visibility.Warning))
                 return;
 
             Trace.WriteLine(message, CreateCategory(WarningCategory));
@@ -104,7 +104,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
 
         public void Debug(string message, params object[] instances)
         {
-            if (!VisibilityIs(LogVisibility.Debug))
+            if (!VisibilityIs(Visibility.Debug))
                 return;
 
             Trace.WriteLine(message, CreateCategory(DebugCategory));
@@ -147,12 +147,12 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
             return this.functionGenerator.CreateAction<object, Action<CustomLoggableMember>>(writer => WriteLogBody(writer, type, loggableMembers));
         }
 
-        private bool CanWriteToLog(LogVisibility memberVisibility)
+        private bool CanWriteToLog(Visibility memberVisibility)
         {
-            if (HasSameVisibility(LogVisibility.Debug, memberVisibility) ||
-                HasSameVisibility(LogVisibility.Error, memberVisibility) ||
-                HasSameVisibility(LogVisibility.Info, memberVisibility) ||
-                HasSameVisibility(LogVisibility.Warning, memberVisibility))
+            if (HasSameVisibility(Visibility.Debug, memberVisibility) ||
+                HasSameVisibility(Visibility.Error, memberVisibility) ||
+                HasSameVisibility(Visibility.Info, memberVisibility) ||
+                HasSameVisibility(Visibility.Warning, memberVisibility))
             {
                 return true;
             }
@@ -160,7 +160,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
             return false;
         }
 
-        private bool HasSameVisibility(LogVisibility visibility, LogVisibility memberVisibility)
+        private bool HasSameVisibility(Visibility visibility, Visibility memberVisibility)
         {
             return this.VisibilityIs(visibility) && memberVisibility.HasFlag(visibility);
         }
@@ -262,7 +262,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
 
         public sealed class CustomLoggableMember
         {
-            public LogVisibility MemberVisibility { get; set; }
+            public Visibility MemberVisibility { get; set; }
             public Type OwningType { get; set; }
             public string MemberName { get; set; }
             public Type MemberType { get; set; }
@@ -274,16 +274,16 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
         {
             var visibilities = new List<string>();
 
-            if (member.MemberVisibility.HasFlag(LogVisibility.Debug))
+            if (member.MemberVisibility.HasFlag(Visibility.Debug))
                 visibilities.Add("DEBUG");
 
-            if (member.MemberVisibility.HasFlag(LogVisibility.Info))
+            if (member.MemberVisibility.HasFlag(Visibility.Info))
                 visibilities.Add("INFO");
 
-            if (member.MemberVisibility.HasFlag(LogVisibility.Warning))
+            if (member.MemberVisibility.HasFlag(Visibility.Warning))
                 visibilities.Add("WARNING");
 
-            if (member.MemberVisibility.HasFlag(LogVisibility.Error))
+            if (member.MemberVisibility.HasFlag(Visibility.Error))
                 visibilities.Add("ERROR");
 
             var category = String.Format("[{0}]", String.Join(", ", visibilities));

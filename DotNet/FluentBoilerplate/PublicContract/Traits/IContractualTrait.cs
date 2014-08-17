@@ -87,7 +87,14 @@ namespace FluentBoilerplate.Traits
         /// <param name="createException">Creates the exception that will be thrown if the condition fails</param>
         /// <returns>The context that this trait applies to</returns>
         /// <exception cref="TException">Thrown if the condition fails</exception>
-        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<Exception, TException> createException = null) where TException : Exception;   
+        TContext EnsureOnThrow<TException>(Func<bool> condition, Func<Exception, TException> createException = null) where TException : Exception;
+
+        /// <summary>
+        /// Indicates that the context action will be timed when running under the specified visibility
+        /// </summary>
+        /// <param name="visibility">The timing visibility</param>
+        /// <returns>The context that this trait applies to</returns>
+        TContext IsTimedUnder(Visibility visibility);
     }
 
     /// <summary>

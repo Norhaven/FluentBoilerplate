@@ -33,4 +33,24 @@ namespace FluentBoilerplate.Traits
         TContext Copy(IContextBundle bundle = null,
                       IContractBundle contractBundle = null);
     }
+
+    /// <summary>
+    /// Represents a trait for copying a context
+    /// </summary>
+    /// <typeparam name="TContext">The context</typeparam>
+    /// <typeparam name="TResult">The result type</typeparam>
+    public interface ICopyableTrait<TContext, TResult>
+    {
+
+        /// <summary>
+        /// Copies the current context
+        /// </summary>
+        /// <param name="bundle">A new bundle associated with the context</param>
+        /// <param name="contractBundle">A new contract bundle associated with the context</param>
+        /// <param name="result">A new result associated with the context</param>
+        /// <returns>An instance of <typeparamref name="TContext"/> that contains any applied bundle changes</returns>
+        TContext Copy(IContextBundle bundle = null,
+                      IContractBundle contractBundle = null,
+                      TResult result = default(TResult));
+    }
 }

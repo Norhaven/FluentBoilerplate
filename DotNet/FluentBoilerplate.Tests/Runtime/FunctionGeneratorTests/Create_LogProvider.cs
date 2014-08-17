@@ -32,7 +32,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
         [Log]
         public class DebugTest
         {
-            [Log(Visibility=LogVisibility.Debug)]
+            [Log(Visibility=Visibility.Debug)]
             public string Message = "Hello";
         }
         private FunctionGenerator.PhysicalAssemblySettings settings;
@@ -45,7 +45,7 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
             this.settings = new FunctionGenerator.PhysicalAssemblySettings("Log", "dll", AppDomain.CurrentDomain.BaseDirectory);
 
             this.functionGenerator = new FunctionGenerator(this.settings);
-            this.provider = new LogProvider(this.functionGenerator, LogVisibility.Debug | LogVisibility.Warning);
+            this.provider = new LogProvider(this.functionGenerator, Visibility.Debug | Visibility.Warning);
         }
 
         [Test]

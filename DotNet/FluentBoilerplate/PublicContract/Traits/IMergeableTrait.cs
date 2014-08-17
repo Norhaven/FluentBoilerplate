@@ -17,6 +17,7 @@ limitations under the License.
 using FluentBoilerplate.Contexts;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace FluentBoilerplate.Traits
         IBoilerplateContext<TResult> MergeCopy(IContextBundle settings = null,
                                     IIdentity account = null,
                                     IContractBundle contractBundle = null,
-                                    TResult result = default(TResult));
+                                    TResult result = default(TResult),
+                                    IImmutableQueue<TimeSpan> callTimings = null);
     }
 }

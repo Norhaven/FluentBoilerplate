@@ -46,15 +46,20 @@ namespace FluentBoilerplate.Runtime.Contexts
                          IBundledContractContext
     {
         private readonly IContractBundle contractBundle;
+        private readonly IImmutableQueue<TimeSpan> callTimings;
+
         public IIdentity Identity { get; private set; }
+        public IImmutableQueue<TimeSpan> CallTimings { get { return this.callTimings; } }
 
         internal InitialBoilerplateContext(IContextBundle bundle,
                                            IIdentity identity,
-                                           IContractBundle contractBundle = null)
+                                           IContractBundle contractBundle = null,
+                                           IImmutableQueue<TimeSpan> callTimings = null)
             :base(bundle)
         {
             this.Identity = identity;
             this.contractBundle = contractBundle ?? new ContractBundle();
+            this.callTimings = callTimings.DefaultIfNull();
         }
 
         public IInitialContractContext BeginContract()
@@ -67,18 +72,19 @@ namespace FluentBoilerplate.Runtime.Contexts
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
                 {
-                    var safeCall = this.bundle.Errors.ExtendAround(action);
-                    var downgradedSettings = DowngradeErrorHandling();
-                    var downgradedContext = Copy(bundle: downgradedSettings);
-                    var result = safeCall(downgradedContext);
-                                        
+                    var downgradedContext = DowngradeCurrentContext();
+
+                    TResult result = default(TResult);
+                    var timings = SafeTimedCall(() => action(downgradedContext));
+
                     return new ResultBoilerplateContext<TResult>(this.bundle,
-                                                           this.Identity,
-                                                           this.contractBundle,
-                                                           result);
+                                                                 this.Identity,
+                                                                 this.contractBundle,
+                                                                 result,
+                                                                 timings);
                 });
         }
-
+        
         public ITypeAccessBuilder<TType> Open<TType>()
         {
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
@@ -90,43 +96,17 @@ namespace FluentBoilerplate.Runtime.Contexts
             return VerifyContractIfPossible(this.contractBundle, this.Identity,
                 () =>
             {
-                var safeCall = this.bundle.Errors.ExtendAround(action);
-                var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(bundle: downgradedSettings);
-                safeCall(downgradedContext);
-                
+                var downgradedContext = DowngradeCurrentContext();
+
+                var timings = SafeTimedCall(() => action(downgradedContext));
+
                 return new InitialBoilerplateContext<TContract>(this.bundle,
                                                                 this.Identity,
-                                                                this.contractBundle);
+                                                                this.contractBundle,
+                                                                timings);
             });
         }
-
-        public IBoilerplateContext Open<TType>(Action<IBoilerplateContext, TType> action)
-        {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
-                () =>
-            {
-                var safeCall = this.bundle.Errors.ExtendAround(action);
-                var downgradedSettings = DowngradeErrorHandling();
-                var downgradedContext = Copy(bundle: downgradedSettings);
-                var response = this.bundle.Access.TryAccess<TType>(this.Identity, instance => safeCall(downgradedContext, instance));
-
-                if (!response.IsSuccess)
-                    throw new OperationWasNotSuccessfulException(response.Result);
-                
-                return new InitialBoilerplateContext<TContract>(this.bundle,
-                                                                this.Identity,
-                                                                this.contractBundle);               
-            });
-        }
-        
-        public IBoilerplateContext Copy(IContextBundle bundle)
-        {
-            return new InitialBoilerplateContext<TContract>(bundle, 
-                                                            this.Identity,
-                                                            this.contractBundle);
-        }
-
+          
         public IConversionBuilder Use<TFrom>(TFrom instance)
         {
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
@@ -147,7 +127,26 @@ namespace FluentBoilerplate.Runtime.Contexts
             return new ResultBoilerplateContext<TResult>(bundle ?? this.bundle,
                                                          this.Identity,
                                                          contractBundle ?? this.contractBundle,
-                                                         result);
+                                                         result,
+                                                         this.callTimings);
+        }
+
+        private InitialBoilerplateContext<ContractContext> DowngradeCurrentContext()
+        {
+            var downgradedBundle = DowngradeErrorHandling();
+            return new InitialBoilerplateContext<ContractContext>(downgradedBundle, this.Identity);
+        }
+
+        private IImmutableQueue<TimeSpan> SafeTimedCall(Action action)
+        {
+            var timingContext = new TimingContext(this.bundle.TimingVisibility);
+
+            this.bundle.Errors.DoInContext(_ =>
+            {
+                timingContext.OpenAs(this.bundle.Visibility, action);
+            });
+
+            return timingContext.EnqueueElapsed(this.callTimings);
         }
     }
 }

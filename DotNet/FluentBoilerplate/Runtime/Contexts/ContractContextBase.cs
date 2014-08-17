@@ -133,6 +133,12 @@ namespace FluentBoilerplate.Runtime.Contexts
             var elevatedPostconditionsOnThrow = this.contractBundle.AddPostconditionOnThrow(contractCondition);
             return Copy(contractBundle: elevatedPostconditionsOnThrow);
         }
+
+        public TContext IsTimedUnder(Visibility visibility)
+        {
+            var elevatedBundle = this.bundle.Copy(timingVisibility: visibility);
+            return Copy(bundle: elevatedBundle);
+        }
         
         public void VerifyPreConditions()
         {

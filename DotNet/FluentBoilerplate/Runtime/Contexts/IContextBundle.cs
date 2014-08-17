@@ -26,12 +26,16 @@ namespace FluentBoilerplate.Contexts
         ITranslationProvider Translation { get; }
         IValidationProvider Validation { get; }
         ILogProvider Log { get; }
+        Visibility Visibility { get; }
+        Visibility TimingVisibility { get; }
 
         IContextBundle Copy(IPermissionsProvider permissionsProvider = null, 
                             IImmutableErrorContext errorContext = null, 
                             ITypeAccessProvider accessProvider = null, 
                             ITranslationProvider translationProvider = null, 
                             IValidationProvider validationProvider = null,
-                            ILogProvider logProvider = null);
+                            ILogProvider logProvider = null,
+                            Visibility? visibility = null,
+                            Visibility? timingVisibility = null);
     }
 }

@@ -47,8 +47,8 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IResultContractContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(action);
-            var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
-            return Copy(bundle: elevatedSettings);
+            var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
+            return Copy(bundle: elevatedBundle);
         }
 
         public IResultContractContext<TResult> RequireRights(params IRight[] rights)
@@ -61,15 +61,15 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IResultContractContext<TResult> MustNotHaveRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(restrictedRights: rights.ToImmutableHashSet());
-            var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
-            return Copy(bundle: elevatedSettings);
+            var elevatedBundle = this.bundle.Copy(permissionsProvider: elevatedPermissions);
+            return Copy(bundle: elevatedBundle);
         }
 
         public IResultContractContext<TResult> RequireRoles(params IRole[] roles)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRoles: roles.ToImmutableHashSet());
-            var elevatedSettings = this.bundle.Copy(permissionsProvider: elevatedPermissions);
-            return Copy(bundle: elevatedSettings);
+            var elevatedBundle = this.bundle.Copy(permissionsProvider: elevatedPermissions);
+            return Copy(bundle: elevatedBundle);
         }
 
         public IResultContractContext<TResult> MustNotHaveRoles(params IRole[] roles)
@@ -150,8 +150,14 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IResultContractContext<TResult> Handles<TException>(Action<TException> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(action);
-            var elevatedSettings = this.bundle.Copy(errorContext: elevatedErrorContext);
-            return Copy(bundle: elevatedSettings);
+            var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
+            return Copy(bundle: elevatedBundle);
+        }
+
+        public IResultContractContext<TResult> IsTimedUnder(Visibility visibility)
+        {
+            var elevatedBundle = this.bundle.Copy(timingVisibility: visibility);
+            return Copy(bundle: elevatedBundle);
         }
 
         public void VerifyPreConditions()

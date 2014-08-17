@@ -31,7 +31,7 @@ namespace FluentBoilerplate
         /// <summary>
         /// Indicates the visibility levels that this type or member will be logged under. Defaults to All.
         /// </summary>
-        public LogVisibility Visibility { get; set; }
+        public Visibility Visibility { get; set; }
         /// <summary>
         /// Indicates whether the type or member should be ignored when logging
         /// </summary>

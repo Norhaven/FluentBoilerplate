@@ -16,6 +16,7 @@
 
 using FluentBoilerplate.Traits;
 using System;
+using System.Collections.Immutable;
 
 namespace FluentBoilerplate
 {
@@ -29,6 +30,11 @@ namespace FluentBoilerplate
         /// The current identity that this context is executing under
         /// </summary>
         IIdentity Identity { get; }
+
+        /// <summary>
+        /// All timings of method calls performed with this context
+        /// </summary>
+        IImmutableQueue<TimeSpan> CallTimings { get; }
 
         /// <summary>
         /// Begins a contract definition block
@@ -64,7 +70,7 @@ namespace FluentBoilerplate
     /// </summary>
     /// <typeparam name="TResult">The result type</typeparam>
     public interface IBoilerplateContext<TResult> :
-        ICopyableTrait<IBoilerplateContext<TResult>>,
+        ICopyableTrait<IBoilerplateContext<TResult>, TResult>,
         IConversionTrait
     {
         /// <summary>

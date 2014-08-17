@@ -32,7 +32,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Logging.LogProviderTests
         {
             public string NonLoggedValue { get; set; }
 
-            [Log(Visibility=LogVisibility.Debug)]
+            [Log(Visibility=Visibility.Debug)]
             public string Value { get; set; }
         }
         
@@ -90,7 +90,7 @@ namespace FluentBoilerplate.Tests.Runtime.Providers.Logging.LogProviderTests
         public void Initialize()
         {
             this.generator = new FunctionGenerator();
-            this.provider = new LogProvider(this.generator, LogVisibility.Debug);
+            this.provider = new LogProvider(this.generator, Visibility.Debug);
         }
 
         [Test]

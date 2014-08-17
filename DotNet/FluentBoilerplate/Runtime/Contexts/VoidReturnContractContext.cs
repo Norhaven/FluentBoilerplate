@@ -52,7 +52,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
             return Copy(bundle: elevatedBundle);
         }
-
+        
         public IBoilerplateContext EndContract()
         {
             return this.originalContext.Copy(this.bundle, this.contractBundle);

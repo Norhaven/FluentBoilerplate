@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="PublicContract\ActiveDirectoryGroup.cs" />
     <Compile Include="PublicContract\Attributes\LogAttribute.cs" />
-    <Compile Include="PublicContract\Attributes\LogVisibility.cs" />
+    <Compile Include="PublicContract\Attributes\Visibility.cs" />
     <Compile Include="PublicContract\Attributes\MapsToAttribute.cs" />
     <Compile Include="PublicContract\Attributes\NotNullAttribute.cs" />
     <Compile Include="PublicContract\Attributes\StringLengthAttribute.cs" />
@@ -66,6 +66,7 @@
     <Compile Include="PublicContract\Contexts\Boilerplate\IVoidReturnContractContext.cs" />
     <Compile Include="PublicContract\Contexts\Boilerplate\IResultContractContext.cs" />
     <Compile Include="PublicContract\Contexts\IContractCondition.cs" />
+    <Compile Include="Runtime\Contexts\TimingContext.cs" />
     <Compile Include="Runtime\Extensions\IExceptionHandlerExtensions.cs" />
     <Compile Include="Runtime\Providers\Database\AdoNetConnection.cs" />
     <Compile Include="PublicContract\Providers\Database\AdoNetConnectionProvider.cs" />

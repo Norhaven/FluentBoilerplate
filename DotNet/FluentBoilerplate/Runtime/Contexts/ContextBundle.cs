@@ -37,6 +37,8 @@ namespace FluentBoilerplate.Runtime.Contexts
         private readonly IValidationProvider validationProvider;
         private readonly IPermissionsProvider permissionsProvider;
         private readonly ILogProvider logProvider;
+        private readonly Visibility visibility;
+        private readonly Visibility timingVisibility;
 
         public IPermissionsProvider Permissions { get { return this.permissionsProvider; } }
         public IValidationProvider Validation { get { return this.validationProvider; } }
@@ -44,13 +46,17 @@ namespace FluentBoilerplate.Runtime.Contexts
         public ITypeAccessProvider Access { get { return accessProvider; } }
         public ITranslationProvider Translation { get { return translationProvider; } }
         public ILogProvider Log { get { return logProvider; } }
+        public Visibility Visibility { get { return this.visibility; } }
+        public Visibility TimingVisibility { get { return this.timingVisibility; } }
 
         public ContextBundle(IPermissionsProvider permissionsProvider = null, 
                              IImmutableErrorContext errorContext = null, 
                              ITypeAccessProvider accessProvider = null,
                              ITranslationProvider translationProvider = null, 
                              IValidationProvider validationProvider = null,
-                             ILogProvider logProvider = null)
+                             ILogProvider logProvider = null,
+                             Visibility visibility = Visibility.None,
+                             Visibility timingVisibility = Visibility.None)
         {
             this.permissionsProvider = permissionsProvider ?? PermissionsProvider.Default;
             this.errorContext = errorContext ?? ImmutableErrorContext.Empty;
@@ -58,6 +64,8 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.translationProvider = translationProvider ?? TranslationProvider.Empty;
             this.validationProvider = validationProvider ?? ValidationProvider.Empty;
             this.logProvider = logProvider ?? LogProvider.Default;
+            this.visibility = visibility;
+            this.timingVisibility = timingVisibility;
         }
 
         public IContextBundle Copy(IPermissionsProvider permissionsProvider = null,
@@ -65,14 +73,18 @@ namespace FluentBoilerplate.Runtime.Contexts
                                    ITypeAccessProvider accessProvider = null,
                                    ITranslationProvider translationProvider = null,
                                    IValidationProvider validationProvider = null,
-                                   ILogProvider logProvider = null)
+                                   ILogProvider logProvider = null,
+                                   Visibility? visibility  = null,
+                                   Visibility? timingVisibility = null)
         {
             return new ContextBundle(permissionsProvider ?? this.permissionsProvider,
                                      errorContext ?? this.errorContext,
                                      accessProvider ?? this.accessProvider,
                                      translationProvider ?? this.translationProvider,
                                      validationProvider ?? this.validationProvider,
-                                     logProvider ?? this.logProvider);
+                                     logProvider ?? this.logProvider,
+                                     visibility ?? this.visibility,
+                                     timingVisibility ?? this.timingVisibility);
         }
     }
 }

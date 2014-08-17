@@ -34,19 +34,27 @@ namespace FluentBoilerplate
         /// Creates an instance of <see cref="IBoilerplateContext"/>
         /// </summary>
         /// <param name="identity">The current identity being used (rights and roles contract requirements/restrictions will apply to this identity)</param>
-        /// <param name="accessProvider">An access provider for specific types (available through IContext.Open())</param>
+        /// <param name="accessProvider">An access provider for specific types (available through IBoilerplateContext.Open&lt;T&gt;())</param>
         /// <param name="permissionsProvider">The provider that will be used for all permissions verification attempts</param>
+        /// <param name="visibility">The visibility level that this context has. This will affect operations that rely on visibility (e.g. logging).</param>
         /// <returns>An instance of <see cref="IBoilerplateContext"/></returns>
-        public static IBoilerplateContext New(IIdentity identity = null, ITypeAccessProvider accessProvider = null, IPermissionsProvider permissionsProvider = null)
+        public static IBoilerplateContext New(IIdentity identity = null, 
+                                              ITypeAccessProvider accessProvider = null, 
+                                              IPermissionsProvider permissionsProvider = null,
+                                              Visibility visibility = Visibility.None)
         {   
             var actualIdentity = identity ?? Identity.Default;
             var actualTypeAccessProvider = accessProvider ?? TypeAccessProvider.Empty;
             var actualPermissionsProvider = permissionsProvider ?? PermissionsProvider.Default;
 
             var functionGenerator = new FunctionGenerator();
+
+            //Core providers
             var translationProvider = new TranslationProvider(functionGenerator);
             var validationProvider = new ValidationProvider(functionGenerator);
-            var logProvider = new LogProvider(functionGenerator, LogVisibility.All);
+            var logProvider = new LogProvider(functionGenerator, visibility);
+
+            //Set up error handling
             var tryCatchProvider = new TryCatchBlockProvider(functionGenerator);
             var exceptionHandlerProvider = new ExceptionHandlerProvider(logProvider);
             var errorContext = new ImmutableErrorContext(logProvider, tryCatchProvider, exceptionHandlerProvider);
@@ -55,7 +63,9 @@ namespace FluentBoilerplate
                                            errorContext: errorContext,
                                            translationProvider: translationProvider,
                                            accessProvider: actualTypeAccessProvider,
-                                           validationProvider: validationProvider);
+                                           validationProvider: validationProvider,
+                                           logProvider: logProvider,
+                                           visibility: visibility);
 
             return new InitialBoilerplateContext<ContractContext>(bundle, actualIdentity);
         }

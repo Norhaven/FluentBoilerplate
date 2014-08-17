@@ -32,31 +32,23 @@ namespace FluentBoilerplate.Tests
 {
     [TestFixture]
     public class SyntaxTestPlayground
-    {
-        class Person
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Description { get; set; }
-        }
-
-        class Interpreter:IDataInterpreter<Person>
-        {
-            public IEnumerable<Person> Interpret(IDataReader dataReader)
-            {
-                while(dataReader.Read())
-                {
-                    var id = dataReader.GetInt32(0);
-                    var name = dataReader.GetString(1);
-                    var description = dataReader.GetString(2);
-                    yield return new Person { Id = id, Name = name, Description = description };
-                }
-            }
-        }
-
+    {        
         [Test]
         public void Test()
         {
+            var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
+
+            var timings = boilerplate
+                .BeginContract()
+                    .IsTimedUnder(Visibility.Debug)
+                .EndContract()
+                .Do(_ => Go())
+                .Do(_ => Go())
+                .Do(_ => Go())
+                .CallTimings;
+
+            foreach (var timing in timings)
+                Console.WriteLine(timing.TotalMilliseconds);
             //var provider = new AdoNetConnectionProvider("FluentBoilerplate", DataSource.SQL);
             //var access = new TypeAccessProvider(provider);
             //var boilerplate = Boilerplate.New(accessProvider: access);

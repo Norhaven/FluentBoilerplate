@@ -19,31 +19,31 @@ using System;
 namespace FluentBoilerplate
 {
     /// <summary>
-    /// The available visibility levels that may be applied when writing to a log
+    /// The available visibility levels that may be applied
     /// </summary>
     [Flags]
-    public enum LogVisibility
+    public enum Visibility
     {
         /// <summary>
         /// Not visible
         /// </summary>
         None = 0,
         /// <summary>
-        /// Debug messages
+        /// Debug visibility level
         /// </summary>
         Debug = 1,
         /// <summary>
-        /// Informational messages
+        /// Informational visibility level
         /// </summary>
         Info = 2,
         /// <summary>
-        /// Warning messages
+        /// Warning visibility level
         /// </summary>
-        Warning = 3,
+        Warning = 4,
         /// <summary>
-        /// Error messages
+        /// Error visibility level
         /// </summary>
-        Error = 4,
+        Error = 8,
         /// <summary>
         /// Visible under all circumstances
         /// </summary>
