@@ -49,15 +49,28 @@ namespace FluentBoilerplate.Tests
         [Test]
         public void Test()
         {
+            var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
+
+            var timings = boilerplate
+                .BeginContract()
+                    .IsTimedUnder(Visibility.Debug)
+                .EndContract()
+                .Do(_ => Go())
+                .Do(_ => Go())
+                .CallTimings;
+
+            foreach (var timing in timings)
+                Console.WriteLine(timing.TotalMilliseconds);
+
             var verifier = new TranslationVerifier<From>();
             var results = verifier.VerifyWithTargetOf<To>();
 
             foreach (var result in results)
                 Debug.WriteLine(result);
 
-            var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
+            var boilerplate2 = Boilerplate.New(visibility: Visibility.Debug);
             
-            var timings = boilerplate
+            var timings2 = boilerplate2
                 .BeginContract()
                     .IsTimedUnder(Visibility.Debug)
                 .EndContract()
