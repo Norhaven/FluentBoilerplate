@@ -103,6 +103,11 @@
       <DependentUpon>CanConnectThroughWcf.feature</DependentUpon>
     </Compile>
     <Compile Include="PublicContract\Providers\WCF\CanConnectThroughWcfSteps.cs" />
+    <Compile Include="PublicContract\Testing\TranslationVerifierTests\DeveloperCanVerifyTranslation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeveloperCanVerifyTranslation.feature</DependentUpon>
+    </Compile>
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -184,6 +189,10 @@
     <None Include="PublicContract\Providers\WCF\CanConnectThroughWcf.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CanConnectThroughWcf.feature.cs</LastGenOutput>
+    </None>
+    <None Include="PublicContract\Testing\TranslationVerifierTests\DeveloperCanVerifyTranslation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeveloperCanVerifyTranslation.feature.cs</LastGenOutput>
     </None>
     <None Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

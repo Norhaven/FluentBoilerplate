@@ -27,17 +27,36 @@ using System.Diagnostics;
 using FluentBoilerplate.Providers;
 using FluentBoilerplate.Providers.Database;
 using System.Data;
+using FluentBoilerplate.Testing;
 
 namespace FluentBoilerplate.Tests
 {
     [TestFixture]
     public class SyntaxTestPlayground
     {        
+        class From
+        {
+            [MapsTo(typeof(To), "Text")]
+            public string Hi { get; set; }
+            [MapsTo(typeof(To), "Text")]
+            public string Blah { get; set; }
+        }
+
+        class To
+        {
+            public string Text { get; set; }
+        }
         [Test]
         public void Test()
         {
-            var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
+            var verifier = new TranslationVerifier<From>();
+            var results = verifier.VerifyWithTargetOf<To>();
 
+            foreach (var result in results)
+                Debug.WriteLine(result);
+
+            var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
+            
             var timings = boilerplate
                 .BeginContract()
                     .IsTimedUnder(Visibility.Debug)
