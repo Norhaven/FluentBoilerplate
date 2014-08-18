@@ -41,19 +41,20 @@ namespace FluentBoilerplate.Runtime.Contexts
             if (!this.bundle.Permissions.HasPermission(identity))
                 throw new ContractViolationException("The current identity does not have permission to  perform this action");
 
+            TResult result = default(TResult);
+
             if (contractBundle == null)
             {
                 Info("No contract is available to verify, performing the action as-is");
-                return action();
+                result = action();
+                Debug("Caller's action returned", result);
             }
 
             var contract = new ContractContext<TResult>(this.bundle, contractBundle, null);
 
             Info("Contract is present, verifying preconditions");
             contract.VerifyPreConditions();
-
-            TResult result = default(TResult);
-
+            
             try
             {
                 result = action();                
@@ -65,6 +66,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                 throw;
             }
 
+            Debug("Caller's action has returned", result);
             Info("Action completed successfully, verifying return postconditions");
             contract.VerifyPostConditions(ContractExit.Returned);
 

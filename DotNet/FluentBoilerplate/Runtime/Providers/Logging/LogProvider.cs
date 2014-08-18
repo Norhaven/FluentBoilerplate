@@ -52,64 +52,49 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
             this.functionGenerator = functionGenerator;
             this.visibility = visibility;
         }
-
-        private bool VisibilityIs(Visibility possibleVisibility)
-        {
-            return this.visibility.HasFlag(possibleVisibility);
-        }
-
-        private string CreateCategory(params string[] categories)
-        {
-            return String.Format("[{0}]", String.Join(", ", categories));
-        }
-        
+                        
         public void Info(string message, params object[] instances)
         {
-            if (!VisibilityIs(Visibility.Info))
-                return;
-
-            Trace.WriteLine(message, CreateCategory(InfoCategory));
-
-            WriteInstancesToLog(instances);
+            Log(InfoCategory, message, Visibility.Info, instances);
         }
 
         public void Error(string message, Exception exception, params object[] instances)
         {
-            if (!VisibilityIs(Visibility.Error))
-                return;
-            
-            Trace.WriteLine(message, CreateCategory(ErrorCategory));
-
-            if (exception != null)
-            {
-                Trace.WriteLine(String.Format("Type:{1}{0}Message:{2}{0}Stack Trace:{3}{0}",
-                                              Environment.NewLine,
-                                              exception.GetType().FullName,
-                                              exception.Message,
-                                              exception.StackTrace));
-            }
-
-            WriteInstancesToLog(instances);
+            Log(ErrorCategory, message, Visibility.Error, instances, () =>
+                {
+                    if (exception != null)
+                    {
+                        Trace.WriteLine(String.Format("Type:{1}{0}Message:{2}{0}Stack Trace:{3}{0}",
+                                                      Environment.NewLine,
+                                                      exception.GetType().FullName,
+                                                      exception.Message,
+                                                      exception.StackTrace));
+                    }
+                });           
         }
 
         public void Warning(string message, params object[] instances)
         {
-            if (!VisibilityIs(Visibility.Warning))
-                return;
-
-            Trace.WriteLine(message, CreateCategory(WarningCategory));
-
-            WriteInstancesToLog(instances);
+            Log(WarningCategory, message, Visibility.Warning, instances);
         }
 
         public void Debug(string message, params object[] instances)
         {
-            if (!VisibilityIs(Visibility.Debug))
+            Log(DebugCategory, message, Visibility.Debug, instances);
+        }
+
+
+        private void Log(string category, string message, Visibility requiredVisibility, object[] instances, Action postAction = null)
+        {
+            if (!VisibilityIs(requiredVisibility))
                 return;
 
-            Trace.WriteLine(message, CreateCategory(DebugCategory));
+            Trace.WriteLine(message, CreateCategory(category));
 
             WriteInstancesToLog(instances);
+
+            if (postAction != null)
+                postAction();
         }
 
         private void WriteInstancesToLog(object[] instances)
@@ -120,7 +105,9 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
             foreach (var instance in instances)
             {
                 var log = GetTypeLogger(instance.GetType());
-                log(instance, this.LogCustomNameValuePairs);
+
+                if (log != null)
+                    log(instance, this.LogCustomNameValuePairs);
             }
         }
 
@@ -172,6 +159,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
             writer.Cast(typeof(object), type);
             writer.SetLocal(localTypedInstance);
 
+            //TODO: Recurse into loggable members
             foreach (var member in loggableMembers)
             {
                 var logAttributes = member.GetCustomAttributes<LogAttribute>().ToArray();
@@ -270,7 +258,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
             public CustomLoggableMember() { }
         }
 
-        public void LogCustomNameValuePairs(CustomLoggableMember member)
+        private void LogCustomNameValuePairs(CustomLoggableMember member)
         {
             var visibilities = new List<string>();
 
@@ -295,6 +283,16 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
                                         member.MemberValue);
 
             Trace.WriteLine(message, category);
+        }
+
+        private bool VisibilityIs(Visibility possibleVisibility)
+        {
+            return this.visibility.HasFlag(possibleVisibility);
+        }
+
+        private string CreateCategory(params string[] categories)
+        {
+            return String.Format("[{0}]", String.Join(", ", categories));
         }
     }
 }

@@ -23,7 +23,7 @@ public class Loggable
 	public string Name { get; set; }
 	
 	//This usage indicates that this property will be called "Trace" when logged and will only be logged when watching for debug or info messages.
-	[Log(Name = "Trace", Visibility = LogVisibility.Debug | LogVisibility.Info)]
+	[Log(Name = "Trace", Visibility = Visibility.Debug | Visibility.Info)]
 	public string TraceData { get; set; }
 	
 	//No attribute indicates that this property will not be logged.
