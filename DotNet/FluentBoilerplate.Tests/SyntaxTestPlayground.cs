@@ -55,7 +55,7 @@ namespace FluentBoilerplate.Tests
             public string Text { get; set; }
         }
         [Test]
-        //[Ignore]
+        [Ignore]
         public void Test()
         {
             var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
