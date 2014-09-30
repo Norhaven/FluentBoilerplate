@@ -1,0 +1,185 @@
+﻿<#@ template debug="true" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+/*
+   Copyright 2014 Chris Hannon
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
+
+namespace FluentBoilerplate
+{
+<# var overloads = 9; #>
+	public interface ITypeCheckExecution
+	{
+		/// <summary>
+		/// Executes the provided action if the instance is of the requested type
+		/// </summary>
+		/// <typeparam name="TType">The requested type.</typeparam>
+		/// <param name="action">The action.</param>
+		TypeCheckResult IfTypeIs<TType>(Action<TType> action);
+		/// <summary>
+		/// Executes the provided function if the instance is of the requested type
+		/// </summary>
+		/// <typeparam name="TType">The requested type.</typeparam>
+		/// <typeparam name="TResult">The type of the result.</typeparam>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		TypeCheckResult<TResult> IfTypeIs<TType, TResult>(Func<TType, TResult> action);
+
+<#
+		for(var i = 2; i <= overloads; i++)
+		{
+			var typeParameters = GetTypeParametersUpTo(i);
+			var unrolledTypeParameters = UnrollTypeParameters(typeParameters);
+#>
+		/// <summary>
+        /// Conditionally executes the method call following this one if the instance 
+		/// has a runtime type matching any of the provided type parameters.
+        /// </summary>
+<#
+			foreach (var parameter in typeParameters)
+			{
+#>
+        /// <typeparam name="<#=parameter#>">A potential type that will cause the conditional method execution.</typeparam>
+<#
+			}
+#>
+        /// <returns>An instance of a conditionally executed choice.</returns>
+		IThen<<#=unrolledTypeParameters#>> IfTypeIsAnyOf<<#=unrolledTypeParameters#>>();
+<#
+		}
+#>    
+	}
+
+	internal abstract class Then
+	{
+		private readonly object instance;
+
+		public Then(object instance)
+		{
+			this.instance = instance;
+		}
+
+		protected TypeCheckResult IfTypeIs<TType>(Action<TType> action)
+		{
+		   var isType = this.instance is TType;
+       
+		   if (isType)
+		   {
+			   action((TType)(object)this.instance);                
+		   }
+
+		   return new TypeCheckResult(isType);
+	   }
+
+	   protected TypeCheckResult<TResult> IfTypeIs<TType, TResult>(Func<TType, TResult> action)
+	   {
+		   var isType = this.instance is TType;
+		   var result = default(TResult);
+
+		   if (isType)
+		   {
+			   result = action((TType)(object)this.instance);
+		   }
+
+		   return new TypeCheckResult<TResult>(isType, result);
+	   }
+	}
+
+<#
+	for (var i = 1; i <= overloads; i++)
+	{
+		var typeParameters = GetTypeParametersUpTo(i);
+		var unrolledTypeParameters = UnrollTypeParameters(typeParameters);
+#>
+
+	public interface IThen<<#=unrolledTypeParameters#>>
+    {
+        TypeCheckResult<TResult> GetFirstMatched<TResult>(<#=GetFuncArguments(typeParameters)#>);
+        TypeCheckResult DoFirstMatched(<#=GetActionArguments(typeParameters)#>);        
+    }
+
+	internal sealed class Then<<#=unrolledTypeParameters#>> : Then, IThen<<#=unrolledTypeParameters#>>
+	{
+		public Then(object instance):base(instance)
+		{
+		}
+
+		public TypeCheckResult<TResult> GetFirstMatched<TResult>(<#=GetFuncArguments(typeParameters)#>)
+		{
+			TypeCheckResult<TResult> result;
+<#
+		for (var j = 1; j <= typeParameters.Count; j++)
+		{
+#>
+			result = IfTypeIs<<#=typeParameters[j - 1]#>, TResult>(doT<#=j#>);
+			if (result) return result;
+<#
+		}
+#>
+			return false;
+		}
+
+        public TypeCheckResult DoFirstMatched(<#=GetActionArguments(typeParameters)#>)
+		{
+			TypeCheckResult result;
+<#
+			for (var j = 1; j <= typeParameters.Count; j++)
+			{
+#>
+			result = IfTypeIs<<#=typeParameters[j - 1]#>>(doT<#=j#>);
+			if (result) return result;
+<#
+			}
+#>
+			return false;
+		}
+	}
+<#
+}
+#>
+}
+ 
+<#+
+private List<string> GetTypeParametersUpTo(int value)
+{
+	var typeParameters = new List<string>();
+	for(var j = 1; j <= value; j++)
+	{
+		var name = "T" + j;
+		typeParameters.Add(name);
+	}
+
+	return typeParameters;
+}
+
+private string UnrollTypeParameters(List<string> typeParameters)
+{
+	return String.Join(", ", typeParameters);
+}
+
+private string GetFuncArguments(List<string> typeParameters)
+{
+	return String.Join(", ", (from p in typeParameters select "Func<" + p + ", TResult> do" + p));
+}
+private string GetActionArguments(List<string> typeParameters)
+{
+	return String.Join(", ", (from p in typeParameters select "Action<" + p + "> do" + p));
+}
+#>

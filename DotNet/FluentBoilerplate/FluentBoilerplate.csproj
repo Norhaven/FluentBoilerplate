@@ -56,7 +56,15 @@
   <ItemGroup>
     <Compile Include="PublicContract\ActiveDirectoryGroup.cs" />
     <Compile Include="PublicContract\Attributes\LogAttribute.cs" />
-    <Compile Include="PublicContract\Attributes\Visibility.cs" />
+    <Compile Include="PublicContract\Attributes\IsMatchForAttribute.cs" />
+    <Compile Include="PublicContract\Attributes\IntegerRangeAttribute.cs" />
+    <Compile Include="PublicContract\ITypeCheckExecution.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ITypeCheckExecution.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PublicContract\TypeCheckResult.cs" />
+    <Compile Include="PublicContract\Visibility.cs" />
     <Compile Include="PublicContract\Attributes\MapsToAttribute.cs" />
     <Compile Include="PublicContract\Attributes\NotNullAttribute.cs" />
     <Compile Include="PublicContract\Attributes\StringLengthAttribute.cs" />
@@ -68,6 +76,11 @@
     <Compile Include="PublicContract\Contexts\IContractCondition.cs" />
     <Compile Include="PublicContract\Testing\TranslationVerifier.cs" />
     <Compile Include="Runtime\Contexts\TimingContext.cs" />
+    <Compile Include="Runtime\ConversionBuilder.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConversionBuilder.tt</DependentUpon>
+    </Compile>
     <Compile Include="Runtime\Extensions\IExceptionHandlerExtensions.cs" />
     <Compile Include="Runtime\Providers\Database\AdoNetConnection.cs" />
     <Compile Include="PublicContract\Providers\Database\AdoNetConnectionProvider.cs" />
@@ -100,7 +113,7 @@
     <Compile Include="PublicContract\Traits\IMergeableTrait.cs" />
     <Compile Include="Runtime\Contexts\ContractBundle.cs" />
     <Compile Include="Runtime\Contexts\ContractContextBase.cs" />
-    <Compile Include="Runtime\Contexts\IContextBundle.cs" />
+    <Compile Include="PublicContract\Contexts\IContextBundle.cs" />
     <Compile Include="Runtime\Contexts\IElevatableContext.cs" />
     <Compile Include="Runtime\Contexts\ResultBoilerplateContext.cs" />
     <Compile Include="Runtime\Contexts\ContractContext.cs" />
@@ -131,7 +144,6 @@
     <Compile Include="PublicContract\IValidationResult.cs" />
     <Compile Include="Runtime\Contexts\VoidReturnContractContext.cs" />
     <Compile Include="Runtime\ContractCondition.cs" />
-    <Compile Include="Runtime\ConversionBuilder.cs" />
     <Compile Include="Runtime\CustomExceptionContractCondition.cs" />
     <Compile Include="Runtime\DefaultContractCondition.cs" />
     <Compile Include="Runtime\Providers\Database\DataSourceProvider.cs" />
@@ -233,6 +245,14 @@
     <None Include="linqpad-samples\9.2 - Extensibility - Permissions.linq" />
     <None Include="linqpad-samples\9.3 - Extensibility - Type Access.linq" />
     <None Include="packages.config" />
+    <None Include="PublicContract\ITypeCheckExecution.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ITypeCheckExecution.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\ConversionBuilder.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConversionBuilder.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages\Developer\AssertFailures.resx">
@@ -260,7 +280,9 @@
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

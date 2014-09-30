@@ -1,4 +1,10 @@
-﻿/*
+﻿<#@ template debug="true" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+/*
    Copyright 2014 Chris Hannon
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +23,7 @@
 using System;
 using FluentBoilerplate.Providers;
 
+<# var overloads = 9; #>
 
 namespace FluentBoilerplate.Runtime
 {
@@ -47,47 +54,38 @@ namespace FluentBoilerplate.Runtime
             var then = new Then<TType>(this.instance);
 			return this.IfTypeIs<TType, TResult>(action);
         }
+<#
+		for (var i = 2; i <= overloads; i++)
+		{
+			var typeParameters = GetTypeParametersUpTo(i);
+			var unrolledTypeParameters = UnrollTypeParameters(typeParameters);		
+#>
 
-        public IThen<T1, T2> IfTypeIsAnyOf<T1, T2>()
+        public IThen<<#=unrolledTypeParameters#>> IfTypeIsAnyOf<<#=unrolledTypeParameters#>>()
         {
-            return new Then<T1, T2>(this.instance);
+            return new Then<<#=unrolledTypeParameters#>>(this.instance);
         }
-
-        public IThen<T1, T2, T3> IfTypeIsAnyOf<T1, T2, T3>()
-        {
-            return new Then<T1, T2, T3>(this.instance);
-        }
-
-        public IThen<T1, T2, T3, T4> IfTypeIsAnyOf<T1, T2, T3, T4>()
-        {
-            return new Then<T1, T2, T3, T4>(this.instance);
-        }
-
-        public IThen<T1, T2, T3, T4, T5> IfTypeIsAnyOf<T1, T2, T3, T4, T5>()
-        {
-            return new Then<T1, T2, T3, T4, T5>(this.instance);
-        }
-
-        public IThen<T1, T2, T3, T4, T5, T6> IfTypeIsAnyOf<T1, T2, T3, T4, T5, T6>()
-        {
-            return new Then<T1, T2, T3, T4, T5, T6>(this.instance);
-        }
-
-        public IThen<T1, T2, T3, T4, T5, T6, T7> IfTypeIsAnyOf<T1, T2, T3, T4, T5, T6, T7>()
-        {
-            return new Then<T1, T2, T3, T4, T5, T6, T7>(this.instance);
-        }
-
-        public IThen<T1, T2, T3, T4, T5, T6, T7, T8> IfTypeIsAnyOf<T1, T2, T3, T4, T5, T6, T7, T8>()
-        {
-            return new Then<T1, T2, T3, T4, T5, T6, T7, T8>(this.instance);
-        }
-
-        public IThen<T1, T2, T3, T4, T5, T6, T7, T8, T9> IfTypeIsAnyOf<T1, T2, T3, T4, T5, T6, T7, T8, T9>()
-        {
-            return new Then<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this.instance);
-        }
-		
+<#
+		}
+#>		
 	}
 }
 
+<#+
+private List<string> GetTypeParametersUpTo(int value)
+{
+	var typeParameters = new List<string>();
+	for(var j = 1; j <= value; j++)
+	{
+		var name = "T" + j;
+		typeParameters.Add(name);
+	}
+
+	return typeParameters;
+}
+
+private string UnrollTypeParameters(List<string> typeParameters)
+{
+	return String.Join(", ", typeParameters);
+}
+#>

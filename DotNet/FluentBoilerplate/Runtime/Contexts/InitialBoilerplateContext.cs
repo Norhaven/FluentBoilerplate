@@ -75,7 +75,7 @@ namespace FluentBoilerplate.Runtime.Contexts
                     var downgradedContext = DowngradeCurrentContext();
 
                     TResult result = default(TResult);
-                    var timings = SafeTimedCall(() => action(downgradedContext));
+                    var timings = SafeTimedCall(() => result = action(downgradedContext));
 
                     return new ResultBoilerplateContext<TResult>(this.bundle,
                                                                  this.Identity,

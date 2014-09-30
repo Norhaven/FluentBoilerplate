@@ -34,8 +34,16 @@ namespace FluentBoilerplate
         /// </summary>
         RequireNotNull = 1,
         /// <summary>
-        /// The string length must conform to the specified range
+        /// The string length must be within the specified range
         /// </summary>
-        StringLength = 2
+        StringLength = 2,
+        /// <summary>
+        /// The integer value must be within the specified range
+        /// </summary>
+        IntegerRange = 3,
+        /// <summary>
+        /// The string value must match the specified regular expression
+        /// </summary>
+        RegularExpressionMatch = 4
     }
 }

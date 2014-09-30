@@ -15,18 +15,21 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace FluentBoilerplate
 {
-    /// <summary>
-    /// Represents a type conversion
-    /// </summary>
-    public interface IConversionBuilder:ITypeCheckExecution
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
+    public sealed class IsMatchForAttribute:Attribute, IValidationAttribute
     {
-        /// <summary>
-        /// Converts the instance to the requested type
-        /// </summary>
-        /// <typeparam name="TType">The target type</typeparam>
-        /// <returns>An instance of <typeparamref name="TType"/></returns>
-        TType As<TType>();        
+        public string Pattern { get; private set; }
+
+        public IsMatchForAttribute(string pattern)
+        {
+            this.Pattern = pattern;
+        }
     }
 }

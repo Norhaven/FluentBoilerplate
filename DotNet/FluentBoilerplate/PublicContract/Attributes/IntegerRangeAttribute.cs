@@ -15,18 +15,18 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace FluentBoilerplate
 {
-    /// <summary>
-    /// Represents a type conversion
-    /// </summary>
-    public interface IConversionBuilder:ITypeCheckExecution
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
+    public sealed class IntegerRangeAttribute : Attribute, IValidationAttribute
     {
-        /// <summary>
-        /// Converts the instance to the requested type
-        /// </summary>
-        /// <typeparam name="TType">The target type</typeparam>
-        /// <returns>An instance of <typeparamref name="TType"/></returns>
-        TType As<TType>();        
+        public long Minimum { get; set; }
+        public long Maximum { get; set; }
+        public bool HasMaximum { get { return this.Maximum >= this.Minimum; } }        
     }
 }

@@ -116,6 +116,20 @@ namespace FluentBoilerplate.Runtime.Extensions
 
             return false;
         }     
+
+        public static ulong GetMaxValue(this Type type)
+        {
+            if (type == typeof(byte)) return byte.MaxValue;
+            if (type == typeof(sbyte)) return (ulong)sbyte.MaxValue;
+            if (type == typeof(short)) return (ulong)short.MaxValue;
+            if (type == typeof(ushort)) return ushort.MaxValue;
+            if (type == typeof(int)) return int.MaxValue;
+            if (type == typeof(uint)) return uint.MaxValue;
+            if (type == typeof(long)) return long.MaxValue;
+            if (type == typeof(ulong)) return ulong.MaxValue;
+
+            return 0;
+        }
         
     }
 }

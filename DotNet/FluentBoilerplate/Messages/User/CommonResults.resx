@@ -117,9 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CannotValidateNullProperty" xml:space="preserve">
+    <value>Property '{0}.{1}' must not be null for validation to succeed</value>
+    <comment>Provides information about a validation failure</comment>
+  </data>
+  <data name="IntegerPropertyIsTooHigh" xml:space="preserve">
+    <value>Property '{0}.{1}' exceeds maximum value of '{2}'</value>
+    <comment>Provides information about an integer validation failure</comment>
+  </data>
+  <data name="IntegerPropertyIsTooLow" xml:space="preserve">
+    <value>Property '{0}.{1}' does not meet or exceed minimum value of '{2}'</value>
+    <comment>Provides information about an integer validation failure</comment>
+  </data>
   <data name="PropertyCannotBeNull" xml:space="preserve">
     <value>Property '{0}.{1}' must not be null</value>
     <comment>Provides information about a specific validation failure</comment>
+  </data>
+  <data name="RegularExpressionWasNotMatch" xml:space="preserve">
+    <value>Property '{0}.{1}' did not match the validation regular expression</value>
+    <comment>Provides information about a regular expression validation failure</comment>
   </data>
   <data name="StringPropertyIsTooLong" xml:space="preserve">
     <value>Property '{0}.{1}' exceeds length of '{2}'</value>

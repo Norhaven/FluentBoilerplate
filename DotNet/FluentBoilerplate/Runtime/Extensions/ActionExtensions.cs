@@ -65,5 +65,10 @@ namespace FluentBoilerplate.Runtime.Extensions
                     action((T)value);
                 };
         }
+
+        public static Action<T1,T3> Apply2nd<T1,T2,T3>(this Action<T1,T2, T3> action, T2 second)
+        {
+            return (first, third) => action(first, second, third);
+        }
     }
 }

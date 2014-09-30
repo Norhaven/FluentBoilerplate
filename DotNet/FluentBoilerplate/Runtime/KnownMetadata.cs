@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Providers.ErrorHandling;
 using FluentBoilerplate.Runtime.Providers.Logging;
 using FluentBoilerplate.Runtime.Providers.Validation;
+using System.Text.RegularExpressions;
 
 namespace FluentBoilerplate.Runtime
 {
@@ -51,6 +52,10 @@ namespace FluentBoilerplate.Runtime
 
             public static readonly MethodInfo IExceptionAwareAction_Do = typeof(IExceptionAwareAction).GetMethod("Do");
             public static readonly MethodInfo IExceptionAwareAction_HandleException = typeof(IExceptionAwareAction).GetMethod("HandleException");
+
+            public static readonly MethodInfo Object_ToString = typeof(object).GetMethod("ToString");
+
+            public static readonly MethodInfo Regex_IsMatch = typeof(Regex).GetMethod("IsMatch", new[] { typeof(string), typeof(string) });
         }        
 
         public static class Constructors

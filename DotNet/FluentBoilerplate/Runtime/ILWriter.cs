@@ -291,6 +291,8 @@ namespace FluentBoilerplate.Runtime
         private void Emit(OpCode opcode, Label label) { StackEval(opcode); il.Emit(opcode, label); }
         private void Emit(OpCode opcode, ConstructorInfo constructor) { StackEval(opcode); il.Emit(opcode, constructor); }
         private void Emit(OpCode opcode, int value) { StackEval(opcode); il.Emit(opcode, value); }
+        private void Emit(OpCode opcode, long value) { StackEval(opcode); il.Emit(opcode, value); }
+        private void Emit(OpCode opcode, ulong value) { StackEval(opcode); il.Emit(opcode, value); }
         private void Emit(OpCode opcode, string value) { StackEval(opcode); il.Emit(opcode, value); }
         private void Emit(OpCode opcode, Type type) { StackEval(opcode); il.Emit(opcode, type); }
         private void EmitCall(OpCode opcode, MethodInfo method, Type[] optionalParameterTypes)
@@ -486,6 +488,16 @@ namespace FluentBoilerplate.Runtime
         internal void LoadInt32(int value)
         {
             Emit(OpCodes.Ldc_I4, value);
+        }
+
+        internal void LoadUInt64(ulong value)
+        {
+            Emit(OpCodes.Ldc_I8, value);
+        }
+
+        internal void LoadInt64(long value)
+        {
+            Emit(OpCodes.Ldc_I8, value);
         }
 
         internal void LoadString(string message)

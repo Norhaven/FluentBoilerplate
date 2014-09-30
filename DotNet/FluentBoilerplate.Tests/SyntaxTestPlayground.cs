@@ -28,12 +28,14 @@ using FluentBoilerplate.Providers;
 using FluentBoilerplate.Providers.Database;
 using System.Data;
 using FluentBoilerplate.Testing;
+using System.Reflection;
 
 namespace FluentBoilerplate.Tests
 {
     [TestFixture]
     public class SyntaxTestPlayground
     {        
+        
         class From
         {
             [MapsTo(typeof(To), "Text")]
@@ -47,9 +49,20 @@ namespace FluentBoilerplate.Tests
             public string Text { get; set; }
         }
         [Test]
+        //[Ignore]
         public void Test()
         {
             var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
+            object instance = "Hello";
+
+            boilerplate.Use(instance).IfTypeIs<string>(text => { });
+            boilerplate.Use(instance).IfTypeIsAnyOf<int, string, long, object>().DoFirstMatched(
+                num => { }, 
+                text => { }, 
+                num2 => { }, 
+                obj => { });
+           // NewMethod(boilerplate, instance);
+
 
             var timings = boilerplate
                 .BeginContract()
@@ -115,8 +128,21 @@ namespace FluentBoilerplate.Tests
             //stopwatch.Stop();
             //Debug.WriteLine(stopwatch.ElapsedMilliseconds);
         }
+
+        //private static TResult NewMethod<TResult>(IBoilerplateContext boilerplate, object instance)
+        //{
+        //    //var result = boilerplate.Use(instance).IfTypeIs<TResult, TResult>(text => Console.WriteLine(text));
+
+        //    //if (result)
+        //    //    return result;
+        //    //boilerplate.Use(instance).IfTypeIsAnyOf<string, int>().DoFirstMatched(t1, t2);
+        //    //boilerplate.Use(instance).IfTypeIsAnyOf<string, int>().GetFirstMatched<long>(t1, t2);
+        //}
+        private static void t1(string x) { }
+        private static void t2(int i) { }
         private TType CreateType<TType>()
         {
+            
             return Activator.CreateInstance<TType>();
         }
         private static void Go()

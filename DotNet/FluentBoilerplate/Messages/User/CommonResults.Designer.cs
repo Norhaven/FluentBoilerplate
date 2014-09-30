@@ -61,11 +61,47 @@ namespace FluentBoilerplate.Messages.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; must not be null for validation to succeed.
+        /// </summary>
+        public static string CannotValidateNullProperty {
+            get {
+                return ResourceManager.GetString("CannotValidateNullProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; exceeds maximum value of &apos;{2}&apos;.
+        /// </summary>
+        public static string IntegerPropertyIsTooHigh {
+            get {
+                return ResourceManager.GetString("IntegerPropertyIsTooHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; does not meet or exceed minimum value of &apos;{2}&apos;.
+        /// </summary>
+        public static string IntegerPropertyIsTooLow {
+            get {
+                return ResourceManager.GetString("IntegerPropertyIsTooLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; must not be null.
         /// </summary>
         public static string PropertyCannotBeNull {
             get {
                 return ResourceManager.GetString("PropertyCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; did not match the validation regular expression.
+        /// </summary>
+        public static string RegularExpressionWasNotMatch {
+            get {
+                return ResourceManager.GetString("RegularExpressionWasNotMatch", resourceCulture);
             }
         }
         

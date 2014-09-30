@@ -1,6 +1,7 @@
 <Query Kind="Program">
   <NuGetReference>FluentBoilerplate</NuGetReference>
   <Namespace>FluentBoilerplate</Namespace>
+  <Namespace>FluentBoilerplate.Testing</Namespace>
 </Query>
 
 public class FromType
