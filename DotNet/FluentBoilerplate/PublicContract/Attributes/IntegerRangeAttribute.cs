@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 namespace FluentBoilerplate
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
-    public sealed class IntegerRangeAttribute : Attribute, IValidationAttribute
+    internal sealed class IntegerRangeAttribute : Attribute, IValidationAttribute
     {
         public long Minimum { get; set; }
         public long Maximum { get; set; }

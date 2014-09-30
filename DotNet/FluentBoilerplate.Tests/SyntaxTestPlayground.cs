@@ -34,8 +34,14 @@ namespace FluentBoilerplate.Tests
 {
     [TestFixture]
     public class SyntaxTestPlayground
-    {        
-        
+    {
+        class Number
+        {
+            //[IntegerRange(Minimum=1, Maximum=10)]
+            public int Numberb { get; set; }
+            [IsMatchFor(@"\d+")]
+            public string Text { get; set; }
+        }
         class From
         {
             [MapsTo(typeof(To), "Text")]
@@ -54,8 +60,7 @@ namespace FluentBoilerplate.Tests
         {
             var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
             object instance = "Hello";
-
-            boilerplate.Use(instance).IfTypeIs<string>(text => { });
+            boilerplate.BeginContract().RequireValidInstanceOf(new Number { Text = "b" }).EndContract().Do(x => { });
             boilerplate.Use(instance).IfTypeIsAnyOf<int, string, long, object>().DoFirstMatched(
                 num => { }, 
                 text => { }, 

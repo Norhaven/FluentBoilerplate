@@ -139,7 +139,7 @@ namespace FluentBoilerplate
 			this.instance = instance;
 		}
 
-		protected TypeCheckResult IfTypeIs<TType>(Action<TType> action)
+		protected internal TypeCheckResult IfTypeIs<TType>(Action<TType> action)
 		{
 		   var isType = this.instance is TType;
        
@@ -151,7 +151,7 @@ namespace FluentBoilerplate
 		   return new TypeCheckResult(isType);
 	   }
 
-	   protected TypeCheckResult<TResult> IfTypeIs<TType, TResult>(Func<TType, TResult> action)
+	   protected internal TypeCheckResult<TResult> IfTypeIs<TType, TResult>(Func<TType, TResult> action)
 	   {
 		   var isType = this.instance is TType;
 		   var result = default(TResult);

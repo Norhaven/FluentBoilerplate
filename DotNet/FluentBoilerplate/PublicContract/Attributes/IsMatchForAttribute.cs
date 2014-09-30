@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 namespace FluentBoilerplate
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
-    public sealed class IsMatchForAttribute:Attribute, IValidationAttribute
+    internal sealed class IsMatchForAttribute:Attribute, IValidationAttribute
     {
         public string Pattern { get; private set; }
 
