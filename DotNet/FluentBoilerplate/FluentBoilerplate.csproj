@@ -55,9 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PublicContract\ActiveDirectoryGroup.cs" />
+    <Compile Include="PublicContract\Attributes\CustomValidationAttribute.cs" />
     <Compile Include="PublicContract\Attributes\LogAttribute.cs" />
     <Compile Include="PublicContract\Attributes\IsMatchForAttribute.cs" />
     <Compile Include="PublicContract\Attributes\IntegerRangeAttribute.cs" />
+    <Compile Include="PublicContract\Exceptions\IncorrectValidationAttributeException.cs" />
+    <Compile Include="PublicContract\ICustomValidator.cs" />
     <Compile Include="PublicContract\ITypeCheckExecution.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,6 +85,7 @@
       <DependentUpon>ConversionBuilder.tt</DependentUpon>
     </Compile>
     <Compile Include="Runtime\Extensions\IExceptionHandlerExtensions.cs" />
+    <Compile Include="Runtime\Extensions\NullableExtensions.cs" />
     <Compile Include="Runtime\Providers\Database\AdoNetConnection.cs" />
     <Compile Include="PublicContract\Providers\Database\AdoNetConnectionProvider.cs" />
     <Compile Include="PublicContract\Providers\Database\DataSource.cs" />

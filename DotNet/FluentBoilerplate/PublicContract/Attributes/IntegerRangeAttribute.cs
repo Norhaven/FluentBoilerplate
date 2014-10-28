@@ -22,11 +22,36 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Indicates that the integer must have a value within the specified range.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
-    internal sealed class IntegerRangeAttribute : Attribute, IValidationAttribute
+    public sealed class IntegerRangeAttribute : Attribute, IValidationAttribute
     {
-        public long Minimum { get; set; }
-        public long Maximum { get; set; }
-        public bool HasMaximum { get { return this.Maximum >= this.Minimum; } }        
+        private long? minimum;
+        private long? maximum;
+
+        /// <summary>
+        /// The inclusive minimum value for the range. Defaults to zero.
+        /// </summary>
+        public long Minimum { get { return this.minimum.GetValueOrDefault(); } set { this.minimum = value; } }
+        /// <summary>
+        /// The inclusive maximum value for the range. Defaults to zero.
+        /// </summary>
+        public long Maximum { get { return this.maximum.GetValueOrDefault(); } set { this.maximum = value; } }
+        /// <summary>
+        /// Whether this instance has a minimum value specified.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has a minimum value specified, otherwise, <c>false</c>.
+        /// </value>
+        public bool HasMinimum { get { return this.minimum != null; } }
+        /// <summary>
+        /// Whether this instance has a maximum value specified.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has a maximum value specified, otherwise, <c>false</c>.
+        /// </value>
+        public bool HasMaximum { get { return this.maximum != null; } }
     }
 }

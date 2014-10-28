@@ -44,6 +44,7 @@ namespace FluentBoilerplate
         /// <summary>
         /// The string value must match the specified regular expression
         /// </summary>
-        RegularExpressionMatch = 4
+        RegularExpressionMatch = 4,
+        Custom
     }
 }

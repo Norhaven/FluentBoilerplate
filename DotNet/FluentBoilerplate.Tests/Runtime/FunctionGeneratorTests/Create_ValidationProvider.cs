@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
+#define PEVERIFY
 using System;
 using NUnit.Framework;
 using System.Diagnostics;
@@ -27,9 +27,19 @@ namespace FluentBoilerplate.Tests.Runtime.FunctionGeneratorTests
     {
         public class BasicValidatedTest
         {
-            public int IntegerValue { get; set; }
+            [IsMatchFor(@"\d+")]
+            public string RegexText { get; set; }
+
+            [IntegerRange(Minimum=2, Maximum=4)]
+            public long Int64Value { get; set; }
+            [IntegerRange(Minimum = 2)]
+            public long Int64ValueWithOnlyMinimum { get; set; }
+            [IntegerRange(Maximum = 2)]
+            public long Int64ValueWithOnlyMaximum { get; set; }
+
             [StringLength(Minimum=2, Maximum=4)]
             public string StringValue { get; set; }
+
             [NotNull]
             public object ObjectValue { get; set; }
         }

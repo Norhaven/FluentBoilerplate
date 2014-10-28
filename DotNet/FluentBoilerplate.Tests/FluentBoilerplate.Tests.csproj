@@ -154,6 +154,9 @@
     </Compile>
     <Compile Include="Runtime\Providers\PermissionsProviderTests\PermissionsCanBeMergedThroughProviderSteps.cs" />
     <Compile Include="Runtime\Providers\Translation\TranslationProviderTests\Translate.cs" />
+    <Compile Include="Runtime\Providers\Validation\ValidationProviderTests\Validate_Custom.cs" />
+    <Compile Include="Runtime\Providers\Validation\ValidationProviderTests\Validate_IsMatchFor.cs" />
+    <Compile Include="Runtime\Providers\Validation\ValidationProviderTests\Validate_IntegerRange.cs" />
     <Compile Include="Runtime\Providers\Validation\ValidationProviderTests\Validate_StringLength.cs" />
     <Compile Include="Runtime\TryCatchBlockTests\Try.cs" />
     <Compile Include="SyntaxTestPlayground.cs" />

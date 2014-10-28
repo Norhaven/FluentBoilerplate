@@ -117,9 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CustomValidatorMustBeOfType" xml:space="preserve">
+    <value>Property '{0}.{1}' specifies a custom validator that is not convertible to  FluentBoilerplate.ICustomValidator&lt;{2}&gt;</value>
+    <comment>Enforces correct custom validation attribute usage</comment>
+  </data>
   <data name="InsufficientAccountRights" xml:space="preserve">
     <value>The provided account does not have the necessary permissions</value>
     <comment>Enforces rights-based authentication</comment>
+  </data>
+  <data name="IntegerRangeValidationHasMinGreaterThanMax" xml:space="preserve">
+    <value>Property '{0}.{1}' has an IntegerRangeAttribute with the minimum value greater than the maximum value</value>
+    <comment>Enforces correct validation attribute usage</comment>
   </data>
   <data name="ParameterCannotBeEmptyOrWhitespace" xml:space="preserve">
     <value>The parameter '{0}' must not be empty or only contain whitespace</value>

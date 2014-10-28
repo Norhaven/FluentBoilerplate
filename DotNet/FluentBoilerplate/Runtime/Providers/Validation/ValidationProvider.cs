@@ -102,10 +102,44 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
                         WriteIntegerRange(writer, property, (IntegerRangeAttribute)attribute);
                     else if (attribute.CanBe<IsMatchForAttribute>())
                         WriteIsMatch(writer, property, (IsMatchForAttribute)attribute);
+                    else if (attribute.CanBe<CustomValidationAttribute>())
+                        WriteCustomValidation(writer, property, (CustomValidationAttribute)attribute);
                     else
                         Debug.Fail("Encountered unhandled validation attribute");
                 }
             }
+        }
+
+        private void WriteCustomValidation(ILWriter writer, PropertyInfo property, CustomValidationAttribute customValidationAttribute)
+        {
+            var validationKind = ValidationKind.Custom;
+
+            var validatorType = typeof(ICustomValidator<>).MakeGenericType(property.PropertyType);
+
+            if (!customValidationAttribute.ValidatorType.CanBe(validatorType))
+            {
+                var message = CommonErrors.CustomValidatorMustBeOfType.WithValues(property.ReflectedType.Name, property.Name, property.PropertyType.Name);
+                throw new IncorrectValidationAttributeException(typeof(CustomValidationAttribute), message);
+            }
+
+            var localValidator = writer.DeclareLocal(validatorType);
+
+            writer.New(customValidationAttribute.ValidatorType);
+            writer.SetLocal(localValidator);
+
+            var validate = KnownMetadata.Methods.ICustomValidator_OfType(property.PropertyType);
+            
+            writer.LoadVariable(localValidator);
+            writer.LoadFirstParameter();
+            writer.GetPropertyValue(property);
+            writer.InstanceMethodCall(validate);
+
+            var end = writer.IfFalseThen();
+
+            WriteFailureResult(writer, validationKind, CommonResults.CustomValidationDidNotSucceed.WithValues(property.ReflectedType.Name, property.Name));
+            writer.Return();
+
+            writer.MarkLabel(end);
         }
 
         private void WriteIsMatch(ILWriter writer, PropertyInfo property, IsMatchForAttribute isMatchAttribute)
@@ -113,7 +147,13 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
             var validationKind = ValidationKind.RegularExpressionMatch;
             var local = writer.DeclareLocal<string>();
 
-            if (property.PropertyType != typeof(string))
+            if (property.PropertyType == typeof(string))
+            {
+                writer.LoadFirstParameter();
+                writer.GetPropertyValue(property);
+                writer.SetLocal(local);
+            }
+            else
             {
                 var temp = writer.DeclareLocal(property.PropertyType);
                 writer.LoadFirstParameter();
@@ -134,7 +174,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
             }
 
             writer.LoadVariable(local);
-            writer.LoadString(isMatchAttribute.Pattern);
+            writer.LoadString(isMatchAttribute.RegularExpression);
             writer.StaticMethodCall(KnownMetadata.Methods.Regex_IsMatch);
             var end = writer.IfFalseThen();
 
@@ -168,7 +208,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
             
             if (signedSet.Contains(property.PropertyType))
                 local = writer.DeclareLocal<long>();
-            else if (signedSet.Contains(property.PropertyType))
+            else if (unsignedSet.Contains(property.PropertyType))
                 local = writer.DeclareLocal<ulong>();
             else
             {
@@ -179,12 +219,35 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
             
             writer.LoadFirstParameter();
             writer.GetPropertyValue(property);
+            writer.Cast(property.PropertyType, local.LocalType);
             writer.SetLocal(local);
 
-            if (integerRangeAttribute.HasMaximum)
+            if (integerRangeAttribute.HasMinimum && integerRangeAttribute.HasMaximum)
             {
-                writer.LoadInt64(integerRangeAttribute.Maximum);
+                if (integerRangeAttribute.Minimum > integerRangeAttribute.Maximum)
+                {
+                    var message = CommonErrors.IntegerRangeValidationHasMinGreaterThanMax.WithValues(property.ReflectedType.Name, property.Name);
+                    throw new IncorrectValidationAttributeException(typeof(IntegerRangeAttribute), message);
+                }
+            }
+
+            if (integerRangeAttribute.HasMinimum)
+            {
                 writer.LoadVariable(local);
+                writer.LoadInt64(integerRangeAttribute.Minimum);
+
+                var isGreaterThanOrEqual = writer.IfLessThan();
+
+                WriteFailureResult(writer, validationKind, CommonResults.IntegerPropertyIsTooLow.WithValues(property.ReflectedType.Name, property.Name, integerRangeAttribute.Minimum));
+                writer.Return();
+
+                writer.MarkLabel(isGreaterThanOrEqual);
+            }
+
+            if (integerRangeAttribute.HasMaximum)
+            {                
+                writer.LoadVariable(local);
+                writer.LoadInt64(integerRangeAttribute.Maximum);                
 
                 var isLessThanOrEqual = writer.IfGreaterThan();
 
@@ -192,17 +255,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
                 writer.Return();
 
                 writer.MarkLabel(isLessThanOrEqual);
-            }
-
-            writer.LoadInt64(integerRangeAttribute.Minimum);
-            writer.LoadVariable(local);
-
-            var isGreaterThanOrEqual = writer.IfLessThan();
-
-            WriteFailureResult(writer, validationKind, CommonResults.IntegerPropertyIsTooLow.WithValues(property.ReflectedType.Name, property.Name, integerRangeAttribute.Minimum));
-            writer.Return();
-
-            writer.MarkLabel(isGreaterThanOrEqual);
+            }           
         }
       
         private void WriteStringLength(ILWriter writer, PropertyInfo property, StringLengthAttribute attribute)

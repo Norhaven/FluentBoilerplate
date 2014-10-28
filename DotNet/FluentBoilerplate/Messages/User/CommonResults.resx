@@ -121,6 +121,10 @@
     <value>Property '{0}.{1}' must not be null for validation to succeed</value>
     <comment>Provides information about a validation failure</comment>
   </data>
+  <data name="CustomValidationDidNotSucceed" xml:space="preserve">
+    <value>The custom validation attempt for property '{0}.{1}' was not successful</value>
+    <comment>Provides information regarding a custom validation result</comment>
+  </data>
   <data name="IntegerPropertyIsTooHigh" xml:space="preserve">
     <value>Property '{0}.{1}' exceeds maximum value of '{2}'</value>
     <comment>Provides information about an integer validation failure</comment>

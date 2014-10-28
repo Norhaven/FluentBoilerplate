@@ -61,11 +61,29 @@ namespace FluentBoilerplate.Messages.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; specifies a custom validator that is not convertible to  FluentBoilerplate.ICustomValidator&lt;{2}&gt;.
+        /// </summary>
+        public static string CustomValidatorMustBeOfType {
+            get {
+                return ResourceManager.GetString("CustomValidatorMustBeOfType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided account does not have the necessary permissions.
         /// </summary>
         public static string InsufficientAccountRights {
             get {
                 return ResourceManager.GetString("InsufficientAccountRights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; has an IntegerRangeAttribute with the minimum value greater than the maximum value.
+        /// </summary>
+        public static string IntegerRangeValidationHasMinGreaterThanMax {
+            get {
+                return ResourceManager.GetString("IntegerRangeValidationHasMinGreaterThanMax", resourceCulture);
             }
         }
         

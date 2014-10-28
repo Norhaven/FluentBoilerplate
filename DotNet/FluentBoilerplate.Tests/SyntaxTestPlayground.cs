@@ -37,7 +37,7 @@ namespace FluentBoilerplate.Tests
     {
         class Number
         {
-            //[IntegerRange(Minimum=1, Maximum=10)]
+            [IntegerRange(Minimum=1, Maximum=10)]
             public int Numberb { get; set; }
             [IsMatchFor(@"\d+")]
             public string Text { get; set; }

@@ -70,6 +70,15 @@ namespace FluentBoilerplate.Messages.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The custom validation attempt for property &apos;{0}.{1}&apos; was not successful.
+        /// </summary>
+        public static string CustomValidationDidNotSucceed {
+            get {
+                return ResourceManager.GetString("CustomValidationDidNotSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property &apos;{0}.{1}&apos; exceeds maximum value of &apos;{2}&apos;.
         /// </summary>
         public static string IntegerPropertyIsTooHigh {

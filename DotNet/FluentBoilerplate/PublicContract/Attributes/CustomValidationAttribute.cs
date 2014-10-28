@@ -19,30 +19,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentBoilerplate.Runtime.Extensions;
 
 namespace FluentBoilerplate
 {
     /// <summary>
-    /// Indicates that the string must conform to the specified regular expression.
+    /// Indicates that the property has some custom validation attached to it.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
-    public sealed class IsMatchForAttribute:Attribute, IValidationAttribute
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=true)]
+    public sealed class CustomValidationAttribute:Attribute, IValidationAttribute
     {
         /// <summary>
-        /// Gets the regular expression.
+        /// Gets the type of the validator.
         /// </summary>
         /// <value>
-        /// The regular expression.
+        /// The type of the validator.
         /// </value>
-        public string RegularExpression { get; private set; }
+        public Type ValidatorType { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="IsMatchForAttribute"/> class.
+        /// Creates a new instance of the <see cref="CustomValidationAttribute"/> class.
         /// </summary>
-        /// <param name="regularExpression">The regular expression.</param>
-        public IsMatchForAttribute(string regularExpression)
+        /// <param name="validatorType">Type of the validator. This must be assignable to <see cref="ICustomValidator"/> of the property type.</param>
+        public CustomValidationAttribute(Type validatorType)
         {
-            this.RegularExpression = regularExpression ?? String.Empty;
+            this.ValidatorType = validatorType;
         }
     }
 }

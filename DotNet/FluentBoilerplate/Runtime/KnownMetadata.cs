@@ -56,6 +56,8 @@ namespace FluentBoilerplate.Runtime
             public static readonly MethodInfo Object_ToString = typeof(object).GetMethod("ToString");
 
             public static readonly MethodInfo Regex_IsMatch = typeof(Regex).GetMethod("IsMatch", new[] { typeof(string), typeof(string) });
+
+            public static MethodInfo ICustomValidator_OfType(Type type) { return typeof(ICustomValidator<>).MakeGenericType(type).GetMethod("Validate", new[] { type }); }
         }        
 
         public static class Constructors
@@ -63,18 +65,20 @@ namespace FluentBoilerplate.Runtime
             public static readonly ConstructorInfo ValidationResult_New = typeof(ValidationResult).GetConstructor(new[] { typeof(ValidationKind), typeof(string), typeof(bool), typeof(bool) });
         }
     }
+
     public static class KnownMetadata<T>
     {
         public static class Constructors
         {
             public static readonly ConstructorInfo IList_New = typeof(IList<T>).GetConstructor(Type.EmptyTypes);
         }
+
         public static class Methods
         {
             public static readonly MethodInfo IList_Add = typeof(IList<T>).GetMethod("Add", new[] { typeof(T) });
             public static readonly MethodInfo Queue_Enqueue = typeof(Queue<T>).GetMethod("Enqueue", new[] { typeof(T) });
             public static readonly MethodInfo Action_Invoke = typeof(Action<T>).GetMethod("Invoke", new[] { typeof(T) });
-            public static readonly MethodInfo Func_Invoke = typeof(Func<T>).GetMethod("Invoke", Type.EmptyTypes);
+            public static readonly MethodInfo Func_Invoke = typeof(Func<T>).GetMethod("Invoke", Type.EmptyTypes);            
         }
     }
 }

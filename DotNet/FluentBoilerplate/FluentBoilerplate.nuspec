@@ -15,7 +15,7 @@
       This package provides an easy and fluent way to write boilerplate code.
     </summary>
     <language>en-US</language>
-    <projectUrl>https://nuget.org/packages/FluentBoilerplate</projectUrl>
+    <projectUrl>https://github.com/Norhaven/FluentBoilerplate</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>

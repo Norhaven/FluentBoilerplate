@@ -171,29 +171,29 @@ namespace FluentBoilerplate.Runtime
         public void New<T>(ConstructorInfo constructor = null, Type[] parameters = null)
         {
             var type = typeof(T);
+            New(type, constructor, parameters);
+        }
+
+        public void New(Type type, ConstructorInfo constructor = null, Type[] parameters = null)
+        {
             var constructorParameters = parameters ?? Type.EmptyTypes;
             var actualConstructor = constructor ?? type.GetConstructor(constructorParameters);
 
             Debug.Assert(actualConstructor != null, AssertFailures.InstanceShouldNotBeNull.WithValues("constructor"));
 
             Emit(OpCodes.Newobj, actualConstructor);
-        }
 
+        }
+               
         public void Cast(Type sourceType, Type targetType)
         {
             if (sourceType.IsClass && targetType.IsClass)
                 Emit(OpCodes.Castclass, targetType);
             else if (sourceType.IsValueType && targetType.IsValueType)
             {
-                if (sourceType == typeof(int))
-                {
-                    if (targetType == typeof(long))
-                        Emit(OpCodes.Conv_I8);                   
-                    else
-                        throw new Exception();
-                }
-                else
-                    throw new Exception();
+                //TODO: Clean up and expand conversions
+                if (targetType == typeof(long) || targetType == typeof(ulong))
+                    Emit(OpCodes.Conv_I8);
             }
             else
                 throw new Exception();
@@ -529,7 +529,7 @@ namespace FluentBoilerplate.Runtime
         {
             var label = this.il.DefineLabel();
 
-            Emit(OpCodes.Brtrue, label);
+            Emit(OpCodes.Brfalse, label);
 
             return label;
         }
@@ -538,7 +538,7 @@ namespace FluentBoilerplate.Runtime
         {
             var label = this.il.DefineLabel();
 
-            Emit(OpCodes.Brfalse, label);
+            Emit(OpCodes.Brtrue, label);
 
             return label;
         }
