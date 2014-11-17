@@ -29,6 +29,8 @@ using FluentBoilerplate.Providers.Database;
 using System.Data;
 using FluentBoilerplate.Testing;
 using System.Reflection;
+//using FluentBoilerplate.Runtime.IL;
+using FluentBoilerplate.Runtime;
 
 namespace FluentBoilerplate.Tests
 {
@@ -58,6 +60,25 @@ namespace FluentBoilerplate.Tests
         [Ignore]
         public void Test()
         {
+            //IMethod method;
+            //ILocalVariable first = method.DefineLocalVariable<int>();
+            //ILocalVariable second = method.DefineLocalVariable(typeof(int));
+
+            //var writtenMethod = 
+            //    method.Body
+            //        .If(first.Equals(second)).Then
+            //            .AssignStackValue.To(first)
+            //            .Do(first.Call(KnownMetadata.Methods.Object_ToString, second))
+            //            .AssignStackValue.To(second)                        
+            //        .End
+            //        .Else
+            //            .If(method.Parameter(1).Equals(first)).Then
+            //            .End
+            //            .NoElse
+            //        .End
+            //    .End;
+                
+                
             var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
             object instance = "Hello";
             boilerplate.BeginContract().RequireValidInstanceOf(new Number { Text = "b" }).EndContract().Do(x => { });

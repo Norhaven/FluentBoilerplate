@@ -129,7 +129,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
             var validate = KnownMetadata.Methods.ICustomValidator_OfType(property.PropertyType);
             
-            writer.LoadVariable(localValidator);
+            writer.LoadLocal(localValidator);
             writer.LoadFirstParameter();
             writer.GetPropertyValue(property);
             writer.InstanceMethodCall(validate);
@@ -160,7 +160,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
                 writer.GetPropertyValue(property);
                 writer.SetLocal(temp);
 
-                writer.LoadVariable(temp);
+                writer.LoadLocal(temp);
                 var notNull = writer.IsNotNull();
 
                 WriteFailureResult(writer, validationKind, CommonResults.CannotValidateNullProperty.WithValues(property.ReflectedType.Name, property.Name));
@@ -168,12 +168,12 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
                 writer.MarkLabel(notNull);
 
-                writer.LoadVariable(temp);
+                writer.LoadLocal(temp);
                 writer.InstanceMethodCall(KnownMetadata.Methods.Object_ToString);
                 writer.SetLocal(local);
             }
 
-            writer.LoadVariable(local);
+            writer.LoadLocal(local);
             writer.LoadString(isMatchAttribute.RegularExpression);
             writer.StaticMethodCall(KnownMetadata.Methods.Regex_IsMatch);
             var end = writer.IfFalseThen();
@@ -233,7 +233,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
             if (integerRangeAttribute.HasMinimum)
             {
-                writer.LoadVariable(local);
+                writer.LoadLocal(local);
                 writer.LoadInt64(integerRangeAttribute.Minimum);
 
                 var isGreaterThanOrEqual = writer.IfLessThan();
@@ -246,7 +246,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
             if (integerRangeAttribute.HasMaximum)
             {                
-                writer.LoadVariable(local);
+                writer.LoadLocal(local);
                 writer.LoadInt64(integerRangeAttribute.Maximum);                
 
                 var isLessThanOrEqual = writer.IfGreaterThan();
@@ -268,7 +268,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
                 writer.GetPropertyValue(property);
                 writer.SetLocal(local);
 
-                writer.LoadVariable(local);
+                writer.LoadLocal(local);
                 writer.LoadNull();
                 var notNullBlock = writer.IfEqualThen();
 
@@ -280,13 +280,13 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
 
                 var lengthValue = writer.DeclareLocal<int>();
                 var length = KnownMetadata.Properties.String_Length;
-                writer.LoadVariable(local);
+                writer.LoadLocal(local);
                 writer.GetPropertyValue(length);
                 writer.SetLocal(lengthValue);
 
                 var minValue = attribute.Minimum;
 
-                writer.LoadVariable(lengthValue);
+                writer.LoadLocal(lengthValue);
                 writer.LoadInt32((int)minValue);
                 var longerThanMinBlock = writer.IfLessThan();
 
@@ -301,7 +301,7 @@ namespace FluentBoilerplate.Runtime.Providers.Validation
                 //The maximum value might not be set, if so then just ignore it
                 if (maxValue > 0)
                 {
-                    writer.LoadVariable(lengthValue);
+                    writer.LoadLocal(lengthValue);
                     writer.LoadInt32((int)maxValue);
                     var shorterThanMaxBlock = writer.IfGreaterThan();
 

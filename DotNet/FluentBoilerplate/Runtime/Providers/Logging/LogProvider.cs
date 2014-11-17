@@ -184,7 +184,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
                             var field = (FieldInfo)member;
                             localValue = writer.DeclareLocal(field.FieldType);
 
-                            writer.LoadVariable(localTypedInstance);
+                            writer.LoadLocal(localTypedInstance);
                             writer.LoadField(field);
                             writer.SetLocal(localValue);
                             break;
@@ -192,7 +192,7 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
                             var property = (PropertyInfo)member;
                             localValue = writer.DeclareLocal(property.PropertyType);
 
-                            writer.LoadVariable(localTypedInstance);
+                            writer.LoadLocal(localTypedInstance);
                             writer.GetPropertyValue(property);
                             writer.SetLocal(localValue);
                             break;
@@ -205,30 +205,30 @@ namespace FluentBoilerplate.Runtime.Providers.Logging
                     writer.New<CustomLoggableMember>();
                     writer.SetLocal(localLogItem);
 
-                    writer.LoadVariable(localLogItem);
+                    writer.LoadLocal(localLogItem);
                     writer.LoadInt32((int)attribute.Visibility);
                     writer.SetPropertyValue(typeof(CustomLoggableMember).GetProperty("MemberVisibility"));
 
-                    writer.LoadVariable(localLogItem);
+                    writer.LoadLocal(localLogItem);
                     writer.TypeOf(type);
                     writer.Cast(localValue.LocalType, typeof(Type));
                     writer.SetPropertyValue(KnownMetadata.Properties.CustomLoggableMember_OwningType);
 
-                    writer.LoadVariable(localLogItem);
+                    writer.LoadLocal(localLogItem);
                     writer.LoadString(member.Name);
                     writer.SetPropertyValue(KnownMetadata.Properties.CustomLoggableMember_MemberName);
 
-                    writer.LoadVariable(localLogItem);
+                    writer.LoadLocal(localLogItem);
                     writer.TypeOf(localValue.LocalType);
                     writer.Cast(localValue.LocalType, typeof(Type));
                     writer.SetPropertyValue(KnownMetadata.Properties.CustomLoggableMember_MemberType);
 
-                    writer.LoadVariable(localLogItem);
-                    writer.LoadVariable(localValue);
+                    writer.LoadLocal(localLogItem);
+                    writer.LoadLocal(localValue);
                     writer.SetPropertyValue(KnownMetadata.Properties.CustomLoggableMember_MemberValue);
 
                     writer.LoadSecondParameter();
-                    writer.LoadVariable(localLogItem);
+                    writer.LoadLocal(localLogItem);
                     writer.ActionDelegateMethodCall<CustomLoggableMember>();
                 }
             }

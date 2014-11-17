@@ -306,11 +306,54 @@ That sounds fancy, but it's just a way of injecting your own type provider into 
 
 So what does that actually mean?
 
-There are quite a few scenarios in which you'd like to make use of a factory (e.g. WCF services, data access). The boilerplate context will help you get access to those.
+There are quite a few scenarios in which you'd like to make use of a factory (e.g. WCF services, data access). The boilerplate context will help you get access to those types through an ITypeProvider implementation.
+
+Let's create a simple WCF type provider for an example service. Here's the contract.
 
 ```C#
-boilerplate.Open<ISomeService>((context, service) => service.CallRemoteMethod());
+[ServiceContract]
+public interface IExampleService
+{
+	[OperationContract]
+	bool GetValue();
+}
+```
+
+First, we're going to need to deviate from the basic FluentBoilerplate namespace. I know, I'm shocked too.
+
+```C#
+using FluentBoilerplate.Providers.WCF;
+```
+
+Now we need to know how to contact the service. Let's use an endpoint and binding in code for this example (getting this from configuration is also supported).
+
+```C#
+var binding = new NetNamedPipeBinding();
+var address = "net.pipe://localhost/FluentBoilerplateExampleService";
+```
+
+Let's make a type provider that can provide us with an open connection to that service.
+
+```C#
+var service = new WcfService<IExampleService>(binding, new EndpointAddress(address));
+var wcfProvider = new WcfConnectionProvider(new [] { service });
+```
+
+And now let's make the boilerplate context aware that it can access that type.
+
+```C#
+var wcfAccessProvider = new TypeAccessProvider(wcfConnectionProvider);
+```
+
+That's it! Let's get a new boilerplate context and call the service.
+
+```C#
+var boilerplate = Boilerplate.New(accessProvider: wcfAccessProvider);
+
+var result = boilerplate.Open<IExampleService>()
+                        .AndGet<bool>((context, service) => service.GetValue())
+		                .Result;
 ```
 
 Currently, there are providers available for WCF and for ADO.Net, with more planned.
-You are also welcome to write your own provider that implements FluentBoilerplate.Providers.ITypeProvider and send it in with your initial Boilerplate.New() call.
+You are also welcome to write your own provider that implements FluentBoilerplate.Providers.ITypeProvider and/or type access provider that implements FluentBoilerplate.Providers.ITypeAccessProvider and send them in with your initial Boilerplate.New() call.

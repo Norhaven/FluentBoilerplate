@@ -149,7 +149,7 @@ namespace FluentBoilerplate.Runtime
         {
             Emit(OpCodes.Ldarg_0);
         }
-        public void LoadVariable(LocalBuilder localBuilder)
+        public void LoadLocal(LocalBuilder localBuilder)
         {
             Emit(OpCodes.Ldloc, localBuilder);
         }

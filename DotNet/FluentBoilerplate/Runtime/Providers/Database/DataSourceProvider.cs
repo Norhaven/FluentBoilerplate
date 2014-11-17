@@ -37,6 +37,13 @@ namespace FluentBoilerplate.Runtime.Providers.Database
             this.dataSource = dataSource;    
         }
         
+        public IDataParameter CreateParameter(string name, object value, DbType dbType)
+        {
+            var parameter = CreateParameter(name, value);
+            parameter.DbType = dbType;
+            return parameter;
+        }
+
         public IDataParameter CreateParameter(string name, object value)
         {
             switch(this.dataSource)
@@ -45,7 +52,7 @@ namespace FluentBoilerplate.Runtime.Providers.Database
                 case DataSource.OleDb: return new OleDbParameter(name, value);
                 case DataSource.SQL: return new SqlParameter(name, value);
                 default:
-                    throw new DataException("The data source '{0}' is not know, cannot create a parameter".WithValues(this.dataSource));
+                    throw new DataException("The data source '{0}' is not known, cannot create a parameter".WithValues(this.dataSource));
             }
         }
 

@@ -114,8 +114,8 @@ namespace FluentBoilerplate.Runtime.Providers.Translation
                 writer.GetPropertyValue(sourceProperty);
                 writer.SetLocal(localSourceValue);
 
-                writer.LoadVariable(localTargetInstance);
-                writer.LoadVariable(localSourceValue);
+                writer.LoadLocal(localTargetInstance);
+                writer.LoadLocal(localSourceValue);
 
                 if (!propertiesAreSameType)
                 {
@@ -125,7 +125,7 @@ namespace FluentBoilerplate.Runtime.Providers.Translation
                 writer.SetPropertyValue(targetProperty);
             }
 
-            writer.LoadVariable(localTargetInstance);
+            writer.LoadLocal(localTargetInstance);
             writer.Return();
             writer.VerifyStack();
         }

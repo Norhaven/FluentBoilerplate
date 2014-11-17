@@ -81,7 +81,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
                         writer.SetLocal(localException);
                         
                         writer.LoadFirstParameter(); //Exception-aware instance
-                        writer.LoadVariable(localException);
+                        writer.LoadLocal(localException);
                         writer.InstanceMethodCall(handleSpecificException);
                     };
 
