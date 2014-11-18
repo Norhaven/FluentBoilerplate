@@ -8,6 +8,12 @@ public class VerifiableType
 	[StringLength(Minimum = 2, Maximum = 5)]
 	[NotNull]
 	public string Text { get; set; }
+  
+  [IntegerRange(Minimum=3, Maximum=42)]
+  public int Value { get; }
+
+  [IsMatchFor(@"\d+\w+")]
+  public string Description { get; }
 }
 
 void Main()
@@ -18,12 +24,18 @@ void Main()
 	var verifiable = new VerifiableType();
 	
 	verifiable.Text = "Text";
+  verifiable.Value = 15;
+  verifiable.Description = "123Test";
 	
 	//Any of the following will cause a validation failure
 	
 	//verifiable.Text = String.Empty; //Too short
 	//verifiable.Text = "This is too long";
 	//verifiable.Text = null;
+  //verifiable.Value = 2;
+  //verifiable.Value = 43;
+  //verifiable.Description = "123";
+  //verifiable.Description = "Test";
 	
 	boilerplate
 		.BeginContract()
