@@ -3,7 +3,7 @@ FluentBoilerplate
 
 All official release information / released builds is located at https://www.nuget.org/packages/FluentBoilerplate/.
 
-**This is a beta-quality work in progress. This means that things could break or behave in unexpected ways**
+**This is a beta-quality work in progress. This means that things could break or behave in unexpected ways.**
 
 That said, you're more than welcome to report any bugs you may find, contribute, etc.
 
@@ -14,6 +14,9 @@ Getting Started
 
 - Build the source (or get a release from NuGet, if available)
 - Reference the built assembly in your project
+
+**Or**
+
 - Use the latest free version of Linqpad, install the NuGet package. Comes with samples!
 
 This is a quick overview of the primary functionality. If you would like more in-depth samples, I would highly suggest that you look at the Linqpad samples in ./DotNet/FluentBoilerplate/linqpad-samples for more information.
@@ -198,13 +201,14 @@ How do we know what rights/roles the caller has, though?
 
 When you create a context, one of the parameters you may optionally specify is an IIdentity instance. This represents the current caller that the context will operate under, and includes sets of rights/roles that they are permitted and explicitly denied. You are welcome to use an instance of the Identity class, which implements IIdentity, or write your own.
 
+Supported rights/roles currently come from manually created objects (as above) or Active Directory, with more planned.
 
 Validation
 =================
 
 The contract also offers a slightly more targeted approach to preconditions, by validating that a specific instance meets all of its requirements (in particular, its properties).
 
-There are currently two attributes that may be applied to properties for validation, with more planned.
+There are currently four attributes that may be applied to properties for validation, with more planned.
 
 ```C#
 public class SomeType
@@ -212,11 +216,19 @@ public class SomeType
     [NotNull]
     [StringLength(Minimum=3, Maximum=10)]
     public string Text { get; }
+	
+	[IntegerRange(Minimum=3, Maximum=42)]
+	public int Value { get; }
+	
+	[IsMatchFor(@"\d+\w+")]
+	public string Description { get; }
 }
 ```
 
 The [NotNull] attribute does what it says. During validation, that property must not be null.
 The [StringLength] attribute enforces length requirements on a string property. Minimum is the inclusive lower bounds, meaning that the string must be three or more characters in length. Maximum is the inclusive upper bounds, meaning that the string must be ten or less characters in length.
+The [IntegerRange] attribute enforces value requirements on an integer property. Minimum is the inclusive lower bounds, meaning that the value must be three or more. Maximum is the inclusive upper bounds, meaning that the value must be forty-two or less. This validation can apply to non-floating point numeric properties (e.g. Int32, Int64).
+The [IsMatchFor] attribute enforces value requirements on a string property. During validation, the value of the string must be a match for the provided regular expression.
 
 Let's validate an instance of SomeType.
 
