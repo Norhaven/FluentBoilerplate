@@ -252,9 +252,7 @@ This gives us an execution path of:
 - Rights/Roles validations
 - Requirements preconditions
 - Instance validations
-
 - Do()
-
 - Postconditions
 
 Translation
