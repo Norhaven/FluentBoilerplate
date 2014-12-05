@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 
 namespace FluentBoilerplate.Contexts
 {
@@ -45,6 +46,26 @@ namespace FluentBoilerplate.Contexts
         IImmutableQueue<Action> InstanceValidations { get; }
 
         /// <summary>
+        /// Gets the maximum number of threads allowed.
+        /// </summary>
+        int ThreadCountRestriction { get; }
+
+        /// <summary>
+        /// Gets the timeout value for acquiring the critical section associated with the thread count restriction.
+        /// </summary>
+        WaitTimeout ThreadCountRestrictionTimeout { get; }
+
+        /// <summary>
+        /// Gets the wait handle that must be signalled for threads to proceed.
+        /// </summary>
+        WaitHandle ThreadWaitHandleSignalRestriction { get; }
+
+        /// <summary>
+        /// Gets the timeout value for acquiring the critical section associated with the thread wait handle's signal restriction.
+        /// </summary>
+        WaitTimeout ThreadWaitHandleSignalRestrictionTimeout { get; }
+
+        /// <summary>
         /// Adds a precondition to the contract
         /// </summary>
         /// <param name="condition">The condition</param>
@@ -71,5 +92,21 @@ namespace FluentBoilerplate.Contexts
         /// <param name="validate">The validation method</param>
         /// <returns>An instance of <see cref="IContractBundle"/> with the condition included</returns>
         IContractBundle AddInstanceValidation(Action validate);
+
+        /// <summary>
+        /// Adds the thread count restriction.
+        /// </summary>
+        /// <param name="count">The maximum number of threads.</param>
+        /// <param name="timeout">The timeout value applied to the thread count restriction.</param>
+        /// <returns>An instance of <see cref="IContractBundle"/> with the restriction included.</returns>
+        IContractBundle AddThreadCountRestrictionOf(int count, WaitTimeout timeout);
+
+        /// <summary>
+        /// Adds the thread wait handle restriction for the specified <see cref="System.Threading.WaitHandle"/>.
+        /// </summary>
+        /// <param name="handle">The handle.</param>
+        /// <param name="timeout">The timeout value applied to the thread wait handle restriction.</param>
+        /// <returns>An instance of <see cref="IContractBundle"/> with the restriction included.</returns>
+        IContractBundle AddThreadWaitHandleRestrictionFor(WaitHandle handle, WaitTimeout timeout);
     }
 }

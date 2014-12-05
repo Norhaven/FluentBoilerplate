@@ -31,6 +31,14 @@ namespace FluentBoilerplate.Runtime.Contexts
     {
         private readonly ICopyableTrait<IBoilerplateContext> originalContext;
 
+        public override IRestrictionBuilder<IVoidReturnContractContext> Restrict
+        {
+            get
+            {
+                return new RestrictionBuilder<IVoidReturnContractContext, VoidReturnContractContext>(this, this.bundle, this.contractBundle);
+            }
+        }
+
         public VoidReturnContractContext(IContextBundle bundle,
                                          IContractBundle contractBundle,
                                          ICopyableTrait<IBoilerplateContext> originalContext)

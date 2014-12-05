@@ -42,6 +42,8 @@ namespace FluentBoilerplate.Runtime.Contexts
         public abstract TContext Copy(IContextBundle bundle = null,
                                       IContractBundle contractBundle = null);
 
+        public abstract IRestrictionBuilder<TContext> Restrict { get; }
+
         public TContext RequireRights(params IRight[] rights)
         {
             var elevatedPermissions = this.bundle.Permissions.Merge(requiredRights: rights.ToImmutableHashSet());

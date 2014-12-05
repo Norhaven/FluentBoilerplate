@@ -29,12 +29,21 @@ namespace FluentBoilerplate.Runtime.Contexts
 {
     internal sealed class ContractContext<TResult> :
         IResultContractContext<TResult>,
-        IVerifiableContractContext
+        IVerifiableContractContext,
+        ICopyableTrait<IResultContractContext<TResult>>
     {
         private readonly IContextBundle bundle;
         private readonly IContractBundle contractBundle;
         private readonly IBoilerplateContext<TResult> originalContext;
-        
+
+        public IRestrictionBuilder<IResultContractContext<TResult>> Restrict
+        {
+            get
+            {
+                return new RestrictionBuilder<IResultContractContext<TResult>, ContractContext<TResult>>(this, this.bundle, this.contractBundle);
+            }
+        }
+                
         public ContractContext(IContextBundle bundle,
                                IContractBundle contractBundle,
                                IBoilerplateContext<TResult> originalContext)
@@ -43,7 +52,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.contractBundle = contractBundle;
             this.originalContext = originalContext;
         }
-
+                
         public IResultContractContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(action);
@@ -193,7 +202,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             }
         }
 
-        private IResultContractContext<TResult> Copy(IContextBundle bundle = null,
+        public IResultContractContext<TResult> Copy(IContextBundle bundle = null,
                                                      IContractBundle contractBundle = null)
         {
             return new ContractContext<TResult>(bundle ?? this.bundle,

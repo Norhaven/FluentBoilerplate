@@ -15,24 +15,17 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace FluentBoilerplate
 {
-    /// <summary>
-    /// Represents a type conversion
-    /// </summary>
-    public interface IConversionBuilder<TFrom>:ITypeCheckExecution
+    public interface IThreadRestrictionBuilder<TParent>
     {
-        /// <summary>
-        /// Converts the instance to the requested type
-        /// </summary>
-        /// <typeparam name="TType">The target type</typeparam>
-        /// <returns>An instance of <typeparamref name="TType"/></returns>
-        TType As<TType>();
-
-        /// <summary>
-        /// Converts the instance to an atomic version of the provided instance.
-        /// </summary>
-        /// <returns>An atomic version of the provided instance.</returns>
-        Atomic<TFrom> AsAtomic();
+        TParent ByWaitingFor(WaitHandle handle, WaitTimeout timeout = default(WaitTimeout));
+        TParent ToMaxOf(int number, WaitTimeout timeout = default(WaitTimeout));
     }
 }

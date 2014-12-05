@@ -31,46 +31,63 @@ namespace FluentBoilerplate.Runtime.Contexts
 #endif
         abstract class ImmutableContractAwareContext<TContext> : ImmutableContext
     {
-        public ImmutableContractAwareContext(IContextBundle bundle)
+        private readonly ThreadRestrictionContext restrictionContext;
+        protected readonly IContractBundle contractBundle;
+
+        public ImmutableContractAwareContext(IContractBundle contractBundle, IContextBundle bundle)
             : base(bundle)
         {
+            this.contractBundle = contractBundle ?? new ContractBundle();
+            this.restrictionContext = new ThreadRestrictionContext(this.contractBundle);
         }             
 
-        public TResult VerifyContractIfPossible<TResult>(IContractBundle contractBundle, IIdentity identity, Func<TResult> action)
+        public TResult VerifyContractIfPossible<TResult>(IIdentity identity, Func<TResult> action)
         {
             if (!this.bundle.Permissions.HasPermission(identity))
                 throw new ContractViolationException("The current identity does not have permission to  perform this action");
 
-            TResult result = default(TResult);
-
-            if (contractBundle == null)
+            if (this.contractBundle == null)
             {
                 Info("No contract is available to verify, performing the action as-is");
-                result = action();
+                var result = action();
                 Debug("Caller's action returned", result);
+                return result;
             }
-
-            var contract = new ContractContext<TResult>(this.bundle, contractBundle, null);
-
-            Info("Contract is present, verifying preconditions");
-            contract.VerifyPreConditions();
-            
-            try
+            else
             {
-                result = action();                
-            }
-            catch
-            {
-                Info("An exception was thrown while executing a custom action, verifying thrown exception postconditions");
-                contract.VerifyPostConditions(ContractExit.ThrewException);
-                throw;
-            }
+                var contract = new ContractContext<TResult>(this.bundle, this.contractBundle, null);
 
-            Debug("Caller's action has returned", result);
-            Info("Action completed successfully, verifying return postconditions");
-            contract.VerifyPostConditions(ContractExit.Returned);
+                Info("Contract is present, verifying preconditions");
+                contract.VerifyPreConditions();
 
-            return result;
+                TResult result;
+                try
+                {
+                    //Thread restrictions never apply to contract validations, only to the caller's action
+                    result = this.restrictionContext.Get(() =>
+                        {
+                            return action();
+                        });
+                }
+                catch(ContractViolationException)
+                {
+                    //Thread restriction contract violations don't trigger any postconditions
+                    throw;
+                }
+                catch
+                {
+                    Info("An exception was thrown while executing a custom action, verifying thrown exception postconditions");
+                    contract.VerifyPostConditions(ContractExit.ThrewException);
+                    throw;
+                }
+                  
+
+                Debug("Caller's action has returned", result);
+                Info("Action completed successfully, verifying return postconditions");
+                contract.VerifyPostConditions(ContractExit.Returned);
+
+                return result;
+            }
         }
     }
 }

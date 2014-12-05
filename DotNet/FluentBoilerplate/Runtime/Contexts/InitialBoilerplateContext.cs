@@ -30,6 +30,7 @@ using FluentBoilerplate.Runtime.Providers;
 using FluentBoilerplate.Messages.User;
 using FluentBoilerplate.Contexts;
 using FluentBoilerplate.Traits;
+using System.Threading;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
@@ -45,7 +46,6 @@ namespace FluentBoilerplate.Runtime.Contexts
         where TContract: IInitialContractContext, 
                          IBundledContractContext
     {
-        private readonly IContractBundle contractBundle;
         private readonly IImmutableQueue<TimeSpan> callTimings;
 
         public IIdentity Identity { get; private set; }
@@ -55,10 +55,9 @@ namespace FluentBoilerplate.Runtime.Contexts
                                            IIdentity identity,
                                            IContractBundle contractBundle = null,
                                            IImmutableQueue<TimeSpan> callTimings = null)
-            :base(bundle)
+            :base(contractBundle, bundle)
         {
             this.Identity = identity;
-            this.contractBundle = contractBundle ?? new ContractBundle();
             this.callTimings = callTimings.DefaultIfNull();
         }
 
@@ -69,45 +68,45 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IBoilerplateContext<TResult> Get<TResult>(Func<IBoilerplateContext, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () =>
                 {
                     var downgradedContext = DowngradeCurrentContext();
-
+                                        
                     TResult result = default(TResult);
                     var timings = SafeTimedCall(() => result = action(downgradedContext));
 
                     return new ResultBoilerplateContext<TResult>(this.bundle,
-                                                                 this.Identity,
-                                                                 this.contractBundle,
-                                                                 result,
-                                                                 timings);
+                                                                    this.Identity,
+                                                                    this.contractBundle,
+                                                                    result,
+                                                                    timings);                       
                 });
         }
         
         public ITypeAccessBuilder<TType> Open<TType>()
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () => new TypeAccessBuilder<TType>(this.Identity, this.bundle, this.contractBundle, this));            
         }
-        
+
         public IBoilerplateContext Do(Action<IBoilerplateContext> action)
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () =>
-            {
-                var downgradedContext = DowngradeCurrentContext();
+                {
+                    var downgradedContext = DowngradeCurrentContext();
 
-                var timings = SafeTimedCall(() => action(downgradedContext));
+                    var timings = SafeTimedCall(() => action(downgradedContext));
 
-                return new InitialBoilerplateContext<TContract>(this.bundle,
-                                                                this.Identity,
-                                                                this.contractBundle,
-                                                                timings);
-            });
+                    return new InitialBoilerplateContext<TContract>(this.bundle,
+                                                                    this.Identity,
+                                                                    this.contractBundle,
+                                                                    timings);
+                });
         }
           
-        public IConversionBuilder Use<TFrom>(TFrom instance)
+        public IConversionBuilder<TFrom> Use<TFrom>(TFrom instance)
         {
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
         }

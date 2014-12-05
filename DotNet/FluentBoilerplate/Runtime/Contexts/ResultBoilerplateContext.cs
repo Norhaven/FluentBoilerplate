@@ -30,6 +30,7 @@
 using FluentBoilerplate.Messages.User;
 using FluentBoilerplate.Contexts;
 using FluentBoilerplate.Traits;
+using System.Threading;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
@@ -38,7 +39,6 @@ namespace FluentBoilerplate.Runtime.Contexts
         IBoilerplateContext<TResult>,
         IMergeableTrait<TResult>
     {
-        private readonly IContractBundle contractBundle;
         private readonly IImmutableQueue<TimeSpan> callTimings;
         
         public IIdentity Identity { get; private set; }
@@ -49,10 +49,9 @@ namespace FluentBoilerplate.Runtime.Contexts
                                           IContractBundle contractBundle,
                                           TResult result,
                                           IImmutableQueue<TimeSpan> callTimings)
-            : base(bundle)
+            : base(contractBundle, bundle)
         {
             this.Identity = identity;
-            this.contractBundle = contractBundle;
             this.Result = result;
             this.callTimings = callTimings;
         }
@@ -64,7 +63,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () =>
                 {
                     var downgradedContext = DowngradeToInitial();
@@ -85,7 +84,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IBoilerplateContext<TResult> Get(Func<IBoilerplateContext, TResult, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () =>
             {
                 var downgradedContext = DowngradeToInitial();
@@ -99,13 +98,13 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public ITypeAccessBuilder<TType, TResult> Open<TType>()
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () => new TypeAccessBuilder<TType, TResult>(this.Identity, this.bundle, this.contractBundle, this, this.Result));
         }
         
         public IBoilerplateContext<TResult> Do(Action<IBoilerplateContext> action)
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () =>
             {
                 var downgradedContext = DowngradeToInitial();
@@ -118,18 +117,18 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IBoilerplateContext<TResult> Do(Action<IBoilerplateContext, TResult> action)
         {
-            return VerifyContractIfPossible(this.contractBundle, this.Identity,
+            return VerifyContractIfPossible(this.Identity,
                 () =>
-            {
-                var downgradedContext = DowngradeToInitial();
+                {
+                    var downgradedContext = DowngradeToInitial();
 
-                var timings = SafeTimedCall(() => action(downgradedContext, this.Result));
-                
-                return MergeCopy(callTimings: timings);
-            });
+                    var timings = SafeTimedCall(() => action(downgradedContext, this.Result));
+
+                    return MergeCopy(callTimings: timings);
+                });
         }
                 
-        public IConversionBuilder Use<TFrom>(TFrom instance)
+        public IConversionBuilder<TFrom> Use<TFrom>(TFrom instance)
         {
             return new ConversionBuilder<TFrom>(this.bundle.Translation, instance);
         }

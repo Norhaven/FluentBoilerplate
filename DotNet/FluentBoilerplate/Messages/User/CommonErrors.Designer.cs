@@ -106,6 +106,15 @@ namespace FluentBoilerplate.Messages.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thread #{0} timed out waiting for {1}.
+        /// </summary>
+        public static string ThreadTimedOut {
+            get {
+                return ResourceManager.GetString("ThreadTimedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; could not be found.
         /// </summary>
         public static string TypeNotFound {

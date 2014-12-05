@@ -137,6 +137,10 @@
     <value>The parameter '{0}' must not be null</value>
     <comment>Enforces non-null parameter values</comment>
   </data>
+  <data name="ThreadTimedOut" xml:space="preserve">
+    <value>Thread #{0} timed out waiting for {1}</value>
+    <comment>Enforces thread timeouts when waiting</comment>
+  </data>
   <data name="TypeNotFound" xml:space="preserve">
     <value>The type '{0}' could not be found</value>
     <comment>Enforces correct type usage</comment>

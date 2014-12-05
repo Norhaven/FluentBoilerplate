@@ -60,7 +60,10 @@
     <Compile Include="PublicContract\Attributes\IsMatchForAttribute.cs" />
     <Compile Include="PublicContract\Attributes\IntegerRangeAttribute.cs" />
     <Compile Include="PublicContract\Exceptions\IncorrectValidationAttributeException.cs" />
+    <Compile Include="PublicContract\Atomic.cs" />
     <Compile Include="PublicContract\ICustomValidator.cs" />
+    <Compile Include="PublicContract\IRestrictionBuilder.cs" />
+    <Compile Include="PublicContract\IThreadRestrictionBuilder.cs" />
     <Compile Include="PublicContract\ITypeCheckExecution.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,6 +81,10 @@
     <Compile Include="PublicContract\Contexts\Boilerplate\IResultContractContext.cs" />
     <Compile Include="PublicContract\Contexts\IContractCondition.cs" />
     <Compile Include="PublicContract\Testing\TranslationVerifier.cs" />
+    <Compile Include="PublicContract\WaitTimeout.cs" />
+    <Compile Include="Runtime\Contexts\ThreadRestrictionContext.cs" />
+    <Compile Include="Runtime\RestrictionBuilder.cs" />
+    <Compile Include="Runtime\Contexts\ThreadRestrictionBuilder.cs" />
     <Compile Include="Runtime\Contexts\TimingContext.cs" />
     <Compile Include="Runtime\ConversionBuilder.cs">
       <AutoGen>True</AutoGen>
@@ -86,6 +93,8 @@
     </Compile>
     <Compile Include="Runtime\Extensions\IExceptionHandlerExtensions.cs" />
     <Compile Include="Runtime\Extensions\NullableExtensions.cs" />
+    <Compile Include="Runtime\Extensions\WaitTimeoutExtensions.cs" />
+    <Compile Include="Runtime\Extensions\WaitHandleExtensions.cs" />
     <Compile Include="Runtime\Providers\Database\AdoNetConnection.cs" />
     <Compile Include="PublicContract\Providers\Database\AdoNetConnectionProvider.cs" />
     <Compile Include="PublicContract\Providers\Database\DataSource.cs" />

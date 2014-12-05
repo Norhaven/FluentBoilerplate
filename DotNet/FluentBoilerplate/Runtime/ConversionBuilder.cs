@@ -20,7 +20,7 @@ using FluentBoilerplate.Providers;
 
 namespace FluentBoilerplate.Runtime
 {
-    internal sealed class ConversionBuilder<TFrom>:IConversionBuilder, ITypeCheckExecution
+    internal sealed class ConversionBuilder<TFrom>:IConversionBuilder<TFrom>, ITypeCheckExecution
     {
         private readonly TFrom instance;
         private readonly ITranslationProvider provider;
@@ -34,6 +34,11 @@ namespace FluentBoilerplate.Runtime
         public TType As<TType>()
         {
             return this.provider.Translate<TFrom, TType>(this.instance);
+        }
+
+        public Atomic<TFrom> AsAtomic()
+        {
+            return new Atomic<TFrom>(this.instance);
         }
 
         public TypeCheckResult IfTypeIs<TType>(Action<TType> action)

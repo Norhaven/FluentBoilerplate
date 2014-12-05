@@ -31,6 +31,7 @@ using FluentBoilerplate.Testing;
 using System.Reflection;
 //using FluentBoilerplate.Runtime.IL;
 using FluentBoilerplate.Runtime;
+using System.Threading;
 
 namespace FluentBoilerplate.Tests
 {
@@ -88,10 +89,25 @@ namespace FluentBoilerplate.Tests
                 num2 => { }, 
                 obj => { });
            // NewMethod(boilerplate, instance);
+            boilerplate
+                .BeginContract()                    
+                    .Handles<Exception, int>(ex => { return 0; })
+                    .Restrict.Threads.ToMaxOf(1)               
+                    .Restrict.Threads.ToMaxOf(5)
+                    .Restrict.Threads.ByWaitingFor(new AutoResetEvent(true), 5000)
+                .EndContract();
+                
+            var atomic = boilerplate.Use(instance).AsAtomic();
+            object o = atomic;
+            atomic = o;
+
+            Atomic<int> i = 5;
 
 
             var timings = boilerplate
                 .BeginContract()
+                    .Handles<Exception>(ex => { })
+                    
                     .IsTimedUnder(Visibility.Debug)
                 .EndContract()
                 .Do(_ => Go())

@@ -38,6 +38,14 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         public IContractBundle Bundle { get { return this.contractBundle; } }
 
+        public override IRestrictionBuilder<IInitialContractContext> Restrict
+        {
+            get
+            {
+                return new RestrictionBuilder<IInitialContractContext, ContractContext>(this, this.bundle, this.contractBundle);
+            }
+        }
+
         public ContractContext(IContextBundle bundle,
                                IContractBundle contractBundle,
                                IElevatableContext originalContext)

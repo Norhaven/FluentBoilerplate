@@ -14,19 +14,22 @@
    limitations under the License.
  */
 
-namespace FluentBoilerplate.Traits
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace FluentBoilerplate.Runtime.Extensions
 {
-    /// <summary>
-    /// Represents a trait for allowing type conversion
-    /// </summary>
-    public interface IConversionTrait
-    {
-        /// <summary>
-        /// Selects an instance to convert
-        /// </summary>
-        /// <typeparam name="TFrom">The type of the instance</typeparam>
-        /// <param name="instance">The instance to convert</param>
-        /// <returns>An instance of <see cref="IConversionBuilder"/> that will complete the conversion</returns>
-        IConversionBuilder<TFrom> Use<TFrom>(TFrom instance);
+    internal static class WaitTimeoutExtensions
+    {   
+        public static WaitTimeout DefaultIfNull(this WaitTimeout? timeout)
+        {
+            if (timeout == null)
+                return WaitTimeout.Infinite;
+            return timeout.Value;
+        }
     }
 }

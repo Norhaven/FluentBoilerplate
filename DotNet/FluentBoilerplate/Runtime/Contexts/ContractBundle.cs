@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Runtime.Extensions;
+using System.Threading;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
@@ -34,16 +35,32 @@ namespace FluentBoilerplate.Runtime.Contexts
         public IImmutableQueue<IContractCondition> PostconditionsOnThrow { get; private set; }
 
         public IImmutableQueue<Action> InstanceValidations { get; private set; }
+        
+        public int ThreadCountRestriction { get; private set; }
+
+        public WaitTimeout ThreadCountRestrictionTimeout { get; private set; }
+
+        public WaitHandle ThreadWaitHandleSignalRestriction { get; private set; }
+
+        public WaitTimeout ThreadWaitHandleSignalRestrictionTimeout { get; private set; }
 
         public ContractBundle(IImmutableQueue<IContractCondition> preconditions = null,
                               IImmutableQueue<IContractCondition> postconditionsOnReturn = null,
                               IImmutableQueue<IContractCondition> postconditionsOnThrow = null,
-                              IImmutableQueue<Action> instanceValidations = null)
+                              IImmutableQueue<Action> instanceValidations = null,
+                              int threadCountRestriction = 0,
+                              WaitTimeout? threadCountRestrictionTimeout = null,
+                              WaitHandle threadWaitHandleSignalRestriction = null,
+                              WaitTimeout? threadWaitHandleSignalRestrictionTimeout = null)
         {
             this.Preconditions = preconditions.DefaultIfNull();
             this.PostconditionsOnReturn = postconditionsOnReturn.DefaultIfNull();
             this.PostconditionsOnThrow = postconditionsOnThrow.DefaultIfNull();
             this.InstanceValidations = instanceValidations.DefaultIfNull();
+            this.ThreadCountRestriction = threadCountRestriction;
+            this.ThreadCountRestrictionTimeout = threadCountRestrictionTimeout.DefaultIfNull();
+            this.ThreadWaitHandleSignalRestriction = threadWaitHandleSignalRestriction.DefaultIfNull();
+            this.ThreadWaitHandleSignalRestrictionTimeout = threadWaitHandleSignalRestrictionTimeout.DefaultIfNull();
         }
 
         public IContractBundle AddPrecondition(IContractCondition condition)
@@ -73,12 +90,30 @@ namespace FluentBoilerplate.Runtime.Contexts
         private IContractBundle Copy(IImmutableQueue<IContractCondition> preconditions = null,
                                      IImmutableQueue<IContractCondition> postconditionsOnReturn = null,
                                      IImmutableQueue<IContractCondition> postconditionsOnThrow = null,
-                                     IImmutableQueue<Action> instanceValidations = null)
+                                     IImmutableQueue<Action> instanceValidations = null,
+                                     int? threadCountRestriction = null,
+                                     WaitTimeout? threadCountRestrictionTimeout = null,
+                                     WaitHandle threadWaitHandleSignalRestriction = null,
+                                     WaitTimeout? threadWaitHandleSignalRestrictionTimeout = null)
         {
             return new ContractBundle(preconditions ?? this.Preconditions,
                                       postconditionsOnReturn ?? this.PostconditionsOnReturn,
                                       postconditionsOnThrow ?? this.PostconditionsOnThrow,
-                                      instanceValidations ?? this.InstanceValidations);
+                                      instanceValidations ?? this.InstanceValidations,
+                                      threadCountRestriction ?? this.ThreadCountRestriction,
+                                      threadCountRestrictionTimeout ?? this.ThreadCountRestrictionTimeout,
+                                      threadWaitHandleSignalRestriction ?? this.ThreadWaitHandleSignalRestriction,
+                                      threadWaitHandleSignalRestrictionTimeout ?? this.ThreadWaitHandleSignalRestrictionTimeout);
+        }
+                
+        public IContractBundle AddThreadCountRestrictionOf(int count, WaitTimeout timeout)
+        {
+            return Copy(threadCountRestriction: count, threadCountRestrictionTimeout: timeout);
+        }
+
+        public IContractBundle AddThreadWaitHandleRestrictionFor(WaitHandle handle, WaitTimeout timeout)
+        {
+            return Copy(threadWaitHandleSignalRestriction: handle, threadWaitHandleSignalRestrictionTimeout: timeout);
         }
     }
 }

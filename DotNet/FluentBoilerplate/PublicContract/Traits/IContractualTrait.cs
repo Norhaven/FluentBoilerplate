@@ -95,6 +95,11 @@ namespace FluentBoilerplate.Traits
         /// <param name="visibility">The timing visibility</param>
         /// <returns>The context that this trait applies to</returns>
         TContext IsTimedUnder(Visibility visibility);
+
+        /// <summary>
+        /// Gets the kinds of restrictions that this contract could impose.
+        /// </summary>
+        IRestrictionBuilder<TContext> Restrict { get; }
     }
 
     /// <summary>
