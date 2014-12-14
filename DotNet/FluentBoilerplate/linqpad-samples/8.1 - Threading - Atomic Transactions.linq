@@ -3,15 +3,13 @@
   <Namespace>FluentBoilerplate</Namespace>
   <Namespace>System.Collections.Immutable</Namespace>
 </Query>
-
 void Main()
 {
   //Multi-threading can be a difficult thing to deal with and
   //you may end up with locking code that you have to be very careful about.
 
   //There are a few ways that you can alleviate your difficulties with FluentBoilerplate.
-  //The simplest way is by using the Atomic<T>
-  type to provide a quick lock around variable access.
+  //The simplest way is by using the Atomic<T> type to provide a quick lock around variable access.
   var atomicInt = Atomic<int>.New(5);
 	
 	//If you would like to do this through the boilerplate instead, you're also welcome to do that.
@@ -61,6 +59,3 @@ void Main()
 	//the order in which they will be locked. In the example above, this would always
 	//lock atomicInt and then secondAtomicInt.	
 }
-
-
-

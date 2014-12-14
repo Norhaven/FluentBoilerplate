@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-using FluentBoilerplate.PublicContract.Exceptions;
+using FluentBoilerplate.Exceptions;
 using FluentBoilerplate.Runtime;
 using System;
 using System.Collections.Generic;

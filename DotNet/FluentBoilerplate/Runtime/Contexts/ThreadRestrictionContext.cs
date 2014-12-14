@@ -42,7 +42,13 @@ namespace FluentBoilerplate.Runtime.Contexts
             var threadCountRestriction = this.contractBundle.ThreadCountRestriction;
             this.threadRestrictor = (threadCountRestriction > 0) ? new Semaphore(threadCountRestriction, threadCountRestriction) : null;
             this.waitHandle = this.contractBundle.ThreadWaitHandleSignalRestriction;
-            this.transactionContext = new LockTransactionContext(this.contractBundle);           
+            this.transactionContext = new LockTransactionContext(this.contractBundle, bundle);
+
+            if (this.threadRestrictor != null)
+                Info("Thread count restriction (count <= {0}) is in effect".WithValues(threadCountRestriction));
+
+            if (this.waitHandle != null)
+                Info("Thread wait handle restriction is in effect");            
         }
 
         public TResult Get<TResult>(Func<TResult> func)

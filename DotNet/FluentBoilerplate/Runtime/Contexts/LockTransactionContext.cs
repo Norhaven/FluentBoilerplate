@@ -15,6 +15,7 @@
  */
 
 using FluentBoilerplate.Contexts;
+using FluentBoilerplate.Runtime.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,14 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal sealed class LockTransactionContext
+    internal sealed class LockTransactionContext:ImmutableContext
     {
         private readonly IContractBundle contractBundle;
         private readonly ILockTransactionMember[] transactionMembers;
         private readonly LockOrder lockOrder;
         private readonly bool isValidTransaction;
 
-        public LockTransactionContext(IContractBundle contractBundle)
+        public LockTransactionContext(IContractBundle contractBundle, IContextBundle contextBundle):base(contextBundle)
         {
             this.contractBundle = contractBundle ?? new ContractBundle();
 
@@ -38,6 +39,12 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.isValidTransaction = transactionContractBundle != null;
             this.transactionMembers = this.isValidTransaction ? transactionContractBundle.TransactionMembers : new ILockTransactionMember[0];
             this.lockOrder = this.isValidTransaction ? transactionContractBundle.LockOrder : LockOrder.Unknown;
+
+            if (this.isValidTransaction)
+            {
+                Info("Atomic transaction operation is in effect with {0} atomic members".WithValues(this.transactionMembers.Length));
+                this.transactionMembers = OrderLocksBy(this.transactionMembers, this.lockOrder).ToArray();
+            }
         }
 
         public void Do(Action action)
@@ -62,11 +69,10 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         private void AcquireLocksInOrder()
         {
-            var pendingLocks = OrderLocksBy(this.lockOrder);
             var acquiredLocks = new Stack<ILockTransactionMember>();
             try
             {
-                foreach(var pending in pendingLocks)
+                foreach(var pending in this.transactionMembers)
                 {
                     pending.AcquireLock();
                     acquiredLocks.Push(pending);
@@ -84,19 +90,16 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         private void ReleaseLocksInOrder()
         {
-            var pendingLocks = OrderLocksBy(this.lockOrder);
-
-            foreach (var pending in pendingLocks)
+            foreach (var pending in this.transactionMembers)
                 pending.ReleaseLock();
         }
 
-        private IEnumerable<ILockTransactionMember> OrderLocksBy(LockOrder order)
+        private static IEnumerable<ILockTransactionMember> OrderLocksBy(ILockTransactionMember[] members, LockOrder order)
         {
             switch(order)
             {
-                case LockOrder.Default: return this.transactionMembers.OrderBy(x => x.Id);
-                case LockOrder.HashCode: return this.transactionMembers.OrderBy(x => x.GetHashCode());
-                case LockOrder.ParameterOrder: return this.transactionMembers;
+                case LockOrder.Default: return members.OrderBy(x => x.Id);
+                case LockOrder.ParameterOrder: return members;
                 default:
                     throw new ArgumentOutOfRangeException("order", order, "Lock order for transaction is unknown or invalid");
             }

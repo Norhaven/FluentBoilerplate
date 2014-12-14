@@ -22,8 +22,18 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents the starting point for building an atomic operation.
+    /// </summary>
+    /// <typeparam name="TParent">The type of the parent.</typeparam>
     public interface IAtomicOperationBuilder<TParent>
     {
+        /// <summary>
+        /// Begins the atomic operation by including the specified atomic variable.
+        /// </summary>
+        /// <typeparam name="T">The type contained within the atomic variable.</typeparam>
+        /// <param name="atomicVariable">The atomic variable.</param>
+        /// <returns>An instance of the atomic operation builder for any additional parameters or completion.</returns>
         IAtomicOperationParametersBuilder<TParent> Of<T>(Atomic<T> atomicVariable);
     }
 }

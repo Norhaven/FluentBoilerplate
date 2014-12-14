@@ -20,10 +20,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.PublicContract.Exceptions
+namespace FluentBoilerplate.Exceptions
 {
+    /// <summary>
+    /// Represents a failure when performing a lock-related transaction.
+    /// </summary>
+    [Serializable]
     public sealed class InvalidLockTransactionStateException : Exception
     {
+        /// <summary>
+        /// Creates a new instance of the <see cref="InvalidLockTransactionStateException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         public InvalidLockTransactionStateException(string message) : base(message) { }
     }
 }

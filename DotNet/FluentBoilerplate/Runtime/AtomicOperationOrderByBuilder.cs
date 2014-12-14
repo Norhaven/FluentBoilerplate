@@ -45,15 +45,6 @@ namespace FluentBoilerplate.Runtime
             }
         }
 
-        public TPublicContext HashCode
-        {
-            get
-            {
-                var elevatedContractBundle = new LockTransactionContractBundle(this.contractBundle, LockOrder.HashCode, this.transactionMembers);
-                return this.context.Copy(this.bundle, elevatedContractBundle);
-            }
-        }
-
         public TPublicContext ParameterOrder
         {
             get

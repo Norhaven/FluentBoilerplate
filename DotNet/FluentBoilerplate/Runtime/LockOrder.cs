@@ -26,7 +26,6 @@ namespace FluentBoilerplate.Runtime
     {
         Unknown = 0,
         Default = 1,
-        HashCode = 2,
-        ParameterOrder = 3
+        ParameterOrder = 2
     }
 }

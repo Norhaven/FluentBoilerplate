@@ -22,9 +22,21 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a builder for a transaction's lock order.
+    /// </summary>
+    /// <typeparam name="TParent">The type of the parent.</typeparam>
     public interface IAtomicOperationOrderByBuilder<TParent>
     {
+        /// <summary>
+        /// Use the default lock ordering. This leaves it up to the boilerplate to determine the correct order.
+        /// </summary>
         TParent Default { get; }
+
+        /// <summary>
+        /// Use the parameter order to define the lock order. This leaves it entirely up to the caller to
+        /// add the atomic variables to the transaction in the exact order that they should be locked.
+        /// </summary>
         TParent ParameterOrder { get; }
     }
 }

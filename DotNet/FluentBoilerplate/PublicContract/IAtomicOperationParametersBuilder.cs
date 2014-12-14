@@ -22,9 +22,23 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
+    /// <summary>
+    /// Represents a builder for adding additional atomic variables to the transaction or defining their lock order.
+    /// </summary>
+    /// <typeparam name="TParent">The type of the parent.</typeparam>
     public interface IAtomicOperationParametersBuilder<TParent>
     {
+        /// <summary>
+        /// Adds the specified atomic variable to the transaction.
+        /// </summary>
+        /// <typeparam name="T">The type contained within the atomic variable.</typeparam>
+        /// <param name="atomicVariable">The atomic variable.</param>
+        /// <returns>An instance of <see cref="IAtomicOperationParametersBuilder"/> for further additions or ordering.</returns>
         IAtomicOperationParametersBuilder<TParent> And<T>(Atomic<T> atomicVariable);
+
+        /// <summary>
+        /// Defines the locking order for the transaction.
+        /// </summary>
         IAtomicOperationOrderByBuilder<TParent> OrderedBy { get; }
     }
 }
