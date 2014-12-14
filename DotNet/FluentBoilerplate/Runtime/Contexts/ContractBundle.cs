@@ -26,7 +26,7 @@ using System.Threading;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal sealed class ContractBundle:IContractBundle
+    internal class ContractBundle:IContractBundle
     {
         public IImmutableQueue<IContractCondition> Preconditions { get; private set; }
 
@@ -59,7 +59,10 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.InstanceValidations = instanceValidations.DefaultIfNull();
             this.ThreadCountRestriction = threadCountRestriction;
             this.ThreadCountRestrictionTimeout = threadCountRestrictionTimeout.DefaultIfNull();
-            this.ThreadWaitHandleSignalRestriction = threadWaitHandleSignalRestriction.DefaultIfNull();
+
+            //Not defaulting this because null is checked for and verifying a default handle would be confusing to the caller
+            this.ThreadWaitHandleSignalRestriction = threadWaitHandleSignalRestriction; 
+
             this.ThreadWaitHandleSignalRestrictionTimeout = threadWaitHandleSignalRestrictionTimeout.DefaultIfNull();
         }
 

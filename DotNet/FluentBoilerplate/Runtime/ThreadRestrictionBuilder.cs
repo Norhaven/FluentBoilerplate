@@ -23,7 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate.Runtime.Contexts
+namespace FluentBoilerplate.Runtime
 {
     internal sealed class ThreadRestrictionBuilder<TPublicContext, TActualContext> : IThreadRestrictionBuilder<TPublicContext>
         where TActualContext :
@@ -33,6 +33,11 @@ namespace FluentBoilerplate.Runtime.Contexts
         private readonly TActualContext context;
         private readonly IContextBundle bundle;
         private readonly IContractBundle contractBundle;
+        
+        public IAtomicOperationBuilder<TPublicContext> ByTransaction
+        {
+            get { return new AtomicOperationBuilder<TPublicContext, TActualContext>(this.context, this.bundle, this.contractBundle); }
+        }
 
         public ThreadRestrictionBuilder(TActualContext context, IContextBundle bundle, IContractBundle contractBundle)
         {

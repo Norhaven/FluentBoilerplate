@@ -64,7 +64,7 @@ namespace FluentBoilerplate.Contexts
         /// Gets the timeout value for acquiring the critical section associated with the thread wait handle's signal restriction.
         /// </summary>
         WaitTimeout ThreadWaitHandleSignalRestrictionTimeout { get; }
-
+        
         /// <summary>
         /// Adds a precondition to the contract
         /// </summary>

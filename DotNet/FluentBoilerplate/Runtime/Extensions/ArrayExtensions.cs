@@ -46,5 +46,12 @@ namespace FluentBoilerplate.Runtime.Extensions
 
             return true;
         }
+
+        public static T[] DefaultIfNull<T>(this T[] array)
+        {
+            if (array == null)
+                return new T[0];
+            return array;
+        }
     }
 }

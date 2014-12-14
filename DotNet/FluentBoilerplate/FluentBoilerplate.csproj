@@ -61,6 +61,10 @@
     <Compile Include="PublicContract\Attributes\IntegerRangeAttribute.cs" />
     <Compile Include="PublicContract\Exceptions\IncorrectValidationAttributeException.cs" />
     <Compile Include="PublicContract\Atomic.cs" />
+    <Compile Include="PublicContract\Exceptions\InvalidLockTransactionStateException.cs" />
+    <Compile Include="PublicContract\IAtomicOperationBuilder.cs" />
+    <Compile Include="PublicContract\IAtomicOperationOrderByBuilder.cs" />
+    <Compile Include="PublicContract\IAtomicOperationParametersBuilder.cs" />
     <Compile Include="PublicContract\ICustomValidator.cs" />
     <Compile Include="PublicContract\IRestrictionBuilder.cs" />
     <Compile Include="PublicContract\IThreadRestrictionBuilder.cs" />
@@ -82,9 +86,17 @@
     <Compile Include="PublicContract\Contexts\IContractCondition.cs" />
     <Compile Include="PublicContract\Testing\TranslationVerifier.cs" />
     <Compile Include="PublicContract\WaitTimeout.cs" />
+    <Compile Include="Runtime\AtomicOperationBuilder.cs" />
+    <Compile Include="Runtime\AtomicOperationOrderByBuilder.cs" />
+    <Compile Include="Runtime\AtomicOperationParametersBuilder.cs" />
+    <Compile Include="Runtime\Contexts\LockTransactionContext.cs" />
+    <Compile Include="Runtime\Contexts\LockTransactionContractBundle.cs" />
     <Compile Include="Runtime\Contexts\ThreadRestrictionContext.cs" />
+    <Compile Include="Runtime\ICopyableTrait.cs" />
+    <Compile Include="Runtime\ILockTransactionMember.cs" />
+    <Compile Include="Runtime\LockOrder.cs" />
     <Compile Include="Runtime\RestrictionBuilder.cs" />
-    <Compile Include="Runtime\Contexts\ThreadRestrictionBuilder.cs" />
+    <Compile Include="Runtime\ThreadRestrictionBuilder.cs" />
     <Compile Include="Runtime\Contexts\TimingContext.cs" />
     <Compile Include="Runtime\ConversionBuilder.cs">
       <AutoGen>True</AutoGen>
@@ -253,7 +265,9 @@
     <None Include="linqpad-samples\6.2 - Using ADO.Net.linq" />
     <None Include="linqpad-samples\6.1 - Using WCF.linq" />
     <None Include="linqpad-samples\7.1 - Timing.linq" />
-    <None Include="linqpad-samples\8.1 - Logging.linq" />
+    <None Include="linqpad-samples\8.2 - Threading - Access Control.linq" />
+    <None Include="linqpad-samples\8.1 - Threading - Atomic Transactions.linq" />
+    <None Include="linqpad-samples\7.2 - Logging.linq" />
     <None Include="linqpad-samples\9.1 - Extensibility - Identity.linq" />
     <None Include="linqpad-samples\9.2 - Extensibility - Permissions.linq" />
     <None Include="linqpad-samples\9.3 - Extensibility - Type Access.linq" />

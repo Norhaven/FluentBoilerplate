@@ -33,12 +33,18 @@ namespace FluentBoilerplate.Runtime.Contexts
     {
         private readonly ThreadRestrictionContext restrictionContext;
         protected readonly IContractBundle contractBundle;
+        internal readonly LockTransactionContractBundle transactionContractBundle;
 
         public ImmutableContractAwareContext(IContractBundle contractBundle, IContextBundle bundle)
             : base(bundle)
         {
             this.contractBundle = contractBundle ?? new ContractBundle();
-            this.restrictionContext = new ThreadRestrictionContext(this.contractBundle);
+            this.restrictionContext = new ThreadRestrictionContext(contractBundle, bundle);
+
+            if (this.contractBundle is LockTransactionContractBundle)
+            {
+                this.transactionContractBundle = (LockTransactionContractBundle)this.contractBundle;
+            }
         }             
 
         public TResult VerifyContractIfPossible<TResult>(IIdentity identity, Func<TResult> action)
@@ -49,8 +55,11 @@ namespace FluentBoilerplate.Runtime.Contexts
             if (this.contractBundle == null)
             {
                 Info("No contract is available to verify, performing the action as-is");
+
                 var result = action();
+
                 Debug("Caller's action returned", result);
+
                 return result;
             }
             else

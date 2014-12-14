@@ -18,15 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace FluentBoilerplate
 {
-    public interface IThreadRestrictionBuilder<TParent>
+    public interface IAtomicOperationBuilder<TParent>
     {
-        TParent ByWaitingFor(WaitHandle handle, WaitTimeout timeout = default(WaitTimeout));
-        TParent ToMaxOf(int number, WaitTimeout timeout = default(WaitTimeout));
-        IAtomicOperationBuilder<TParent> ByTransaction { get; }
+        IAtomicOperationParametersBuilder<TParent> Of<T>(Atomic<T> atomicVariable);
     }
 }

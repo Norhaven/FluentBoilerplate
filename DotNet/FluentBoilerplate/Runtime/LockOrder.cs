@@ -18,15 +18,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Runtime
 {
-    public interface IThreadRestrictionBuilder<TParent>
+    internal enum LockOrder
     {
-        TParent ByWaitingFor(WaitHandle handle, WaitTimeout timeout = default(WaitTimeout));
-        TParent ToMaxOf(int number, WaitTimeout timeout = default(WaitTimeout));
-        IAtomicOperationBuilder<TParent> ByTransaction { get; }
+        Unknown = 0,
+        Default = 1,
+        HashCode = 2,
+        ParameterOrder = 3
     }
 }

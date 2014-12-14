@@ -114,6 +114,17 @@
       <DependentUpon>RunWithErrorHandling.feature</DependentUpon>
     </Compile>
     <Compile Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandlingSteps.cs" />
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\RestrictThreadsByCount.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RestrictThreadsByCount.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\RestrictThreadsByCountSteps.cs" />
+    <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\RestrictThreadsByWaitingForWaitHandle.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RestrictThreadsByWaitingForWaitHandle.feature</DependentUpon>
+    </Compile>
     <Compile Include="Runtime\Contexts\InitialBoilerplateContextTests\RunWithinContext.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -165,6 +176,7 @@
     <Compile Include="TestPermissions.cs" />
     <Compile Include="TestTypeAccessProvider.cs" />
     <Compile Include="TestWcfService.cs" />
+    <Compile Include="ThreadSynchronizationVerifier.cs" />
     <Compile Include="ValidateableType.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +212,14 @@
     <None Include="Runtime\Contexts\ImmutableErrorContextTests\RunWithErrorHandling.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RunWithErrorHandling.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\Contexts\InitialBoilerplateContextTests\RestrictThreadsByCount.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RestrictThreadsByCount.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\Contexts\InitialBoilerplateContextTests\RestrictThreadsByWaitingForWaitHandle.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RestrictThreadsByWaitingForWaitHandle.feature.cs</LastGenOutput>
     </None>
     <None Include="Runtime\Contexts\InitialBoilerplateContextTests\RunWithinContext.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

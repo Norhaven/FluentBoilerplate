@@ -18,15 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.Runtime
 {
-    public interface IThreadRestrictionBuilder<TParent>
+    internal interface ILockTransactionMember
     {
-        TParent ByWaitingFor(WaitHandle handle, WaitTimeout timeout = default(WaitTimeout));
-        TParent ToMaxOf(int number, WaitTimeout timeout = default(WaitTimeout));
-        IAtomicOperationBuilder<TParent> ByTransaction { get; }
+        Guid Id { get; }
+        void AcquireLock();
+        void ReleaseLock();
     }
 }

@@ -17,8 +17,10 @@
 using FluentBoilerplate.Contexts;
 using FluentBoilerplate.Messages.User;
 using FluentBoilerplate.Runtime.Extensions;
+using FluentBoilerplate.Traits;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,18 +28,21 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal sealed class ThreadRestrictionContext
+    internal sealed class ThreadRestrictionContext : ImmutableContext,
+        ICopyableTrait<ThreadRestrictionContext>
     {
         private readonly IContractBundle contractBundle;
         private readonly Semaphore threadRestrictor;
         private readonly WaitHandle waitHandle;
+        private readonly LockTransactionContext transactionContext;
 
-        public ThreadRestrictionContext(IContractBundle contractBundle)
+        public ThreadRestrictionContext(IContractBundle contractBundle, IContextBundle bundle):base(bundle)
         {
             this.contractBundle = contractBundle ?? new ContractBundle();
             var threadCountRestriction = this.contractBundle.ThreadCountRestriction;
-            this.threadRestrictor = (threadCountRestriction > 0) ? new Semaphore(0, threadCountRestriction) : null;
+            this.threadRestrictor = (threadCountRestriction > 0) ? new Semaphore(threadCountRestriction, threadCountRestriction) : null;
             this.waitHandle = this.contractBundle.ThreadWaitHandleSignalRestriction;
+            this.transactionContext = new LockTransactionContext(this.contractBundle);           
         }
 
         public TResult Get<TResult>(Func<TResult> func)
@@ -50,41 +55,75 @@ namespace FluentBoilerplate.Runtime.Contexts
         public void Do(Action action)
         {
             //The order of evaluation doesn't matter for thread restrictions, it just changes the number of
-            //threads that are potentially waiting on the wait handle at one time. Both gates (if present) have to
+            //threads that are potentially waiting on the wait handle or semaphore at one time. Both gates (if present) have to
             //be passed for the caller to do anything so we couldn't get a known performance gain by changing
-            //the order one way or the other. The semaphore's release is simpler in code this way.
+            //the order one way or the other. The semaphore's release is simpler in code this way, hence the current ordering.
 
             if (this.waitHandle != null)
             {
-                var timeout = this.contractBundle.ThreadWaitHandleSignalRestrictionTimeout;
-                var signalled = this.waitHandle.WaitOne(timeout.Milliseconds);
-                if (!signalled)
-                {
-                    var id = Thread.CurrentThread.ManagedThreadId;
-                    throw new ContractViolationException(CommonErrors.ThreadTimedOut.WithValues(id, "wait handle restriction"));
-                }
+                WaitForProvidedWaitHandle();
             }
 
             if (this.threadRestrictor != null)
             {
-                var timeout = this.contractBundle.ThreadCountRestrictionTimeout;
-                var signalled = this.threadRestrictor.WaitOne(timeout.Milliseconds);
-                if (!signalled)
-                {
-                    var id = Thread.CurrentThread.ManagedThreadId;
-                    throw new ContractViolationException(CommonErrors.ThreadTimedOut.WithValues(id, "thread count restriction"));
-                }
+                WaitForThreadCountRestrictedSection();
             }            
-            
+                        
             try
             {
-                action();
+                this.transactionContext.Do(() => action());
             }
             finally
-            {
+            {  
                 if (this.threadRestrictor != null)
-                    this.threadRestrictor.Release();
+                {
+                    LeaveThreadCountRestrictedSection();
+                }
             }
+        }
+        
+        private void LeaveThreadCountRestrictedSection()
+        {
+            Debug("Thread #{0} is leaving the thread count restricted section".WithValues(Thread.CurrentThread.ManagedThreadId));
+            this.threadRestrictor.Release();
+        }
+
+        private void WaitForProvidedWaitHandle()
+        {
+            var id = Thread.CurrentThread.ManagedThreadId;
+
+            Debug("Thread #{0} is beginning to wait for the provided WaitHandle".WithValues(id));
+
+            var timeout = this.contractBundle.ThreadWaitHandleSignalRestrictionTimeout;
+            var signalled = this.waitHandle.WaitOne(timeout.Milliseconds);
+            if (!signalled)
+            {
+                throw new ContractViolationException(CommonErrors.ThreadTimedOut.WithValues(id, "wait handle restriction"));
+            }
+
+            Debug("Thread #{0} ended its wait successfully for the provided WaitHandle".WithValues(id));
+        }
+
+        private void WaitForThreadCountRestrictedSection()
+        {
+            var id = Thread.CurrentThread.ManagedThreadId;
+
+            Debug("Thread #{0} is beginning to wait for the thread count restricted section".WithValues(id));
+
+            var timeout = this.contractBundle.ThreadCountRestrictionTimeout;
+            var signalled = this.threadRestrictor.WaitOne(timeout.Milliseconds);
+            if (!signalled)
+            {
+                throw new ContractViolationException(CommonErrors.ThreadTimedOut.WithValues(id, "thread count restriction"));
+            }
+
+            Debug("Thread #{0} acquired access to the thread count restricted section".WithValues(id));
+        }
+
+        public ThreadRestrictionContext Copy(IContextBundle bundle = null, IContractBundle contractBundle = null)
+        {
+            return new ThreadRestrictionContext(contractBundle ?? this.contractBundle,
+                                                bundle ?? this.bundle);
         }
     }
 }

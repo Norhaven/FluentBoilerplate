@@ -82,26 +82,45 @@ namespace FluentBoilerplate.Tests
                 
             var boilerplate = Boilerplate.New(visibility: Visibility.Debug);
             object instance = "Hello";
-            boilerplate.BeginContract().RequireValidInstanceOf(new Number { Text = "b" }).EndContract().Do(x => { });
-            boilerplate.Use(instance).IfTypeIsAnyOf<int, string, long, object>().DoFirstMatched(
-                num => { }, 
-                text => { }, 
-                num2 => { }, 
-                obj => { });
+            //boilerplate.BeginContract().RequireValidInstanceOf(new Number { Text = "b" }).EndContract().Do(x => { });
+            //boilerplate.Use(instance).IfTypeIsAnyOf<int, string, long, object>().DoFirstMatched(
+            //    num => { }, 
+            //    text => { }, 
+            //    num2 => { }, 
+            //    obj => { });
            // NewMethod(boilerplate, instance);
+            Atomic<object> atom = Atomic<object>.New(instance);
+            Atomic<int> atomInt = Atomic<int>.New(5);
+            
             boilerplate
-                .BeginContract()                    
-                    .Handles<Exception, int>(ex => { return 0; })
-                    .Restrict.Threads.ToMaxOf(1)               
-                    .Restrict.Threads.ToMaxOf(5)
-                    .Restrict.Threads.ByWaitingFor(new AutoResetEvent(true), 5000)
-                .EndContract();
-                
-            var atomic = boilerplate.Use(instance).AsAtomic();
-            object o = atomic;
-            atomic = o;
+                .BeginContract()
+                //.Handles<Exception, int>(ex => { return 0; })
+                //.Restrict.Threads.ToMaxOf(1)               
+                //.Restrict.Threads.ToMaxOf(5)
+                .Restrict.Threads.ByWaitingFor(new ManualResetEvent(false), 5000)
+                    //.Restrict.Threads.ByTransaction
+                    //    .Of(atom)
+                    //    .And(atomInt)
+                    //    .OrderedBy.Default
+                .EndContract()
+                .Do(_ => {
+                    object obj = atom;
+                    int value = atomInt;
+                    atom.Value = obj;
+                    atomInt.Value = value;
+                });
 
-            Atomic<int> i = 5;
+
+
+
+
+            int variable = 5;
+            var atomic = boilerplate.Use(variable).AsAtomic();
+            int o = atomic;
+                  
+
+
+
 
 
             var timings = boilerplate

@@ -18,15 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentBoilerplate
+namespace FluentBoilerplate.PublicContract.Exceptions
 {
-    public interface IThreadRestrictionBuilder<TParent>
+    public sealed class InvalidLockTransactionStateException : Exception
     {
-        TParent ByWaitingFor(WaitHandle handle, WaitTimeout timeout = default(WaitTimeout));
-        TParent ToMaxOf(int number, WaitTimeout timeout = default(WaitTimeout));
-        IAtomicOperationBuilder<TParent> ByTransaction { get; }
+        public InvalidLockTransactionStateException(string message) : base(message) { }
     }
 }
