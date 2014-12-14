@@ -226,8 +226,11 @@ public class SomeType
 ```
 
 The [NotNull] attribute does what it says. During validation, that property must not be null.
+
 The [StringLength] attribute enforces length requirements on a string property. Minimum is the inclusive lower bounds, meaning that the string must be three or more characters in length. Maximum is the inclusive upper bounds, meaning that the string must be ten or less characters in length.
+
 The [IntegerRange] attribute enforces value requirements on an integer property. Minimum is the inclusive lower bounds, meaning that the value must be three or more. Maximum is the inclusive upper bounds, meaning that the value must be forty-two or less. This validation can apply to non-floating point numeric properties (e.g. Int32, Int64).
+
 The [IsMatchFor] attribute enforces value requirements on a string property. During validation, the value of the string must be a match for the provided regular expression.
 
 Let's validate an instance of SomeType.
@@ -249,9 +252,7 @@ This gives us an execution path of:
 - Rights/Roles validations
 - Requirements preconditions
 - Instance validations
-
 - Do()
-
 - Postconditions
 
 Translation
