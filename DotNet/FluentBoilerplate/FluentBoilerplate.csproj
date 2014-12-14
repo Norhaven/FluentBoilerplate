@@ -92,7 +92,6 @@
     <Compile Include="Runtime\Contexts\LockTransactionContext.cs" />
     <Compile Include="Runtime\Contexts\LockTransactionContractBundle.cs" />
     <Compile Include="Runtime\Contexts\ThreadRestrictionContext.cs" />
-    <Compile Include="Runtime\ICopyableTrait.cs" />
     <Compile Include="Runtime\ILockTransactionMember.cs" />
     <Compile Include="Runtime\LockOrder.cs" />
     <Compile Include="Runtime\RestrictionBuilder.cs" />
