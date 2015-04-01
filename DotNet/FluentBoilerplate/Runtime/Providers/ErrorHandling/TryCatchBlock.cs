@@ -37,7 +37,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             private readonly IExceptionHandlerProvider provider;
             
             public TResult Result { get; private set; }
-
+            
             public ExceptionAwareAction(Func<TResult> action, IExceptionHandlerProvider provider)
             {
                 this.action = action;
@@ -49,10 +49,14 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
                 this.Result = this.action();
             }
 
-            public void HandleException<TException>(TException exception) where TException : Exception
-            {
+            public bool HandleException<TException>(TException exception, int currentExecutionAttempt) where TException : Exception
+            {   
                 var handler = this.provider.TryGetHandler<TException, TResult>();
+                if (currentExecutionAttempt < handler.RetryCount)
+                    return false;
+
                 this.Result = handler.Handle(exception);
+                return true;
             }
         }
 
@@ -70,10 +74,15 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             {
                 this.action();
             }
-            public void HandleException<TException>(TException exception) where TException : Exception
+            public bool HandleException<TException>(TException exception, int currentExecutionAttempt) where TException : Exception
             {
                 var handler = this.provider.TryGetHandler<TException>();
+
+                if (currentExecutionAttempt < handler.RetryCount)
+                    return false;
+
                 handler.Handle(exception);
+                return true;
             }
         }
 

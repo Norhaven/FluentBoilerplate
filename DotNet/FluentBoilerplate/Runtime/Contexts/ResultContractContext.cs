@@ -27,14 +27,35 @@ using FluentBoilerplate.Traits;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal sealed class ContractContext<TResult> :
+    internal sealed class ContractHandledContext<TException, TResult> : 
+        ContractContext<TResult>, 
+        IResultContractHandledContext<TResult>
+        where TException:Exception
+    {
+        public ContractHandledContext(IContextBundle bundle,
+                                      IContractBundle contractBundle,
+                                      IBoilerplateContext<TResult> originalContext)
+            :base(bundle, contractBundle, originalContext)
+        {
+
+        }
+
+        public IResultContractContext<TResult> WithRetryOf(int count)
+        {
+            var elevatedErrorContext = this.bundle.Errors.MarkExceptionHandlerForRetry<TException, TResult>(count);
+            var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
+            return Copy(elevatedBundle);
+        }
+    }
+
+    internal class ContractContext<TResult> :
         IResultContractContext<TResult>,
         IVerifiableContractContext,
         ICopyableTrait<IResultContractContext<TResult>>
     {
-        private readonly IContextBundle bundle;
-        private readonly IContractBundle contractBundle;
-        private readonly IBoilerplateContext<TResult> originalContext;
+        protected readonly IContextBundle bundle;
+        protected readonly IContractBundle contractBundle;
+        protected readonly IBoilerplateContext<TResult> originalContext;
 
         public IRestrictionBuilder<IResultContractContext<TResult>> Restrict
         {
@@ -52,12 +73,12 @@ namespace FluentBoilerplate.Runtime.Contexts
             this.contractBundle = contractBundle;
             this.originalContext = originalContext;
         }
-                
-        public IResultContractContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception
+            
+        public IResultContractHandledContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(action);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
-            return Copy(bundle: elevatedBundle);
+            return new ContractHandledContext<TException, TResult>(elevatedBundle, this.contractBundle, this.originalContext);
         }
 
         public IResultContractContext<TResult> RequireRights(params IRight[] rights)

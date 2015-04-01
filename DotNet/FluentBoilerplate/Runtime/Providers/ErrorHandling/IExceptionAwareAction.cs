@@ -14,6 +14,6 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         interface IExceptionAwareAction
     {
         void Do();
-        void HandleException<TException>(TException exception) where TException : Exception;
+        bool HandleException<TException>(TException exception, int currentExecutionAttempt) where TException : Exception;        
     }
 }

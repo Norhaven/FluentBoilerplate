@@ -59,6 +59,8 @@
     <Compile Include="PublicContract\Attributes\LogAttribute.cs" />
     <Compile Include="PublicContract\Attributes\IsMatchForAttribute.cs" />
     <Compile Include="PublicContract\Attributes\IntegerRangeAttribute.cs" />
+    <Compile Include="PublicContract\Contexts\Boilerplate\IResultContractHandledContext.cs" />
+    <Compile Include="PublicContract\Contexts\Boilerplate\IVoidReturnContractHandledContext.cs" />
     <Compile Include="PublicContract\Exceptions\IncorrectValidationAttributeException.cs" />
     <Compile Include="PublicContract\Atomic.cs" />
     <Compile Include="PublicContract\Exceptions\InvalidLockTransactionStateException.cs" />

@@ -145,6 +145,14 @@ namespace FluentBoilerplate.Runtime
             }
         }
 
+        public void LoadFalse()
+        {
+            Emit(OpCodes.Ldc_I4_0);
+        }
+        public void LoadTrue()
+        {
+            Emit(OpCodes.Ldc_I4_1);
+        }
         public void LoadThis()
         {
             Emit(OpCodes.Ldarg_0);
@@ -183,6 +191,11 @@ namespace FluentBoilerplate.Runtime
 
             Emit(OpCodes.Newobj, actualConstructor);
 
+        }
+
+        public void GoTo(Label label)
+        {
+            Emit(OpCodes.Br, label);
         }
                
         public void Cast(Type sourceType, Type targetType)

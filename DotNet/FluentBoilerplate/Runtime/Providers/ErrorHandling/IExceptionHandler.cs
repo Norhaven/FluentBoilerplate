@@ -22,6 +22,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
     /// <typeparam name="TException">The exception type</typeparam>
     internal interface IExceptionHandler<in TException>
     {
+        int RetryCount { get; set; }
     }
 
     internal interface IVoidReturnExceptionHandler<in TException> : IExceptionHandler<TException>

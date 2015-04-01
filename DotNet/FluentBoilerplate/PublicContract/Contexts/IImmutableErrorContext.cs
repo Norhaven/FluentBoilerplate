@@ -52,6 +52,8 @@ namespace FluentBoilerplate.Contexts
         /// <param name="handler">The exception handler</param>
         /// <returns>An instance of <see cref="IImmutableErrorContext"/> with the exception handler registered</returns>
         IImmutableErrorContext RegisterExceptionHandler<TException, TResult>(Func<TException, TResult> handler) where TException : Exception;
+        IImmutableErrorContext MarkExceptionHandlerForRetry<TException>(int retryCount) where TException:Exception;
+        IImmutableErrorContext MarkExceptionHandlerForRetry<TException, TResult>(int retryCount) where TException : Exception;
         /// <summary>
         /// Performs an action, surrounded by the context's exception handlers
         /// </summary>

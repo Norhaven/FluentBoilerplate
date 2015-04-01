@@ -54,6 +54,8 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         private readonly ILogProvider log;
         private readonly Action<TException> actionHandler;
 
+        public int RetryCount { get; set; }
+
         public ExceptionHandler(ILogProvider log, Action<TException> actionHandler)
         {
             Debug.Assert(log != null, AssertFailures.InstanceShouldNotBeNull.WithValues("log"));

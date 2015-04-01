@@ -24,12 +24,33 @@ using System.Threading.Tasks;
 
 namespace FluentBoilerplate.Runtime.Contexts
 {
-    internal sealed class VoidReturnContractContext:
+    internal sealed class VoidReturnContractHandledContext<TException>:
+        VoidReturnContractContext,
+        IVoidReturnContractHandledContext
+        where TException:Exception
+    {
+        public VoidReturnContractHandledContext(IContextBundle bundle,
+                                                IContractBundle contractBundle,
+                                                ICopyableTrait<IBoilerplateContext> originalContext)
+            : base(bundle, contractBundle, originalContext)
+        {   
+            
+        }
+
+        public IVoidReturnContractContext WithRetryOf(int count)
+        {
+            var elevatedErrorContext = this.bundle.Errors.MarkExceptionHandlerForRetry<TException>(count);
+            var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
+            return new VoidReturnContractContext(elevatedBundle, this.contractBundle, this.originalContext);
+        }
+    }
+
+    internal class VoidReturnContractContext:
         ContractContextBase<IVoidReturnContractContext>,
         IVoidReturnContractContext,
         ICopyableTrait<IVoidReturnContractContext>
     {
-        private readonly ICopyableTrait<IBoilerplateContext> originalContext;
+        protected readonly ICopyableTrait<IBoilerplateContext> originalContext;
 
         public override IRestrictionBuilder<IVoidReturnContractContext> Restrict
         {

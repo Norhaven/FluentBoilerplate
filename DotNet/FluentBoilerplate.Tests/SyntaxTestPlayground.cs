@@ -60,7 +60,7 @@ namespace FluentBoilerplate.Tests
         [Test]
         [Ignore]
         public void Test()
-        {
+        {   
             //IMethod method;
             //ILocalVariable first = method.DefineLocalVariable<int>();
             //ILocalVariable second = method.DefineLocalVariable(typeof(int));

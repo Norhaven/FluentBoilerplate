@@ -75,7 +75,29 @@ namespace FluentBoilerplate.Runtime.Contexts
 
             return new ImmutableErrorContext(this.log, this.tryCatchBlockProvider, elevatedHandlerProvider);
         }
-        
+
+        public IImmutableErrorContext MarkExceptionHandlerForRetry<TException>(int retryCount) where TException:Exception
+        {
+            //Re-registering for the same exception type needs to ignore the request
+            if (this.handlerProvider.HandledExceptionTypes.Contains(typeof(TException)))
+                return this;
+
+            var elevatedHandlerProvider = this.handlerProvider.MarkExceptionHandlerForRetry<TException>(retryCount);
+
+            return new ImmutableErrorContext(this.log, this.tryCatchBlockProvider, elevatedHandlerProvider);
+        }
+
+        public IImmutableErrorContext MarkExceptionHandlerForRetry<TException, TResult>(int retryCount) where TException : Exception
+        {
+            //Re-registering for the same exception type needs to ignore the request
+            if (this.handlerProvider.HandledExceptionTypes.Contains(typeof(TException)))
+                return this;
+
+            var elevatedHandlerProvider = this.handlerProvider.MarkExceptionHandlerForRetry<TException, TResult>(retryCount);
+
+            return new ImmutableErrorContext(this.log, this.tryCatchBlockProvider, elevatedHandlerProvider);
+        }
+
         public void DoInContext(Action<IImmutableErrorContext> action)
         {
             var tryCatch = this.tryCatchBlockProvider.GetTryCatchFor(this.handlerProvider);

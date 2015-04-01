@@ -110,5 +110,19 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             var elevatedQueue = this.orderedHandlers.Enqueue(new KeyValuePair<Type, IExceptionHandler<Exception>>(type, handler));
             return new ExceptionHandlerProvider(this.log, elevatedQueue);  
         }
+
+        public IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException>(int retryCount) where TException : Exception
+        {
+            var handler = this.handlers[typeof(TException)];
+            handler.RetryCount = retryCount;
+            return this;
+        }
+
+        public IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException, TResult>(int retryCount) where TException: Exception
+        {
+            var handler = this.handlers[typeof(TException)];
+            handler.RetryCount = retryCount;
+            return this;
+        }
     }
 }

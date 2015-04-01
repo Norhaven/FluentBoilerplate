@@ -61,25 +61,25 @@ namespace FluentBoilerplate.Runtime.Contexts
                                        this.originalContext);         
         }
 
-        public IResultContractContext<TResult> Handles<TException, TResult>(Func<TException, TResult> action = null) where TException : Exception
+        public IResultContractHandledContext<TResult> Handles<TException, TResult>(Func<TException, TResult> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException, TResult>(action);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
 
             var context = this.originalContext.Elevate<TResult>(elevatedBundle, this.contractBundle);
-            return new ContractContext<TResult>(elevatedBundle,
-                                                this.contractBundle,
-                                                context);
+            return new ContractHandledContext<TException, TResult>(elevatedBundle,
+                                                                   this.contractBundle,
+                                                                   context);
         }
 
-        public IVoidReturnContractContext Handles<TException>(Action<TException> action = null) where TException : Exception
+        public IVoidReturnContractHandledContext Handles<TException>(Action<TException> action = null) where TException : Exception
         {
             var elevatedErrorContext = this.bundle.Errors.RegisterExceptionHandler<TException>(action);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);
 
-            return new VoidReturnContractContext(elevatedBundle,
-                                                 this.contractBundle,
-                                                 this.originalContext);
+            return new VoidReturnContractHandledContext<TException>(elevatedBundle,
+                                                                    this.contractBundle,
+                                                                    this.originalContext);
         }
 
         public IBoilerplateContext EndContract()

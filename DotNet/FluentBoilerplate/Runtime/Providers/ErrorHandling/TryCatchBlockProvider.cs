@@ -52,20 +52,38 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 
         private void WriteTryCatchBlockBody(ILWriter writer, IImmutableQueue<Type> exceptionTypes)
         {
+            var currentExecutionAttempt = writer.DeclareLocal<int>();
+            var shouldRetry = writer.DeclareLocal<bool>();
+
+            var retryLabel = writer.DefineLabel();
+            writer.MarkLabel(retryLabel);
+
+            writer.WriteIncrement(currentExecutionAttempt, 1);
+
             writer.TryCatch(
                 endOfTryCatch =>
                 {
+                    writer.LoadFalse();
+                    writer.SetLocal(shouldRetry);
+
                     var method = KnownMetadata.Methods.IExceptionAwareAction_Do;
                     writer.LoadFirstParameter();
                     writer.InstanceMethodCall(method);
                 },
-                WriteUnrolledCatchBlocks(writer, exceptionTypes)
+                WriteUnrolledCatchBlocks(writer, exceptionTypes, shouldRetry, currentExecutionAttempt)
                 );
+                        
+            writer.LoadLocal(shouldRetry);
+            var shouldNotRetry = writer.IfTrueThen();
 
+            writer.GoTo(retryLabel);
+
+            writer.MarkLabel(shouldNotRetry);
+            
             writer.Return();
         }
         
-        private IEnumerable<Action<Label>> WriteUnrolledCatchBlocks(ILWriter writer, IImmutableQueue<Type> exceptionTypes)
+        private IEnumerable<Action<Label>> WriteUnrolledCatchBlocks(ILWriter writer, IImmutableQueue<Type> exceptionTypes, LocalBuilder shouldRetry, LocalBuilder currentExecutionAttempt)
         {
             var handleException = KnownMetadata.Methods.IExceptionAwareAction_HandleException;
             
@@ -77,12 +95,28 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 
                     Action catchBlockBody = () =>
                     {
+                        var endOfCatch = writer.DefineLabel();
                         var localException = writer.DeclareLocal(exceptionType);
                         writer.SetLocal(localException);
                         
                         writer.LoadFirstParameter(); //Exception-aware instance
                         writer.LoadLocal(localException);
+                        writer.LoadLocal(currentExecutionAttempt);
                         writer.InstanceMethodCall(handleSpecificException);
+
+                        //The handler refusing to handle it indicates that we should perform a retry.
+                        var wasHandled = writer.IfFalseThen();
+
+                        writer.LoadTrue();
+                        writer.SetLocal(shouldRetry);
+                        writer.GoTo(endOfCatch);
+
+                        writer.MarkLabel(wasHandled);
+
+                        writer.LoadFalse();
+                        writer.SetLocal(shouldRetry);
+
+                        writer.MarkLabel(endOfCatch);
                     };
 
                     writer.CatchBlock(exceptionType, endOfTryCatch, catchBlockBody);

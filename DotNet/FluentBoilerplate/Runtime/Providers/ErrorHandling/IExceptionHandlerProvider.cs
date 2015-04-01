@@ -71,5 +71,8 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         /// <param name="action">The action</param>
         /// <returns>An instance of <see cref="IExceptionHandlerProvider"/> that contains the given exception handler</returns>
         IExceptionHandlerProvider Add<TException, TResult>(Func<TException, TResult> action) where TException : Exception;
+
+        IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException>(int retryCount) where TException : Exception;
+        IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException, TResult>(int retryCount) where TException : Exception;
     }
 }

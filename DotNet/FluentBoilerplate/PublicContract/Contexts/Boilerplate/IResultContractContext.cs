@@ -32,7 +32,7 @@ namespace FluentBoilerplate
         /// <typeparam name="TResult">The result type</typeparam>
         /// <param name="action">How the exception will be handled (if omitted, falls back to default handler)</param>
         /// <returns>A context geared towards result-based contract definitions</returns>
-        IResultContractContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception;
+        IResultContractHandledContext<TResult> Handles<TException>(Func<TException, TResult> action = null) where TException : Exception;
 
         /// <summary>
         /// Ends the contract definition for the context

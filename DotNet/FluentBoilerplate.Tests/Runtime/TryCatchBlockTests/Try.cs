@@ -38,8 +38,10 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
 
             var handledExceptionTypes = ImmutableQueue<Type>.Empty.Enqueue(typeof(Exception));
 
+            var retryCount = 0;
             var handler = new Mock<IVoidReturnExceptionHandler<Exception>>(MockBehavior.Strict);
             handler.Setup(x => x.Handle(It.Is<Exception>(p => p.Message == message)));
+            handler.Setup(x => x.RetryCount).Returns(retryCount);
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.TryGetHandler<Exception>()).Returns(handler.Object);
@@ -62,8 +64,10 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
                 .Enqueue(typeof(ArgumentException))
                 .Enqueue(typeof(Exception));
 
+            var retryCount = 0;
             var handler = new Mock<IVoidReturnExceptionHandler<ArgumentException>>(MockBehavior.Strict);
             handler.Setup(x => x.Handle(It.Is<ArgumentException>(p => p.Message == message)));
+            handler.Setup(x => x.RetryCount).Returns(retryCount);
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.TryGetHandler<ArgumentException>()).Returns(handler.Object);
@@ -108,8 +112,10 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
                 .Enqueue(typeof(Exception))
                 .Enqueue(typeof(ArgumentException));
 
+            var retryCount = 0;
             var handler = new Mock<IVoidReturnExceptionHandler<Exception>>(MockBehavior.Strict);
             handler.Setup(x => x.Handle(It.IsAny<Exception>()));
+            handler.Setup(x => x.RetryCount).Returns(retryCount);
 
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.TryGetHandler<Exception>()).Returns(handler.Object);
@@ -131,9 +137,11 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             var handledExceptionTypes = ImmutableQueue<Type>.Empty
                 .Enqueue(typeof(Exception));
 
+            var retryCount = 0;
             var handler = new Mock<IResultExceptionHandler<Exception, int>>(MockBehavior.Strict);
+            handler.Setup(x => x.RetryCount).Returns(retryCount);
             handler.Setup(x => x.Handle(It.Is<Exception>(p => p.Message == message))).Returns(5);
-
+            
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.TryGetHandler<Exception, int>()).Returns(handler.Object);
             handlerProvider.Setup(x => x.HandledTypesInCatchOrder).Returns(handledExceptionTypes);
@@ -167,6 +175,39 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             var result = tryCatch.Try<int>(() => 5);
 
             result.Should().Be(5, "because that's what the handler returned");
+        }
+
+        [Test]
+        public void ExceptionHandlerCanProvokeRetry()
+        {
+            var handledExceptionTypes = ImmutableQueue<Type>.Empty
+                .Enqueue(typeof(Exception));
+
+            var retryCount = 5;
+            var handler = new Mock<IResultExceptionHandler<Exception, int>>(MockBehavior.Strict);
+            handler.Setup(x => x.RetryCount).Returns(retryCount);
+                        
+            var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
+            handlerProvider.Setup(x => x.TryGetHandler<Exception, int>()).Returns(handler.Object);
+            handlerProvider.Setup(x => x.HandledTypesInCatchOrder).Returns(handledExceptionTypes);
+            handlerProvider.Setup(x => x.HandledExceptionTypes).Returns(handledExceptionTypes.ToImmutableHashSet());
+
+            var generator = new FunctionGenerator();
+            var provider = new TryCatchBlockProvider(generator);
+            var tryCatch = provider.GetTryCatchFor(handlerProvider.Object);
+
+            var numberOfTries = 0;
+            var result = tryCatch.Try<int>(() =>
+                {
+                    numberOfTries++;
+
+                    if (numberOfTries < retryCount)
+                        throw new Exception();
+                    return 5;
+                });
+
+            result.Should().Be(5, "because that's what the handler returned");
+            numberOfTries.Should().Be(retryCount, "because that's the number of retries requested");
         }
     }
 }
