@@ -60,7 +60,14 @@ namespace FluentBoilerplate.Tests
         [Test]
         [Ignore]
         public void Test()
-        {   
+        {
+            //var boilerplate = Boilerplate.New();
+            //boilerplate
+            //    .BeginContract()
+            //        .Handles<ServiceIsBusyException>(LogServiceFailure).WithRetryOf(3)
+            //        .Handles<Exception>().WithRetryOf(3)
+            //    .endContract
+                
             //IMethod method;
             //ILocalVariable first = method.DefineLocalVariable<int>();
             //ILocalVariable second = method.DefineLocalVariable(typeof(int));

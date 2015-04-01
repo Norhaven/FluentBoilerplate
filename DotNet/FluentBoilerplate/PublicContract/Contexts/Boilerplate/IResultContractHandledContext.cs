@@ -25,6 +25,6 @@ namespace FluentBoilerplate
     /// <typeparam name="TResult">The result type</typeparam>
     public interface IResultContractHandledContext<TResult> : IResultContractContext<TResult>
     {
-        IResultContractContext<TResult> WithRetryOf(int count);
+        IResultContractContext<TResult> WithRetryOf(int count, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None);
     }
 }

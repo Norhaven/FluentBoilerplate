@@ -26,6 +26,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using FluentBoilerplate.Providers;
+using System.Threading;
 
 namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 {    
@@ -79,7 +80,23 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
                 var handler = this.provider.TryGetHandler<TException>();
 
                 if (currentExecutionAttempt < handler.RetryCount)
+                {
+                    if (handler.RetryIntervalInMilliseconds > 0)
+                    {
+                        var retryThreshold = handler.RetryIntervalInMilliseconds;
+
+                        if (handler.Backoff == RetryBackoff.Exponential)
+                        {
+                            retryThreshold = (int)Math.Pow(retryThreshold, currentExecutionAttempt);
+                        }
+
+                        var intervalWatcher = new Stopwatch();
+                        intervalWatcher.Start();
+                        SpinWait.SpinUntil(() => intervalWatcher.ElapsedMilliseconds > retryThreshold);
+                    }
+
                     return false;
+                }
 
                 handler.Handle(exception);
                 return true;

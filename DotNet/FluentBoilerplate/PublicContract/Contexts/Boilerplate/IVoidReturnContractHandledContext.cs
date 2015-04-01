@@ -24,6 +24,6 @@ namespace FluentBoilerplate
     /// </summary>
     public interface IVoidReturnContractHandledContext : IVoidReturnContractContext
     {
-        IVoidReturnContractContext WithRetryOf(int count);
+        IVoidReturnContractContext WithRetryOf(int count, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None);
     }
 }

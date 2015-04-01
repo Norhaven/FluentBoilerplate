@@ -55,6 +55,8 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         private readonly Action<TException> actionHandler;
 
         public int RetryCount { get; set; }
+        public int RetryIntervalInMilliseconds { get; set; }
+        public RetryBackoff Backoff { get; set; }
 
         public ExceptionHandler(ILogProvider log, Action<TException> actionHandler)
         {

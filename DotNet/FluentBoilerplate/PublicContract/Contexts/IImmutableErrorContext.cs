@@ -52,8 +52,25 @@ namespace FluentBoilerplate.Contexts
         /// <param name="handler">The exception handler</param>
         /// <returns>An instance of <see cref="IImmutableErrorContext"/> with the exception handler registered</returns>
         IImmutableErrorContext RegisterExceptionHandler<TException, TResult>(Func<TException, TResult> handler) where TException : Exception;
-        IImmutableErrorContext MarkExceptionHandlerForRetry<TException>(int retryCount) where TException:Exception;
-        IImmutableErrorContext MarkExceptionHandlerForRetry<TException, TResult>(int retryCount) where TException : Exception;
+        /// <summary>
+        /// Marks the exception handler for retry.
+        /// </summary>
+        /// <typeparam name="TException">The type of the exception.</typeparam>
+        /// <param name="retryCount">The retry count.</param>
+        /// <param name="millisecondsInterval">The interval in milliseconds before another retry may be attempted.</param>
+        /// <param name="backoff">How subsequent retries should handle backing off of the retry interval.</param>
+        /// <returns>An instance of <see cref="IImmutableErrorContext"/> with the exception handler marked for retry.</returns>
+        IImmutableErrorContext MarkExceptionHandlerForRetry<TException>(int retryCount, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None) where TException : Exception;
+        /// <summary>
+        /// Marks the exception handler for retry.
+        /// </summary>
+        /// <typeparam name="TException">The type of the exception.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="retryCount">The retry count.</param>
+        /// <param name="millisecondsInterval">The interval in milliseconds before another retry may be attempted.</param>
+        /// <param name="backoff">How subsequent retries should handle backing off of the retry interval.</param>
+        /// <returns>An instance of <see cref="IImmutableErrorContext"/> with the exception handler marked for retry.</returns>
+        IImmutableErrorContext MarkExceptionHandlerForRetry<TException, TResult>(int retryCount, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None) where TException : Exception;
         /// <summary>
         /// Performs an action, surrounded by the context's exception handlers
         /// </summary>

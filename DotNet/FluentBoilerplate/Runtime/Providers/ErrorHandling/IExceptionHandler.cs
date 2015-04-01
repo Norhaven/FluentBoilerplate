@@ -23,6 +23,8 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
     internal interface IExceptionHandler<in TException>
     {
         int RetryCount { get; set; }
+        int RetryIntervalInMilliseconds { get; set; }
+        RetryBackoff Backoff { get; set; }
     }
 
     internal interface IVoidReturnExceptionHandler<in TException> : IExceptionHandler<TException>
