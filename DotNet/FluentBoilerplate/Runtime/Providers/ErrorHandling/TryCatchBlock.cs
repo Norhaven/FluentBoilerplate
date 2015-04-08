@@ -81,10 +81,10 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
 
                 if (currentExecutionAttempt < handler.RetryCount)
                 {
-                    if (handler.RetryIntervalInMilliseconds > 0)
-                    {
-                        var retryThreshold = handler.RetryIntervalInMilliseconds;
+                    var retryThreshold = handler.RetryIntervalInMilliseconds;
 
+                    if (retryThreshold > 0)
+                    {
                         if (handler.Backoff == RetryBackoff.Exponential)
                         {
                             retryThreshold = (int)Math.Pow(retryThreshold, currentExecutionAttempt);
