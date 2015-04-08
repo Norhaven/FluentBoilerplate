@@ -58,15 +58,18 @@ namespace FluentBoilerplate.Tests
             public string Text { get; set; }
         }
         [Test]
-        [Ignore]
+        //[Ignore]
         public void Test()
-        {
-            //var boilerplate = Boilerplate.New();
-            //boilerplate
-            //    .BeginContract()
-            //        .Handles<ServiceIsBusyException>(LogServiceFailure).WithRetryOf(3)
-            //        .Handles<Exception>().WithRetryOf(3)
-            //    .endContract
+        {   
+            var b = Boilerplate.New();
+            b
+                .BeginContract()
+                    .Handles<ArgumentException>(ex => { }).WithRetryOf(3, 1000, RetryBackoff.Exponential)
+                .EndContract()
+                .Do(_ =>
+                {
+                    throw new ArgumentException();
+                });
                 
             //IMethod method;
             //ILocalVariable first = method.DefineLocalVariable<int>();

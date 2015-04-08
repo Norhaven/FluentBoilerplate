@@ -32,7 +32,7 @@ namespace FluentBoilerplate
         IIdentity Identity { get; }
 
         /// <summary>
-        /// All timings of method calls performed with this context
+        /// All available timings of method calls performed with this context
         /// </summary>
         IImmutableQueue<TimeSpan> CallTimings { get; }
 

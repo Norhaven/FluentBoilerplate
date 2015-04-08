@@ -79,15 +79,16 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             {
                 var handler = this.provider.TryGetHandler<TException>();
 
-                if (currentExecutionAttempt < handler.RetryCount)
+                if (currentExecutionAttempt <= handler.RetryCount)
                 {
                     var retryThreshold = handler.RetryIntervalInMilliseconds;
 
                     if (retryThreshold > 0)
                     {
-                        if (handler.Backoff == RetryBackoff.Exponential)
+                        if (currentExecutionAttempt > 1 &&
+                            handler.Backoff == RetryBackoff.Exponential)
                         {
-                            retryThreshold = (int)Math.Pow(retryThreshold, currentExecutionAttempt);
+                            retryThreshold *= (int)Math.Exp(currentExecutionAttempt - 1);
                         }
 
                         var intervalWatcher = new Stopwatch();
