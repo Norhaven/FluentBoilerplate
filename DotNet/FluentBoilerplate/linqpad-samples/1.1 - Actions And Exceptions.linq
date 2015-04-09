@@ -64,6 +64,21 @@ void Main()
 	//For example, let's see the code above in that style instead.
 	DoAllActionsSafely(boilerplate);
 	
+  //Perhaps you'd like to retry the action a few times if a particular exception happens.
+  //That's also pretty easy!
+  
+  boilerplate
+    .BeginContract()
+      .Handles<ArgumentException>(ex => Console.WriteLine(ex.Message)).WithRetryOf(3)
+    .EndContract()
+    .Do(_ => 
+      { 
+        Console.WriteLine("Tried to do an action"); 
+        throw new ArgumentException("Encountered a problem doing this action");
+      });
+      
+  //You can also customize the interval between retries and apply a strategy to backing off subsequent retries.
+  
 	//That's not all you can do, by a long shot.
 	//Check out some of the other samples!
 }
