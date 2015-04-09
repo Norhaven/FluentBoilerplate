@@ -186,6 +186,7 @@ namespace FluentBoilerplate.Tests.Runtime.TryCatchBlockTests
             var retryCount = 5;
             var handler = new Mock<IResultExceptionHandler<Exception, int>>(MockBehavior.Strict);
             handler.Setup(x => x.RetryCount).Returns(retryCount);
+            handler.Setup(x => x.RetryIntervalInMilliseconds).Returns(0);
                         
             var handlerProvider = new Mock<IExceptionHandlerProvider>(MockBehavior.Strict);
             handlerProvider.Setup(x => x.TryGetHandler<Exception, int>()).Returns(handler.Object);
