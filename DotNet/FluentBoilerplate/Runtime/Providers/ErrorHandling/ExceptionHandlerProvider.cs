@@ -111,7 +111,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             return new ExceptionHandlerProvider(this.log, elevatedQueue);  
         }
 
-        public IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException>(int retryCount, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None) where TException : Exception
+        public IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException>(int retryCount, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None) where TException : Exception
         {
             var handler = this.handlers[typeof(TException)];
             handler.RetryCount = retryCount;
@@ -120,7 +120,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             return this;
         }
 
-        public IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException, TResult>(int retryCount, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None) where TException : Exception
+        public IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException, TResult>(int retryCount, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None) where TException : Exception
         {
             var handler = this.handlers[typeof(TException)];
             handler.RetryCount = retryCount;

@@ -24,6 +24,13 @@ namespace FluentBoilerplate
     /// </summary>
     public interface IVoidReturnContractHandledContext : IVoidReturnContractContext
     {
-        IVoidReturnContractContext WithRetryOf(int count, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None);
+        /// <summary>
+        /// This exception handler will retry the action up to the specified number of times before handling the exception.
+        /// </summary>
+        /// <param name="maxRetryAttempts">The maximum number of retry attempts possible.</param>
+        /// <param name="millisecondsInterval">The interval in milliseconds between retry attempts.</param>
+        /// <param name="backoff">The strategy for backing off on retry attempts.</param>
+        /// <returns>An instance of the current contract context.</returns>
+        IVoidReturnContractContext WithRetryOf(int maxRetryAttempts, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None);
     }
 }

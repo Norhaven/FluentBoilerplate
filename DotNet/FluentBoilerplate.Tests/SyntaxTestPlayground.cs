@@ -58,13 +58,13 @@ namespace FluentBoilerplate.Tests
             public string Text { get; set; }
         }
         [Test]
-        //[Ignore]
+        [Ignore]
         public void Test()
         {   
             var b = Boilerplate.New();
             b
                 .BeginContract()
-                    .Handles<ArgumentException>(ex => { }).WithRetryOf(3, 1000, RetryBackoff.Exponential)
+                    .Handles<ArgumentException>(ex => { }).WithRetryOf(3, 1000, BackoffStrategy.Exponential)
                 .EndContract()
                 .Do(_ =>
                 {

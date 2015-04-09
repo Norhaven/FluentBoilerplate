@@ -24,7 +24,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
     {
         int RetryCount { get; set; }
         int RetryIntervalInMilliseconds { get; set; }
-        RetryBackoff Backoff { get; set; }
+        BackoffStrategy Backoff { get; set; }
     }
 
     internal interface IVoidReturnExceptionHandler<in TException> : IExceptionHandler<TException>

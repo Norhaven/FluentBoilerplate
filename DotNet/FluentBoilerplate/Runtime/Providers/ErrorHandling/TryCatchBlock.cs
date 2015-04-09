@@ -53,8 +53,26 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
             public bool HandleException<TException>(TException exception, int currentExecutionAttempt) where TException : Exception
             {   
                 var handler = this.provider.TryGetHandler<TException, TResult>();
-                if (currentExecutionAttempt < handler.RetryCount)
+
+                if (currentExecutionAttempt <= handler.RetryCount)
+                {
+                    var retryThreshold = handler.RetryIntervalInMilliseconds;
+
+                    if (retryThreshold > 0)
+                    {
+                        if (currentExecutionAttempt > 1 &&
+                            handler.Backoff == BackoffStrategy.Exponential)
+                        {
+                            retryThreshold *= (int)Math.Exp(currentExecutionAttempt - 1);
+                        }
+
+                        var intervalWatcher = new Stopwatch();
+                        intervalWatcher.Start();
+                        SpinWait.SpinUntil(() => intervalWatcher.ElapsedMilliseconds > retryThreshold);
+                    }
+
                     return false;
+                }
 
                 this.Result = handler.Handle(exception);
                 return true;
@@ -71,10 +89,12 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
                 this.action = action;
                 this.provider = provider;
             }
+
             public void Do()
             {
                 this.action();
             }
+
             public bool HandleException<TException>(TException exception, int currentExecutionAttempt) where TException : Exception
             {
                 var handler = this.provider.TryGetHandler<TException>();
@@ -86,7 +106,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
                     if (retryThreshold > 0)
                     {
                         if (currentExecutionAttempt > 1 &&
-                            handler.Backoff == RetryBackoff.Exponential)
+                            handler.Backoff == BackoffStrategy.Exponential)
                         {
                             retryThreshold *= (int)Math.Exp(currentExecutionAttempt - 1);
                         }

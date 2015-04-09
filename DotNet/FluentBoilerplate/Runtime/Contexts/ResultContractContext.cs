@@ -40,7 +40,7 @@ namespace FluentBoilerplate.Runtime.Contexts
 
         }
 
-        public IResultContractContext<TResult> WithRetryOf(int count, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None)
+        public IResultContractContext<TResult> WithRetryOf(int count, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None)
         {
             var elevatedErrorContext = this.bundle.Errors.MarkExceptionHandlerForRetry<TException, TResult>(count, millisecondsInterval, backoff);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);

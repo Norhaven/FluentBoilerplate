@@ -37,7 +37,7 @@ namespace FluentBoilerplate.Runtime.Contexts
             
         }
 
-        public IVoidReturnContractContext WithRetryOf(int count, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None)
+        public IVoidReturnContractContext WithRetryOf(int count, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None)
         {
             var elevatedErrorContext = this.bundle.Errors.MarkExceptionHandlerForRetry<TException>(count, millisecondsInterval, backoff);
             var elevatedBundle = this.bundle.Copy(errorContext: elevatedErrorContext);

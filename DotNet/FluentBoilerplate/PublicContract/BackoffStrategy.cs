@@ -23,16 +23,16 @@ using System.Threading.Tasks;
 namespace FluentBoilerplate
 {
     /// <summary>
-    /// Represents an approach to backoff attempts during a retry.
+    /// Represents a strategy to backing off during a sequence of retry attempts.
     /// </summary>
-    public enum RetryBackoff
+    public enum BackoffStrategy
     {
         /// <summary>
         /// No backoff, any subsequent retry may happen immediately.
         /// </summary>
         None = 0,
         /// <summary>
-        /// Backoff is exponential, taking into account any retry interval.
+        /// Backoff is exponential based on the specified retry interval.
         /// </summary>
         Exponential = 1
     }

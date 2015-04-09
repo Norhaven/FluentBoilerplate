@@ -72,7 +72,7 @@ namespace FluentBoilerplate.Runtime.Providers.ErrorHandling
         /// <returns>An instance of <see cref="IExceptionHandlerProvider"/> that contains the given exception handler</returns>
         IExceptionHandlerProvider Add<TException, TResult>(Func<TException, TResult> action) where TException : Exception;
 
-        IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException>(int retryCount, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None) where TException : Exception;
-        IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException, TResult>(int retryCount, int millisecondsInterval = 0, RetryBackoff backoff = RetryBackoff.None) where TException : Exception;
+        IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException>(int retryCount, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None) where TException : Exception;
+        IExceptionHandlerProvider MarkExceptionHandlerForRetry<TException, TResult>(int retryCount, int millisecondsInterval = 0, BackoffStrategy backoff = BackoffStrategy.None) where TException : Exception;
     }
 }

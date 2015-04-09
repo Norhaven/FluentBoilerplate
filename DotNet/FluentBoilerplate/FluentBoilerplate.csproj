@@ -75,7 +75,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ITypeCheckExecution.tt</DependentUpon>
     </Compile>
-    <Compile Include="PublicContract\RetryBackoff.cs" />
+    <Compile Include="PublicContract\BackoffStrategy.cs" />
     <Compile Include="PublicContract\TypeCheckResult.cs" />
     <Compile Include="PublicContract\Visibility.cs" />
     <Compile Include="PublicContract\Attributes\MapsToAttribute.cs" />
