@@ -5,7 +5,7 @@ All official release information / released builds are located at https://www.nu
 
 **This is a beta-quality work in progress. This means that things could break or behave in unexpected ways.**
 
-That said, you're more than welcome to <a href="https://github.com/Norhaven/FluentBoilerplate/wiki/How-to-contribute">report any bugs you may find, contribute, etc.</a>
+That said, you're more than welcome to <a href="https://github.com/Norhaven/FluentBoilerplate/wiki/How-can-I-contribute%3F">report any bugs you may find, contribute, etc.</a>
 
 Enjoy!
 
